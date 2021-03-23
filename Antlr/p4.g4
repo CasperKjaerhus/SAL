@@ -1,77 +1,70 @@
-grammar p4v2;
-s 					:	Importstmts InitStmts;
-Importstmts 		:	Importstmt Importstmts
+grammar p4;
+s 					:	importstmts initStmts;
+importstmts 		:	importstmt importstmts
 					|	;
-InitStmts 			:	Dcl InitStmts
+initStmts 			:	dcl initStmts
 					|	;
-Importstmt 			:	'include' Id;
-Dcl 				:	FuncDcl
-					|	VarDcl;
-VarDcl 				:	Type Id
-					| 	Type Id Modifier
-					|	Type Id Assignment Expr
-					|	Type Id Modifier Assignment Expr;
-Modifier 			:	Lbracket Size Rbracket
+importstmt 			:	Include Id;
+dcl 				:	funcDcl
+					|	varDcl;
+varDcl 				:	Type Id
+					| 	Type Id modifier
+					|	Type Id Assignment expr
+					|	Type Id modifier Assignment expr;
+modifier 			:	Lbracket Size Rbracket
 					|	Lbracket Rbracket;
-FuncDcl 			:	Function Id Lparen Params Rparen Returns Type Body
-					|	Function Id Lparen Rparen Returns Type Body;
-Params 				:	Param
-					|	Param ',' Params;
-Param 				:	Type Id;
+funcDcl 			:	Function Id Lparen params Rparen Returns Type body
+					|	Function Id Lparen Rparen Returns Type body;
+params 				:	param
+					|	param Comma params;
+param 				:	Type Id;
+body 				:	Begin stmts End;
+stmts 				:	varDcl stmts							// Hvad med funcDcl inde i en funcDcl?
+					|	controlExpr stmts
+					|	functioncall stmts
+					|	returnExpr stmts
+					|	;
+expr 				: 	relExpr (BoolOp relExpr)*;				// Hvad med negation?
+relExpr 			:	addExpr (RelOp addExpr)*;
+addExpr				: 	mulExpr (AddOp mulExpr)*;
+mulExpr				: 	term (MulOp term)*;
+term				: 	val | Lparen expr Rparen;
+val					: 	Id | num | functioncall;
+controlExpr			:	ifExpr
+					|	forExpr
+					|	whileExpr
+					|	foreachExpr
+					|	switchExpr;
+ifExpr 				:	If Lparen expr Rparen Then body elseExpr;
+elseExpr 			:	Else body
+					|	Else ifExpr
+					|	;
+forExpr 			:	For Lparen Id Colon expr Dotdotdot expr Rparen body
+					|	For Lparen Id Colon expr Dotdotdot expr Comma Step expr Rparen body;
+whileExpr 			:	While Lparen expr Rparen body;
+foreachExpr			:	Foreach Lparen Id In Id Rparen body;
+switchExpr 			:	Switch Lparen Id Rparen switchBody;
+switchBody 			:	Begin cases End;
+cases 				:	r_case
+					|	r_case cases;
+r_case 				:	CaseKeyword val Colon 					// Hvad med blokke/scope/Begin-End?
+					|	CaseKeyword val Colon Break
+					|	CaseKeyword val Colon body
+					|	CaseKeyword val Colon body Break;
+functioncall		:	Id Lparen arguments Rparen 
+					| 	Id Lparen Rparen;
+arguments 			:	val | val Comma arguments;
+returnExpr 			:	Return expr;
+num 				:	Integers
+					|	Decimal;
+
+//Terminals
+Include				:	'include';
 Type 				:	'number'
 					|	'string'
 					|	'char'
 					|	'bool'
 					| 	'void';
-Body 				:	Begin Stmts End;
-Stmts 				:	VarDcl Stmts							// Hvad med funcdcl inde i en funcdcl?
-					|	ControlExpr Stmts
-					|	Functioncall Stmts
-					|	ReturnExpr Stmts
-					|	;
-Expr 				: 	RelExpr (BoolOp RelExpr)*;				// Hvad med negation?
-RelExpr 			:	AddExpr (RelOp AddExpr)*;
-AddExpr				: 	MulExpr (AddOp MulExpr)*;
-MulExpr				: 	Term (MulOp Term)*;
-Term				: 	Val | Lparen Expr Rparen;
-Val					: 	Id | Num | Functioncall;
-ControlExpr			:	IfExpr
-					|	ForExpr
-					|	WhileExpr
-					|	ForeachExpr
-					|	SwitchExpr;
-IfExpr 				:	If Lparen Expr Rparen Then Body ElseExpr;
-ElseExpr 			:	Else Body
-					|	Else IfExpr
-					|	;
-ForExpr 			:	For Lparen Id Colon Expr Dotdotdot Expr Rparen Body
-					|	For Lparen Id Colon Expr Dotdotdot Expr Comma Step Expr Rparen Body;
-WhileExpr 			:	While Lparen Expr Rparen Body;
-ForeachExpr			:	Foreach Lparen Id In Id Rparen Body;
-SwitchExpr 			:	Switch Lparen Id Rparen Switchbody;
-Switchbody 			:	Begin Cases End;
-Cases 				:	Case
-					|	Case Cases;
-Case 				:	CaseKeyword Val Colon 					// Hvad med blokke/scope/Begin-end?
-					|	CaseKeyword Val Colon Break
-					|	CaseKeyword Val Colon Body
-					|	CaseKeyword Val Colon Body Break;
-Functioncall		:	Id Lparen Arguments Rparen 
-					| 	Id Lparen Rparen;
-Arguments 			:	Val | Val ',' Arguments;
-ReturnExpr 			:	Return Expr;
-
-//Regex
-Size				:	[1-9]+ Digit*;
-Id 					:	[a-zA-Z]+[a-zA-Z0-9_]*;
-Num 				:	Integers
-					|	Decimal;
-Integers			:	'0'
-					|	[1-9]+ Digit*; 
-Decimal				:	Integers '.' Digit*;
-fragment Digit		:	[0-9];
-
-//Terminals
 RelOp 				:	'<'
 					|	'>'
 					|	'=='
@@ -109,6 +102,14 @@ In 					:	'in';
 Switch 				:	'switch';
 CaseKeyword 		:	'case';
 Break 				:	'break';
+
+//Regex
+Size				:	[1-9]+Digit*;
+Id 					:	[a-zA-Z]+[a-zA-Z0-9_]*;
+Integers			:	[1-9]+Digit*
+					|	'0'; 
+Decimal				:	Integers '.' Digit*;
+fragment Digit		:	[0-9];
 
 LineComment			:	'/''/' ~[\r\n]* -> skip;
 MultiComment		:	'/''*' .*? '*''/' -> skip;
