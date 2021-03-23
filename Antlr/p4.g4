@@ -30,6 +30,8 @@ addExpr				: 	mulExpr (AddOp mulExpr)*;
 mulExpr				: 	term (MulOp term)*;
 term				: 	val | Lparen expr Rparen;
 val					: 	Id | num | functioncall;
+num					:	Integers;
+				//	|	Decimal;
 controlExpr			:	ifExpr
 					|	forExpr
 					|	whileExpr
@@ -55,8 +57,6 @@ functioncall		:	Id Lparen arguments Rparen
 					| 	Id Lparen Rparen;
 arguments 			:	val | val Comma arguments;
 returnExpr 			:	Return expr;
-num 				:	Integers
-					|	Decimal;
 
 //Terminals
 Include				:	'include';
@@ -106,10 +106,11 @@ Break 				:	'break';
 //Regex
 Size				:	[1-9]+Digit*;
 Id 					:	[a-zA-Z]+[a-zA-Z0-9_]*;
-Integers			:	[1-9]+Digit*
-					|	'0'; 
-Decimal				:	Integers '.' Digit*;
-fragment Digit		:	[0-9];
+Integers            :   Digits
+                    |   [0]; 
+//Decimal             :   Integers '.' Digit*;
+fragment Digit      :   [0-9];
+fragment Digits     :   [1-9][0-9]*;
 
 LineComment			:	'/''/' ~[\r\n]* -> skip;
 MultiComment		:	'/''*' .*? '*''/' -> skip;
