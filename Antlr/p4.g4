@@ -1,5 +1,5 @@
 grammar p4v2;
-s 					:	Importstmts InitStmts ;
+s 					:	Importstmts InitStmts;
 Importstmts 		:	Importstmt Importstmts
 					|	;
 InitStmts 			:	Dcl InitStmts
