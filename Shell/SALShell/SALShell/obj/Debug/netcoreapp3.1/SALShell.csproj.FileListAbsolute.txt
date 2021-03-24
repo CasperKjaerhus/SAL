@@ -1,0 +1,13 @@
+C:\Users\alexa\Desktop\Uni\Bachelor\4.Sem\Projekt\SAL\Shell\SALShell\SALShell\bin\Debug\netcoreapp3.1\SALShell.exe
+C:\Users\alexa\Desktop\Uni\Bachelor\4.Sem\Projekt\SAL\Shell\SALShell\SALShell\bin\Debug\netcoreapp3.1\SALShell.deps.json
+C:\Users\alexa\Desktop\Uni\Bachelor\4.Sem\Projekt\SAL\Shell\SALShell\SALShell\bin\Debug\netcoreapp3.1\SALShell.runtimeconfig.json
+C:\Users\alexa\Desktop\Uni\Bachelor\4.Sem\Projekt\SAL\Shell\SALShell\SALShell\bin\Debug\netcoreapp3.1\SALShell.runtimeconfig.dev.json
+C:\Users\alexa\Desktop\Uni\Bachelor\4.Sem\Projekt\SAL\Shell\SALShell\SALShell\bin\Debug\netcoreapp3.1\SALShell.dll
+C:\Users\alexa\Desktop\Uni\Bachelor\4.Sem\Projekt\SAL\Shell\SALShell\SALShell\bin\Debug\netcoreapp3.1\SALShell.pdb
+C:\Users\alexa\Desktop\Uni\Bachelor\4.Sem\Projekt\SAL\Shell\SALShell\SALShell\obj\Debug\netcoreapp3.1\SALShell.csprojAssemblyReference.cache
+C:\Users\alexa\Desktop\Uni\Bachelor\4.Sem\Projekt\SAL\Shell\SALShell\SALShell\obj\Debug\netcoreapp3.1\SALShell.AssemblyInfoInputs.cache
+C:\Users\alexa\Desktop\Uni\Bachelor\4.Sem\Projekt\SAL\Shell\SALShell\SALShell\obj\Debug\netcoreapp3.1\SALShell.AssemblyInfo.cs
+C:\Users\alexa\Desktop\Uni\Bachelor\4.Sem\Projekt\SAL\Shell\SALShell\SALShell\obj\Debug\netcoreapp3.1\SALShell.csproj.CoreCompileInputs.cache
+C:\Users\alexa\Desktop\Uni\Bachelor\4.Sem\Projekt\SAL\Shell\SALShell\SALShell\obj\Debug\netcoreapp3.1\SALShell.dll
+C:\Users\alexa\Desktop\Uni\Bachelor\4.Sem\Projekt\SAL\Shell\SALShell\SALShell\obj\Debug\netcoreapp3.1\SALShell.pdb
+C:\Users\alexa\Desktop\Uni\Bachelor\4.Sem\Projekt\SAL\Shell\SALShell\SALShell\obj\Debug\netcoreapp3.1\SALShell.genruntimeconfig.cache

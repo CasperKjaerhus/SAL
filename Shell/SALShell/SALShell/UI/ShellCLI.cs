@@ -15,7 +15,6 @@ namespace SALShell.UI
 
         public void Start()
         {
-            Console.WriteLine("Welcome to the SAL Compiler!\n");
             DisplayHelp();
             do
             {
@@ -52,7 +51,23 @@ namespace SALShell.UI
 
         public void DisplayHelp()
         {
-            throw new NotImplementedException();
+            string helpL = "'-h' | '-help' | 'help' | 'h'";
+            string helpR = "Display this menu.";
+
+            string cdL = "'cd' <path>";
+            string cdR ="Change directory to <path>.";
+
+            string cdupL = "'..'";
+            string cdupR = "Go up one directory.";
+
+            string salcL = "'salc' <file>";
+            string salcR = "Compile a <file> with the SAL Compiler.";
+
+            Console.WriteLine("Welcome to the SAL Compiler!");
+            Console.WriteLine("{0, -40} | {1, 10}", helpL, helpR);
+            Console.WriteLine("{0, -40} | {1, 10}", cdL, cdR);
+            Console.WriteLine("{0, -40} | {1, 10}", cdupL, cdupR);
+            Console.WriteLine("{0, -40} | {1, 10}", salcL, salcR);
         }
         public void DisplayGeneralError(string eMessage)
         {
@@ -61,7 +76,7 @@ namespace SALShell.UI
 
         public void DisplayCommandNotFoundMessage(string commandStr)
         {
-            throw new NotImplementedException();
+            Console.WriteLine($"Sorry, I do not recognize the '{commandStr}' command. Try again.");
         }
     }
 }

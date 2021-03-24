@@ -1,4 +1,7 @@
 ﻿using System;
+using SALShell.Controller;
+using SALShell.Core;
+using SALShell.UI;
 
 namespace SALShell
 {
@@ -6,7 +9,10 @@ namespace SALShell
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            ICore core = new Core.Core();
+            IShellUI ui = new ShellCLI();
+            ShellController sheeController = new ShellController(ui, core);
+            sheeController.Ui.Start();
         }
     }
 }

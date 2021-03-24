@@ -10,7 +10,7 @@ namespace SALShell.Command
     {
         public void Execute(string[] argStrings, IShellUI ui, ICore core)
         {
-            throw new NotImplementedException();
+            ui.DisplayHelp();
         }
     }
 }
