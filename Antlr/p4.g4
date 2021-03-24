@@ -29,9 +29,7 @@ relExpr 			:	addExpr (RelOp addExpr)*;
 addExpr				: 	mulExpr (AddOp mulExpr)*;
 mulExpr				: 	term (MulOp term)*;
 term				: 	val | Lparen expr Rparen;
-val					: 	Id | num | functioncall;
-num					:	Integers;
-				//	|	Decimal;
+val					: 	Id | Integer | Decimal | functioncall;
 controlExpr			:	ifExpr
 					|	forExpr
 					|	whileExpr
@@ -104,13 +102,12 @@ CaseKeyword 		:	'case';
 Break 				:	'break';
 
 //Regex
-Size				:	[1-9]+Digit*;
+
 Id 					:	[a-zA-Z]+[a-zA-Z0-9_]*;
-Integers            :   Digits
-                    |   [0]; 
-//Decimal             :   Integers '.' Digit*;
-fragment Digit      :   [0-9];
-fragment Digits     :   [1-9][0-9]*;
+fragment Digit		:	'0'..'9';
+Decimal				:	Digit+[.]Digit+;
+Integer				:	'0' | '1'..'9'Digit*;
+Size				:	'1'..'9'Digit*;
 
 LineComment			:	'/''/' ~[\r\n]* -> skip;
 MultiComment		:	'/''*' .*? '*''/' -> skip;
