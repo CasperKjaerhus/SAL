@@ -10,7 +10,6 @@ dcl 				:	funcDcl
 varDcl 				:	Type Id
 					| 	Type Id modifier
 					|	Type Id Assignment expr
-					|	Type Id Assignment String
 					|	Type Id modifier Assignment modifierExpr;
 modifier 			:	Size
 					|	Lbracket Rbracket;
@@ -39,7 +38,8 @@ val					: 	Id
 					| 	functioncall 
 					| 	Id Dot Id 
 					| 	Id Lbracket indexVal Rbracket
-					|	Id Dot functioncall;
+					|	Id Dot functioncall
+					|	String;
 indexVal			:	Integer
 					|	Id
 					|	Id Dot Id
