@@ -10,9 +10,13 @@ dcl 				:	funcDcl
 varDcl 				:	Type Id
 					| 	Type Id modifier
 					|	Type Id Assignment expr
-					|	Type Id modifier Assignment expr;
-modifier 			:	Lbracket Size Rbracket
+					|	Type Id Assignment String
+					|	Type Id modifier Assignment modifierExpr;
+modifier 			:	Size
 					|	Lbracket Rbracket;
+modifierExpr		:	expr | LBrace valList RBrace;
+valList				:	val Comma valList 
+					| 	val;
 funcDcl 			:	Function Id Lparen params Rparen Returns Type body
 					|	Function Id Lparen Rparen Returns Type body;
 params 				:	param
@@ -29,7 +33,17 @@ relExpr 			:	addExpr (RelOp addExpr)*;
 addExpr				: 	mulExpr (AddOp mulExpr)*;
 mulExpr				: 	term (MulOp term)*;
 term				: 	val | Lparen expr Rparen;
-val					: 	Id | Integer | Decimal | functioncall;
+val					: 	Id 
+					|	Integer 
+					|	Decimal 
+					| 	functioncall 
+					| 	Id Dot Id 
+					| 	Id Lbracket indexVal Rbracket
+					|	Id Dot functioncall;
+indexVal			:	Integer
+					|	Id
+					|	Id Dot Id
+					|	functioncall;
 controlExpr			:	ifExpr
 					|	forExpr
 					|	whileExpr
@@ -82,6 +96,8 @@ Lbracket 			:	'[';
 Rbracket 			:	']';
 Lparen 				:	'(';
 Rparen 				:	')';
+LBrace				:	'{';
+RBrace				:	'}';
 Return 				:	'return';
 Returns 			:	'returns';
 Comma 				:	',';
@@ -100,14 +116,17 @@ In 					:	'in';
 Switch 				:	'switch';
 CaseKeyword 		:	'case';
 Break 				:	'break';
-
+Dot					:	'.';
 //Regex
 
+String				:	'"'~["]*'"';
+Char				:	'\''~[']'\'';
+Size				:	Lbracket Nonzero Rbracket;
 Id 					:	[a-zA-Z]+[a-zA-Z0-9_]*;
 fragment Digit		:	'0'..'9';
+fragment Nonzero	: 	'1'..'9'Digit*;
 Decimal				:	Digit+[.]Digit+;
-Integer				:	'0' | '1'..'9'Digit*;
-Size				:	'1'..'9'Digit*;
+Integer				:	'0' | Nonzero;
 
 LineComment			:	'/''/' ~[\r\n]* -> skip;
 MultiComment		:	'/''*' .*? '*''/' -> skip;
