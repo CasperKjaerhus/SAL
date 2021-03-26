@@ -26,6 +26,7 @@ namespace SALShell.Controller
             {"cd", new ChangeDirectoryCommand()},
             {"salc", new SalCompileCommand()},
         };
+
         private void Ui_CommandEntered(string command)
         {
             try

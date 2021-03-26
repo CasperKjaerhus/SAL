@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using SALShell.Core;
 using SALShell.UI;
+using System.IO;
 
 namespace SALShell.Command
 {
@@ -10,7 +11,16 @@ namespace SALShell.Command
     {
         public void Execute(string[] argStrings, IShellUI ui, ICore core)
         {
-            throw new NotImplementedException();
+            string Path = argStrings[1];
+
+            try
+            {
+                core.OpenFile(Path);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }
