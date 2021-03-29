@@ -4,8 +4,8 @@ importStmt			: Include Id;
 initStmt 			: varDcl | funcDcl;
 varDcl				: Type Id (Modifier)?
 					| Type Id Assignment expr
-					| Type Id Modifier Assignment list
-					|	Id Assignment expr;
+					| Type Id Modifier Assignment list;
+assignment			: Id Assignment expr;
 Modifier			: Lbracket (Nonzero)? Rbracket;
 list				: LBrace val? (Comma val)* RBrace;
 funcDcl 			: Function Id Lparen params Rparen Returns Type body
@@ -13,28 +13,29 @@ funcDcl 			: Function Id Lparen params Rparen Returns Type body
 params				: param? (Comma param)*;
 param				: Type Id;
 body				: Begin stmt* End;
-stmt 				: varDcl
+stmt 				: varDcl Semicolon
+					| assignment Semicolon
 					| controlStructure
-					| functioncall
-					| Return returnStmt;
+					| functioncall Semicolon
+					| Return returnStmt Semicolon;
 					
 controlStructure	: ifStmt
 					| forExpr
 					| foreachExpr
 					| whileExpr
 					| switchStmt;
-ifStmt 				: If Lparen predExpr Rparen Then body elseStmt?;
+ifStmt 				: If Lparen expr Rparen Then body elseStmt?;
 elseStmt 			: Else body
 					| Else ifStmt;
 forExpr 			: For Lparen Id Colon expr Dotdotdot expr Rparen body
 					| For Lparen Id Colon expr Dotdotdot expr Comma Step expr Rparen body;
-whileExpr 			: While Lparen predExpr Rparen body;
+whileExpr 			: While Lparen expr Rparen body;
 foreachExpr			: Foreach Lparen Id In Id Rparen body;
 switchStmt 			: Switch Lparen Id Rparen switchBody;
 switchBody 			: Begin switchItem* End;
 switchItem 			: CaseKeyword val Colon body? Break?;
 			
-expr 				: relExpr | boolExpr;
+expr 				: Negation? relExpr | Negation? boolExpr;
 relExpr				: mathExpr ( RelOp mathExpr)*;
 boolExpr 			: andExpr (OrOp andExpr)*;
 andExpr				: boolTerm (AndOp boolTerm)*;
@@ -122,7 +123,9 @@ Switch 				: 'switch';
 CaseKeyword 		: 'case';
 Break 				: 'break';
 Dot					: '.';
+Semicolon			: ';';
 
+//Types
 Type				: 'number' | 'string' | 'bool' | 'void' | 'char';
 String				: '"'~["]*'"';
 Char				: '\''~[']'\'';
@@ -130,8 +133,6 @@ Bool				: 'true' | 'false';
 
 //Regex
 
-String				: '"'~["]*'"';
-Char				: '\''~[']'\'';
 Id					: ([a-zA-Z]([a-zA-Z0-9_])*);
 fragment Digit		: '0'..'9';
 fragment Nonzero	: '1'..'9'Digit*;

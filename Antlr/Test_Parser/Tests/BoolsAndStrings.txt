@@ -9,7 +9,7 @@ function getFirstChar(string stringInp) returns char begin
     
     char firstChar;
     bool isEmpty = true;
-    number strLength = getStringLength(stringInp)
+    number strLength = getStringLength(stringInp);
     
     if(strLength > 0) then begin
         isEmpty = false;
