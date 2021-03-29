@@ -8,11 +8,9 @@ importstmt 			:	Include Id;
 dcl 				:	funcDcl
 					|	varDcl;
 varDcl 				:	Type Id
-					| 	Type Id modifier
+					| 	Type Id Modifier
 					|	Type Id Assignment expr
-					|	Type Id modifier Assignment modifierExpr;
-modifier 			:	Size
-					|	Lbracket Rbracket;
+					|	Type Id Modifier Assignment modifierExpr;
 modifierExpr		:	expr | LBrace valList RBrace;
 valList				:	val Comma valList 
 					| 	val;
@@ -117,11 +115,12 @@ Switch 				:	'switch';
 CaseKeyword 		:	'case';
 Break 				:	'break';
 Dot					:	'.';
+
 //Regex
 
 String				:	'"'~["]*'"';
 Char				:	'\''~[']'\'';
-Size				:	Lbracket Nonzero Rbracket;
+Modifier			:	Lbracket (Nonzero)? Rbracket;
 Id 					:	[a-zA-Z]+[a-zA-Z0-9_]*;
 fragment Digit		:	'0'..'9';
 fragment Nonzero	: 	'1'..'9'Digit*;
