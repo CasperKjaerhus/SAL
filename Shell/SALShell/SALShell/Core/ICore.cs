@@ -8,5 +8,6 @@ namespace SALShell.Core
     interface ICore
     {
         public void OpenFile(string fileLoc);
+        public void ChangeDirectory(string path);
     }
 }

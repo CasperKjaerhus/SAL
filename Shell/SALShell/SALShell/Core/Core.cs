@@ -25,5 +25,17 @@ namespace SALShell.Core
             
 
         }
+
+        public void ChangeDirectory(string path)
+        {
+            if(path != null)
+            {
+                Environment.CurrentDirectory = path;
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
+        }
     }
 }

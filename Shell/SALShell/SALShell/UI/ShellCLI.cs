@@ -41,7 +41,7 @@ namespace SALShell.UI
 
         public void DisplayChangeDirectory()
         {
-            throw new NotImplementedException();
+            Console.WriteLine(Environment.CurrentDirectory);
         }
 
         public void DisplayCompilation()

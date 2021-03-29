@@ -10,7 +10,21 @@ namespace SALShell.Command
     {
         public void Execute(string[] argStrings, IShellUI ui, ICore core)
         {
-            throw new NotImplementedException();
+            string path = argStrings[1];
+
+            try
+            {
+                if (path != null)
+                {
+                    core.ChangeDirectory(path);
+                    ui.DisplayChangeDirectory();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
     }
 }

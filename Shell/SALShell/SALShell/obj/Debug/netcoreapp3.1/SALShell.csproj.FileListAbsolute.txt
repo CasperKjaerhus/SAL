@@ -24,3 +24,16 @@ D:\P4\SAL\Shell\SALShell\SALShell\obj\Debug\netcoreapp3.1\SALShell.csproj.CoreCo
 D:\P4\SAL\Shell\SALShell\SALShell\obj\Debug\netcoreapp3.1\SALShell.dll
 D:\P4\SAL\Shell\SALShell\SALShell\obj\Debug\netcoreapp3.1\SALShell.pdb
 D:\P4\SAL\Shell\SALShell\SALShell\obj\Debug\netcoreapp3.1\SALShell.genruntimeconfig.cache
+C:\Users\KPsan\OneDrive\Skrivebord\GitHub\SAL\Shell\SALShell\SALShell\bin\Debug\netcoreapp3.1\SALShell.exe
+C:\Users\KPsan\OneDrive\Skrivebord\GitHub\SAL\Shell\SALShell\SALShell\bin\Debug\netcoreapp3.1\SALShell.deps.json
+C:\Users\KPsan\OneDrive\Skrivebord\GitHub\SAL\Shell\SALShell\SALShell\bin\Debug\netcoreapp3.1\SALShell.runtimeconfig.json
+C:\Users\KPsan\OneDrive\Skrivebord\GitHub\SAL\Shell\SALShell\SALShell\bin\Debug\netcoreapp3.1\SALShell.runtimeconfig.dev.json
+C:\Users\KPsan\OneDrive\Skrivebord\GitHub\SAL\Shell\SALShell\SALShell\bin\Debug\netcoreapp3.1\SALShell.dll
+C:\Users\KPsan\OneDrive\Skrivebord\GitHub\SAL\Shell\SALShell\SALShell\bin\Debug\netcoreapp3.1\SALShell.pdb
+C:\Users\KPsan\OneDrive\Skrivebord\GitHub\SAL\Shell\SALShell\SALShell\obj\Debug\netcoreapp3.1\SALShell.csprojAssemblyReference.cache
+C:\Users\KPsan\OneDrive\Skrivebord\GitHub\SAL\Shell\SALShell\SALShell\obj\Debug\netcoreapp3.1\SALShell.AssemblyInfoInputs.cache
+C:\Users\KPsan\OneDrive\Skrivebord\GitHub\SAL\Shell\SALShell\SALShell\obj\Debug\netcoreapp3.1\SALShell.AssemblyInfo.cs
+C:\Users\KPsan\OneDrive\Skrivebord\GitHub\SAL\Shell\SALShell\SALShell\obj\Debug\netcoreapp3.1\SALShell.csproj.CoreCompileInputs.cache
+C:\Users\KPsan\OneDrive\Skrivebord\GitHub\SAL\Shell\SALShell\SALShell\obj\Debug\netcoreapp3.1\SALShell.dll
+C:\Users\KPsan\OneDrive\Skrivebord\GitHub\SAL\Shell\SALShell\SALShell\obj\Debug\netcoreapp3.1\SALShell.pdb
+C:\Users\KPsan\OneDrive\Skrivebord\GitHub\SAL\Shell\SALShell\SALShell\obj\Debug\netcoreapp3.1\SALShell.genruntimeconfig.cache

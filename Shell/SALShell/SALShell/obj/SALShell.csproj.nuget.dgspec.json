@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\P4\\SAL\\Shell\\SALShell\\SALShell\\SALShell.csproj": {}
+    "C:\\Users\\KPsan\\OneDrive\\Skrivebord\\GitHub\\SAL\\Shell\\SALShell\\SALShell\\SALShell.csproj": {}
   },
   "projects": {
-    "D:\\P4\\SAL\\Shell\\SALShell\\SALShell\\SALShell.csproj": {
+    "C:\\Users\\KPsan\\OneDrive\\Skrivebord\\GitHub\\SAL\\Shell\\SALShell\\SALShell\\SALShell.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\P4\\SAL\\Shell\\SALShell\\SALShell\\SALShell.csproj",
+        "projectUniqueName": "C:\\Users\\KPsan\\OneDrive\\Skrivebord\\GitHub\\SAL\\Shell\\SALShell\\SALShell\\SALShell.csproj",
         "projectName": "SALShell",
-        "projectPath": "D:\\P4\\SAL\\Shell\\SALShell\\SALShell\\SALShell.csproj",
-        "packagesPath": "C:\\Users\\marcu\\.nuget\\packages\\",
-        "outputPath": "D:\\P4\\SAL\\Shell\\SALShell\\SALShell\\obj\\",
+        "projectPath": "C:\\Users\\KPsan\\OneDrive\\Skrivebord\\GitHub\\SAL\\Shell\\SALShell\\SALShell\\SALShell.csproj",
+        "packagesPath": "C:\\Users\\KPsan\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\KPsan\\OneDrive\\Skrivebord\\GitHub\\SAL\\Shell\\SALShell\\SALShell\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\marcu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\KPsan\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -29,6 +26,7 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
             "projectReferences": {}
           }
         },
@@ -40,6 +38,7 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "imports": [
             "net461",
             "net462",
@@ -55,7 +54,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }
