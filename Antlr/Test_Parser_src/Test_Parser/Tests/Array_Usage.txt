@@ -1,0 +1,23 @@
+﻿function main() returns void begin
+    number timer = 100;
+    number ledPins[] = {2, 7, 4, 6, 5, 3}; // initialising number array
+
+
+    for (thisPin: 0...ledPins.length, step 1) begin        
+        pinMode(ledPins[thisPin], OUTPUT);        // Sets the specified pin as output
+    end
+
+    while (true) begin
+        for (thisPin: 0...ledPins.length) begin          // Implicitly step = 1
+            digitalWrite(ledPins[thisPin], HIGH);  // Turns on the LED for the specified pin
+            delay(timer);                          
+            digitalWrite(ledPins[thisPin], LOW);   // Turns off the LED for the specified pin
+        end
+        for (thisPin: 0...ledPins.length) begin          // Implicitly step = 1
+            digitalWrite(ledPins[thisPin], HIGH);  // Turns on the LED for the specified pin
+            delay(timer);                          
+            digitalWrite(ledPins[thisPin], LOW);   // Turns off the LED for the specified pin
+        end
+        
+    end
+end
