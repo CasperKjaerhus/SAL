@@ -1,10 +1,11 @@
 grammar p4v4;
-s 			: (importStmt)* (initStmt)*;
+s 					: (importStmt)* (initStmt)*;
 importStmt			: Include Id;
 initStmt 			: varDcl | funcDcl;
 varDcl				: Type Id (Modifier)?
 					| Type Id Assignment expr
-					| Type Id Modifier Assignment list;
+					| Type Id Modifier Assignment list
+					|	Id Assignment expr;
 list				: LBrace val? (Comma val)* RBrace;
 funcDcl 			: Function Id Lparen params Rparen Returns Type body
 					| Function Id Lparen Rparen Returns Type body;
@@ -14,7 +15,7 @@ body				: Begin stmt* End;
 stmt 				: varDcl
 					| controlStructure
 					| functioncall
-					| returnStmt;
+					| Return returnStmt;
 controlStructure	: ifStmt
 					| forExpr
 					| foreachExpr
@@ -23,8 +24,9 @@ controlStructure	: ifStmt
 returnStmt			: Id 
 					| val 
 					| expr;
-functioncall		: Id Lparen argument* Rparen;
+functioncall		: Id (Dot Id)* Lparen argument* Rparen;
 argument 			: val (Comma val)*;
+
 ifStmt 				: If Lparen predExpr Rparen Then body elseStmt?;
 elseStmt 			: Else body
 					| Else ifStmt;
@@ -36,15 +38,15 @@ switchStmt 			: Switch Lparen Id Rparen switchBody;
 switchBody 			: Begin switchItem* End;
 switchItem 			: CaseKeyword val Colon body? Break?;
 
-expr 				: mathExpr | predExpr;
-predExpr 			: relExpr | boolExpr;
+expr 				: relExpr | boolExpr;
 relExpr				: mathExpr ( RelOp mathExpr)*;
 boolExpr 			: andExpr (OrOp andExpr)*;
 andExpr				: boolTerm (AndOp boolTerm)*;
-boolTerm 			: Id | Bool | functioncall | Lparen predExpr Rparen;
+boolTerm 			: Id | Bool | functioncall | Lparen expr Rparen;
 mathExpr			: mulExpr (AddOp mulExpr)*;
 mulExpr				: mathTerm (MulOp mathTerm)*;
-mathTerm			: val | Lparen mathExpr Rparen;
+mathTerm			: val | Lparen relExpr Rparen;
+
 
 val					: UnIncreDecre? Id UnIncreDecre?
 					| literal
