@@ -10,7 +10,8 @@ dcl 				:	funcDcl
 varDcl 				:	Type Id
 					| 	Type Id Modifier
 					|	Type Id Assignment expr
-					|	Type Id Modifier Assignment modifierExpr;
+					|	Type Id Modifier Assignment modifierExpr
+					|	Id Assignment expr;
 modifierExpr		:	expr | LBrace valList RBrace;
 valList				:	val Comma valList 
 					| 	val;
