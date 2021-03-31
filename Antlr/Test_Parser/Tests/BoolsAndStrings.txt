@@ -1,0 +1,27 @@
+﻿function main() returns void begin
+    string stringVar = "This is a string";
+    
+    Serial.Print(getFirstChar(stringVar)); 
+    // Prints "T" to the console using the arduino-specific functionality Serial.Print()
+end
+
+function getFirstChar(string stringInp) returns char begin
+    
+    char firstChar;
+    bool isEmpty = true;
+    number strLength = getStringLength(stringInp);
+    
+    if(strLength > 0) then begin
+        isEmpty = false;
+    end
+    
+    if(!isEmpty) then begin
+        firstChar = stringInp[0];
+    end
+
+    return firstChar; 
+end
+
+function getStringLength(string stringInp) returns number begin
+// Execute imaginary code that gets the string length..
+end
