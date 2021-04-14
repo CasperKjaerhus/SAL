@@ -248,6 +248,18 @@ public interface Ip4Visitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitLiteral([NotNull] p4Parser.LiteralContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="p4Parser.postfix"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPostfix([NotNull] p4Parser.PostfixContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="p4Parser.prefix"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPrefix([NotNull] p4Parser.PrefixContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="p4Parser.valuetype"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

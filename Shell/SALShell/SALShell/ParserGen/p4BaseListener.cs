@@ -468,6 +468,30 @@ public partial class p4BaseListener : Ip4Listener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitLiteral([NotNull] p4Parser.LiteralContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="p4Parser.postfix"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterPostfix([NotNull] p4Parser.PostfixContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="p4Parser.postfix"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitPostfix([NotNull] p4Parser.PostfixContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="p4Parser.prefix"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterPrefix([NotNull] p4Parser.PrefixContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="p4Parser.prefix"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitPrefix([NotNull] p4Parser.PrefixContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="p4Parser.valuetype"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

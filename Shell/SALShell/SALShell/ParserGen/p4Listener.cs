@@ -391,6 +391,26 @@ public interface Ip4Listener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitLiteral([NotNull] p4Parser.LiteralContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="p4Parser.postfix"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterPostfix([NotNull] p4Parser.PostfixContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="p4Parser.postfix"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitPostfix([NotNull] p4Parser.PostfixContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="p4Parser.prefix"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterPrefix([NotNull] p4Parser.PrefixContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="p4Parser.prefix"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitPrefix([NotNull] p4Parser.PrefixContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="p4Parser.valuetype"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
