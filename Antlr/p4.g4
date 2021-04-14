@@ -2,7 +2,9 @@ grammar p4;
 s 						: 		importStmt* funcDcl* stmt*;
 importStmt				:		Include Id;
 stmt 					: 		assignment Semicolon
-						|		declaration Semicolon		
+						|		declaration Semicolon
+						|		postfix Semicolon
+						|		prefix Semicolon
 						|		(Id'.')* functioncall Semicolon
 						| 		controlStructure
 						|		loopStructure;

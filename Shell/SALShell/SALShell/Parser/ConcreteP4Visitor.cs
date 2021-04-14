@@ -9,6 +9,76 @@ namespace SALShell.Parser
 {
     public class ConcreteP4Visitor : p4BaseVisitor<ASTNode>
     {
+        public override ASTNode VisitS([NotNull] p4Parser.SContext context)
+        {
+            StatementAstNode Root = null;
+            if(context.importStmt() != null)
+            {
+                foreach (IParseTree importstmt in context.funcDcl())
+                {
+                    if (Root == null)
+                        Root = new StatementAstNode(Visit(importstmt), null);
+                    else
+                        Root.Push(new StatementAstNode(Visit(importstmt), null));
+                }
+            }
+            if(context.funcDcl() != null)
+            {
+                foreach (IParseTree funcdcl in context.funcDcl())
+                {
+                    if (Root == null)
+                        Root = new StatementAstNode(Visit(funcdcl), null);
+                    else
+                        Root.Push(new StatementAstNode(Visit(funcdcl), null));
+                }
+            }
+            if(context.stmt() != null)
+            {
+                foreach(IParseTree stmt in context.stmt())
+                {
+                    if(Root == null)
+                        Root = new StatementAstNode(Visit(stmt), null);
+                    else
+                        Root.Push(new StatementAstNode(Visit(stmt), null));
+                }
+            }
+
+            return Root;
+        }
+
+        public override ASTNode VisitStmt([NotNull] p4Parser.StmtContext context)
+        {
+            if (context.assignment() != null)
+            {
+                return Visit(context.assignment());
+            }
+            else if (context.declaration() != null)
+            {
+                return Visit(context.declaration());
+            }
+            else if (context.postfix() != null)
+            {
+                return Visit(context.postfix());
+            }
+            else if (context.prefix() != null)
+            {
+                return Visit(context.prefix());
+            }
+            else if(context.Dot() != null)
+            {
+                // TODO: FUNCTIONCALL (Id'.')* functioncall Semicolon
+            }
+            else if (context.controlStructure() != null)
+            {
+                return Visit(context.controlStructure());
+            }
+            else if(context.loopStructure() != null)
+            {
+                return Visit(context.loopStructure());
+            }
+            return base.VisitStmt(context);
+        }
+
         public override ASTNode VisitDeclaration([NotNull] p4Parser.DeclarationContext context)
         {
             //Console.WriteLine(context.GetText());
@@ -129,7 +199,7 @@ namespace SALShell.Parser
             {
                 /*TODO: Direct component selection*/
             }
-            throw new Exception("Wrong parse get rekt");
+            throw new Exception("Wrong parse get owned n00b");
         }
 
         public override ASTNode VisitPrimExpr([NotNull] p4Parser.PrimExprContext context)
@@ -142,8 +212,31 @@ namespace SALShell.Parser
             {
                 return Visit(context.expr());
             }
+            if(context.postfix() != null)
+            {
+                return Visit(context.postfix());
+            }
+            if(context.prefix() != null)
+            {
+                return Visit(context.prefix());
+            }
+            if(context.functioncall() != null)
+            {
+                return Visit(context.functioncall());
+            }
             throw new Exception("Wrong parse get rekt");
         }
+
+        public override ASTNode VisitPostfix([NotNull] p4Parser.PostfixContext context)
+        {
+            return new PostfixExprAstNode(Visit(context.Id()), context.IncrementOp().Symbol);
+        }
+
+        public override ASTNode VisitPrefix([NotNull] p4Parser.PrefixContext context)
+        {
+            return new PrefixExprAstNode(Visit(context.Id()), context.IncrementOp().Symbol);
+        }
+
         public override ASTNode VisitValue([NotNull] p4Parser.ValueContext context)
         {
             if(context.Number() != null)

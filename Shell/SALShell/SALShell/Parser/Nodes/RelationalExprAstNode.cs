@@ -7,8 +7,10 @@ namespace SALShell.Parser
 {
     class RelationalExprAstNode : ExprAstNode
     {
-        public RelationalExprAstNode(ASTNode expr1, ASTNode expr2, IToken Operator) : base(expr1, expr2, Operator)
+        public RelationalExprAstNode(ASTNode expr1, ASTNode expr2, IToken Operator) : base(Operator)
         {
+            Children.Add(expr1);
+            Children.Add(expr2);
         }
     }
 }
