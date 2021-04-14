@@ -1,145 +1,131 @@
 grammar p4;
-s 					: (importStmt)* (initStmt)*;
-importStmt			: Include Id;
-initStmt 			: varDcl | funcDcl;
-varDcl				: Type Id (Modifier)?
-					| Type Id Assignment expr
-					| Type Id Modifier Assignment list;
-assignment			: Id Assignment expr;
-Modifier			: Lbracket (Nonzero)? Rbracket;
-list				: LBrace val? (Comma val)* RBrace;
-funcDcl 			: Function Id Lparen params Rparen Returns Type body
-					| Function Id Lparen Rparen Returns Type body;
-params				: param? (Comma param)*;
-param				: Type Id;
-body				: Begin stmt* End;
-stmt 				: varDcl Semicolon
-					| assignment Semicolon
-					| controlStructure
-					| functioncall Semicolon
-					| Return returnStmt Semicolon;
-					
-controlStructure	: ifStmt
-					| forExpr
-					| foreachExpr
-					| whileExpr
-					| switchStmt;
-ifStmt 				: If Lparen expr Rparen Then body elseStmt?;
-elseStmt 			: Else body
-					| Else ifStmt;
-forExpr 			: For Lparen Id Colon expr Dotdotdot expr Rparen body
-					| For Lparen Id Colon expr Dotdotdot expr Comma Step expr Rparen body;
-whileExpr 			: While Lparen expr Rparen body;
-foreachExpr			: Foreach Lparen Id In Id Rparen body;
-switchStmt 			: Switch Lparen Id Rparen switchBody;
-switchBody 			: Begin switchItem* End;
-switchItem 			: CaseKeyword val Colon body? Break?;
-			
-expr 				: Negation? relExpr | Negation? boolExpr;
-relExpr				: mathExpr ( RelOp mathExpr)*;
-boolExpr 			: andExpr (OrOp andExpr)*;
-andExpr				: boolTerm (AndOp boolTerm)*;
+s 						: 		importStmt* funcDcl* stmt*;
+importStmt				:		Include Id;
+stmt 					: 		assignment Semicolon
+						|		declaration Semicolon		
+						|		(Id'.')* functioncall Semicolon
+						| 		controlStructure
+						|		loopStructure;
 
-boolTerm 			: Id | Bool | functioncall | Lparen expr Rparen;
-mathExpr			: mulExpr (AddOp mulExpr)*;
-mulExpr				: mathTerm (MulOp mathTerm)*;
-mathTerm			: val | Lparen relExpr Rparen;
-val					: UnIncreDecre? Id UnIncreDecre?
-					| literal
-					| functioncall 
-					| Id Dot Id 
-					| Id Lbracket UnIncreDecre? indexVal UnIncreDecre? Rbracket
-					| Id Dot functioncall;
-indexVal			: Integer
-					| Id
-					| Id Dot Id
-					| functioncall;
-literal				: Integer 
-					| Decimal
-					| String
-					| Char
-					| Bool;
+block					:		Begin stmt* End;
 
-functioncall		: Id (Dot Id)* Lparen argument* Rparen;
-argument 			: val (Comma val)*;
+returnExpr				: 		Return expr Semicolon;
 
-returnStmt			: Id 
-					| val 
-					| expr;
+funcDcl					:		Function Id Lparen params Rparen returnsStmt functionBody;
+params					: 		(param (Comma param)*)?;
+param					: 		valuetype Id;
+functionBody			:		Begin stmt*  returnExpr? End;
+returnsStmt				: 		Returns returntype;
 
-//Operator
-Negation			: '!';
-AndOp 				: '&&';
-OrOp				: '||';
-RelOp 				: '<'
-					| '>'
-					| '=='
-					| '!='
-					| '<='
-					| '>=';
+assignment				:		Id assnOp expr;
 
-UnaryOp				: '+' | '-';
-UnIncreDecre		: '++' | '--';
+declaration				:		valuetype Id Modifier? (Assign expr)?;
 
-CompoundStmt		: '+='  								// sup?
-					| '-=' 
-					| '/=' 
-					| '*=' 
-					| '%=';
+functioncall			:		Id Lparen arguments? Rparen;
+arguments				:		expr (Comma expr)*;
 
-AddOp 				: '+'
-					| '-';
-MulOp 				: '*'
-					| '/'
-					| '%';
-					
-Assignment 			: '=';
+controlStructure		: 		ifStmt
+						| 		switchStmt;
+ifStmt 					: 		If Lparen expr Rparen Then block elseStmt?;
+elseStmt 				: 		Else block
+						| 		Else ifStmt;
+						
+loopStructure			: 		forexpr
+						| 		foreachexpr
+						| 		whileexpr;
 
-//Terminals
-Function 			: 'function';
-Include				: 'include';
-Lbracket 			: '[';
-Rbracket 			: ']';
-Lparen 				: '(';
-Rparen 				: ')';
-LBrace				: '{';
-RBrace				: '}';
-Return 				: 'return';
-Returns 			: 'returns';
-Comma 				: ',';
-Begin 				: 'begin';
-End 				: 'end';
-If 					: 'if';
-Else 				: 'else';
-Then 				: 'then';
-For 				: 'for';
-While 				: 'while';
-Colon 				: ':';
-Dotdotdot 			: '...';
-Step 				: 'step';
-Foreach 			: 'foreach';
-In 					: 'in';
-Switch 				: 'switch';
-CaseKeyword 		: 'case';
-Break 				: 'break';
-Dot					: '.';
-Semicolon			: ';';
+forexpr 				: 		For Lparen Id Colon expr Dotdotdot expr Rparen block
+						| 		For Lparen Id Colon expr Dotdotdot expr Comma Step expr Rparen block;
+whileexpr 				: 		While Lparen expr Rparen block;
+foreachexpr				: 		Foreach Lparen Id In Id Rparen block;
+switchStmt 				: 		Switch Lparen Id Rparen switchBody;
+switchBody 				: 		Begin switchItem* End;
+switchItem 				: 		CaseKeyword expr Colon block? Break?;
+
+expr                    :       (Negation)? condExpr (Comma expr)*;
+condExpr                :       logORexpr | logORexpr '?' expr ':' condExpr;
+logORexpr               :       logORexpr LogOrOp logANDexpr| logANDexpr;
+logANDexpr              :       logANDexpr LogAndOp andExpr | andExpr;
+andExpr                 :       andExpr EqualityOp relExpr | relExpr;
+relExpr                 :       relExpr RelOp addExpr | addExpr;
+addExpr                 :       addExpr AddOp multExpr | multExpr;
+multExpr                :       multExpr MultOp postExpr | postExpr;
+exprList                :       expr (Comma exprList)* ;
+postExpr                :       primExpr | Lbrace exprList Rbrace | postExpr Lbracket expr Rbracket | postExpr'.'Id;
+primExpr                :       literal | Lparen expr Rparen | IncrementOp? Id IncrementOp? | functioncall;
+literal					:	 	value;
+valuetype				: 		NUMBER | BOOL | CHAR | STRING;
+returntype				: 		VOID | valuetype;
+value					: 		Number | bool | Char | String;
+bool					: 		True | False;
+assnOp					:		Assign | CompoundOp;
+
+Modifier				: 		Lbracket (Nonzero)? Rbracket;
+Number					: 		Integer | Decimal;
+
+Function				:	 	'function';
+Returns					: 		'returns';
+Return					: 		'return';
+Lparen					: 		'(';
+Rparen					:		')';
+Semicolon				: 		';';
+Assign					:		'=';
+Comma					:		',';
+Include					: 		'include';
+Begin 					: 		'begin';
+End 					: 		'end';
+If 						: 		'if';
+Else 					: 		'else';
+Then 					: 		'then';
+For 					: 		'for';
+While 					: 		'while';
+Colon 					: 		':';
+Dotdotdot 				: 		'...';
+Step 					: 		'step';
+Foreach 				: 		'foreach';
+In 						: 		'in';
+Switch 					: 		'switch';
+CaseKeyword 			: 		'case';
+Break 					: 		'break';
+Dot						: 		'.';
+
+LogOrOp					:		'||';
+LogAndOp				:		'&&';
+EqualityOp				:		'==' | '!=';
+RelOp 					: 		'<' | '>' |  '<=' | '>=';
+AddOp					:		'+' | '-';
+MultOp					:		'*' | '/' | '%';
+Lbracket 				:		'[';
+Rbracket 				:		']';
+Lbrace					:		'{';
+Rbrace					:		'}';
+CompoundOp				:	  	'*=' | '/=' |  '%=' | '+=' | '-=' | '^=';
+IncrementOp				:		'++' | '--';
+Negation				:		'!';
+
+
 
 //Types
-Type				: 'number' | 'string' | 'bool' | 'void' | 'char';
-String				: '"'~["]*'"';
-Char				: '\''~[']'\'';
-Bool				: 'true' | 'false';
+NUMBER					: 		'number';
+STRING					:		'string';
+CHAR					:		'char';
+BOOL					: 		'bool';
+VOID					: 		'void';
 
-//Regex
+True					:		'true';
+False					:		'false';
 
-Id					: ([a-zA-Z]([a-zA-Z0-9_])*);
-fragment Digit		: '0'..'9';
-fragment Nonzero	: '1'..'9'Digit*;
-Decimal				: Digit+[.]Digit+;
-Integer				: '0' | Nonzero;
 
-LineComment			: '/''/' ~[\r\n]* -> skip;
-MultiComment		: '/''*' .*? '*''/' -> skip;
+Id						: 		[a-zA-Z][a-zA-Z0-9_]*;
+fragment Digit			: 		'0'..'9';
+fragment Nonzero		: 		'1'..'9'Digit*;
+Decimal					: 		Digit+[.]Digit+;
+Integer					: 		'0' | Nonzero;
+String					: 		'"'~["]*'"';
+Char					: 		'\''~[']'\'';
+
+LineComment				: 		'/''/' ~[\r\n]* -> skip;
+MultiComment			: 		'/''*' .*? '*''/' -> skip;
+
 //Skips
-WS  				: [ \t\r\n]+ -> skip;
+WS  					: 		[ \t\r\n]+ -> skip;
