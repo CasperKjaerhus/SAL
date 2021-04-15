@@ -18,7 +18,7 @@ namespace SALShell
             //ShellController sheeController = new ShellController(ui, core);
             //sheeController.Ui.Start();
 
-            p4Lexer lexer = new p4Lexer(new AntlrInputStream("number timer = 50+50; string fucker = \"tester\"; char pog = 'L';"));
+            p4Lexer lexer = new p4Lexer(new AntlrInputStream("number ledPins[] = {2, 7, 4, 6, 5, 3};"));
             CommonTokenStream stream = new CommonTokenStream(lexer);
 
             
@@ -29,6 +29,7 @@ namespace SALShell
 
             IList<IToken> asfd = lexer.GetAllTokens();
             Console.WriteLine("AMOUNT: " + asfd.Count);
+
             foreach(IToken token in asfd)
             {
                 Console.WriteLine($"{token.Text} : {lexer.Vocabulary.GetSymbolicName(token.Type)}");

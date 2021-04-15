@@ -1,6 +1,6 @@
 grammar p4;
 s 						: 		importStmt* funcDcl* stmt*;
-importStmt				:		Include Id;
+importStmt				:		Include Id Semicolon;
 stmt 					: 		assignment Semicolon
 						|		declaration Semicolon
 						|		postfix Semicolon
@@ -44,7 +44,7 @@ switchStmt 				: 		Switch Lparen Id Rparen switchBody;
 switchBody 				: 		Begin switchItem* End;
 switchItem 				: 		CaseKeyword expr Colon block? Break?;
 
-expr                    :       (Negation)? condExpr (Comma expr)*;
+expr                    :       (Negation)? condExpr;
 condExpr                :       logORexpr | logORexpr '?' expr ':' condExpr;
 logORexpr               :       logORexpr LogOrOp logANDexpr| logANDexpr;
 logANDexpr              :       logANDexpr LogAndOp andExpr | andExpr;
@@ -52,7 +52,7 @@ andExpr                 :       andExpr EqualityOp relExpr | relExpr;
 relExpr                 :       relExpr RelOp addExpr | addExpr;
 addExpr                 :       addExpr AddOp multExpr | multExpr;
 multExpr                :       multExpr MultOp postExpr | postExpr;
-exprList                :       expr (Comma exprList)* ;
+exprList                :       expr (Comma exprList)?;
 postExpr                :       primExpr | Lbrace exprList Rbrace | postExpr Lbracket expr Rbracket | postExpr'.'Id;
 primExpr                :       literal | Lparen expr Rparen| Id | postfix | prefix | functioncall;
 literal					:	 	value;

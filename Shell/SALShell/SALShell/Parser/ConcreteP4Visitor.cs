@@ -12,9 +12,11 @@ namespace SALShell.Parser
         public override ASTNode VisitS([NotNull] p4Parser.SContext context)
         {
             StatementAstNode Root = null;
+
             if(context.importStmt() != null)
             {
-                foreach (IParseTree importstmt in context.funcDcl())
+                Console.WriteLine("iumport");
+                foreach (IParseTree importstmt in context.importStmt())
                 {
                     if (Root == null)
                         Root = new StatementAstNode(Visit(importstmt), null);
@@ -22,6 +24,7 @@ namespace SALShell.Parser
                         Root.Push(new StatementAstNode(Visit(importstmt), null));
                 }
             }
+
             if(context.funcDcl() != null)
             {
                 foreach (IParseTree funcdcl in context.funcDcl())
@@ -32,11 +35,13 @@ namespace SALShell.Parser
                         Root.Push(new StatementAstNode(Visit(funcdcl), null));
                 }
             }
+
             if(context.stmt() != null)
             {
                 foreach(IParseTree stmt in context.stmt())
                 {
-                    if(Root == null)
+                    Console.WriteLine("stmt");
+                    if (Root == null)
                         Root = new StatementAstNode(Visit(stmt), null);
                     else
                         Root.Push(new StatementAstNode(Visit(stmt), null));
@@ -44,6 +49,11 @@ namespace SALShell.Parser
             }
 
             return Root;
+        }
+
+        public override ASTNode VisitImportStmt([NotNull] p4Parser.ImportStmtContext context)
+        {
+            return new ImportStatementAstNode(context.Id().Symbol);
         }
 
         public override ASTNode VisitStmt([NotNull] p4Parser.StmtContext context)
@@ -78,11 +88,149 @@ namespace SALShell.Parser
             }
             return base.VisitStmt(context);
         }
+        public override ASTNode VisitControlStructure([NotNull] p4Parser.ControlStructureContext context)
+        {
+            if(context.ifStmt() != null)
+            {
+                return Visit(context.ifStmt());
+
+            }
+            else if(context.switchStmt() != null)
+            {
+                return Visit(context.switchStmt());
+            }
+
+            return base.VisitControlStructure(context);
+        }
+        public override ASTNode VisitIfStmt([NotNull] p4Parser.IfStmtContext context)
+        {
+            if(context.elseStmt() != null)
+            {
+                return new IfStructureAstNode(Visit(context.expr()), Visit(context.block()), Visit(context.elseStmt()), context.If().Symbol);
+            }
+            else
+            {
+                return new IfStructureAstNode(Visit(context.expr()), Visit(context.block()), null, context.If().Symbol);
+            }
+            
+        }
+
+        public override ASTNode VisitElseStmt([NotNull] p4Parser.ElseStmtContext context)
+        {
+            if(context.block() != null)
+            {
+                return Visit(context.block());
+            }
+            else if(context.ifStmt() != null)
+            {
+                return Visit(context.ifStmt());
+            }
+
+            throw new Exception("koljnmsdfg");
+        }
+
+        public override ASTNode VisitSwitchStmt([NotNull] p4Parser.SwitchStmtContext context)
+        {
+            
+            return new SwitchStructureAstNode(new IdAstNode(context.Id().Symbol, null), Visit(context.switchBody()), context.Switch().Symbol);
+        }
+
+        public override ASTNode VisitSwitchBody([NotNull] p4Parser.SwitchBodyContext context)
+        {
+            List<ASTNode> switchitems = new List<ASTNode>();
+            foreach(IParseTree switchitem in context.switchItem())
+            {
+                switchitems.Add(Visit(switchitem));
+            }
+
+            return new SwitchBodyAstNode(switchitems.ToArray(), context.Begin().Symbol);
+        }
+
+        public override ASTNode VisitSwitchItem([NotNull] p4Parser.SwitchItemContext context)
+        {
+            if (context.block() != null && context.Break() != null)
+            {
+                return new SwitchItemAstNode(Visit(context.expr()), Visit(context.block()), true, context.CaseKeyword().Symbol);
+            }
+            else if (context.block() == null && context.Break() != null)
+            {
+                return new SwitchItemAstNode(Visit(context.expr()), null, true, context.CaseKeyword().Symbol);
+            }
+            else if(context.block() == null && context.Break() == null)
+            {
+                return new SwitchItemAstNode(Visit(context.expr()), null, false, context.CaseKeyword().Symbol);
+            }
+            else if (context.block() != null && context.Break() == null)
+            {
+                return new SwitchItemAstNode(Visit(context.expr()), Visit(context.block()), false, context.CaseKeyword().Symbol);
+            }
+            throw new Exception("Something is ronk");
+        }
+
+        public override ASTNode VisitAssignment([NotNull] p4Parser.AssignmentContext context)
+        {
+            IdAstNode id = new IdAstNode(context.Id().Symbol, null);
+            Antlr4.Runtime.IToken symbol = Visit(context.assnOp()).Token;
+            ASTNode expr = Visit(context.expr());
+
+            return new AssignAstNode(id, symbol, expr);
+        }
+
+        public override ASTNode VisitArguments([NotNull] p4Parser.ArgumentsContext context)
+        {
+            List<ASTNode> arguments = new List<ASTNode>();
+            foreach(IParseTree argument in context.expr())
+            {
+                arguments.Add(Visit(argument));
+            }
+            return new ArgumentsAstNode(arguments.ToArray(), null);
+        }
+
+        public override ASTNode VisitExprList([NotNull] p4Parser.ExprListContext context)
+        {
+            List<ASTNode> exprlist = new List<ASTNode>
+            {
+                Visit(context.expr())
+            };
+
+            if(context.exprList() != null)
+            {
+                ASTNode lowerList = Visit(context.exprList());
+                foreach(ASTNode child in lowerList.Children)
+                {
+                    exprlist.Add(child);
+                }
+            }
+
+            return new ExprListAstNode(exprlist.ToArray(), null);
+        }
+
+        public override ASTNode VisitAssnOp([NotNull] p4Parser.AssnOpContext context)
+        {
+            if (context.Assign() != null)
+                return new ValueAstNode(context.Assign().Symbol);
+            else if (context.CompoundOp() != null)
+                return new ValueAstNode(context.CompoundOp().Symbol);
+            throw new Exception("DISCONNECTED");
+        }
+
+        public override ASTNode VisitBlock([NotNull] p4Parser.BlockContext context)
+        {
+            StatementAstNode Root = null;
+            foreach (IParseTree stmt in context.stmt())
+            {
+                if (Root == null)
+                    Root = new StatementAstNode(Visit(stmt), null);
+                else
+                    Root.Push(new StatementAstNode(Visit(stmt), null));
+            }
+            return Root;
+        }
+
 
         public override ASTNode VisitDeclaration([NotNull] p4Parser.DeclarationContext context)
         {
-            //Console.WriteLine(context.GetText());
-
+            /* TODO: MODIFIER @ IDAstNode*/
             IdAstNode id = new IdAstNode(context.Id().Symbol, Visit(context.valuetype()));
             Antlr4.Runtime.IToken symbol = context.Assign().Symbol;
             ASTNode expr = Visit(context.expr());
@@ -113,8 +261,6 @@ namespace SALShell.Parser
 
         public override ASTNode VisitExpr([NotNull] p4Parser.ExprContext context)
         {
-            /*TODO: (Comma expr)* should be supported*/
-
             ExprAstNode exprnode = (ExprAstNode) Visit(context.condExpr());
             exprnode.Negation = context.Negation() != null;
 
@@ -224,17 +370,21 @@ namespace SALShell.Parser
             {
                 return Visit(context.functioncall());
             }
+            if(context.Id() != null)
+            {
+                return new IdAstNode(context.Id().Symbol, null);
+            }
             throw new Exception("Wrong parse get rekt");
         }
 
         public override ASTNode VisitPostfix([NotNull] p4Parser.PostfixContext context)
         {
-            return new PostfixExprAstNode(Visit(context.Id()), context.IncrementOp().Symbol);
+            return new PostfixExprAstNode(new IdAstNode(context.Id().Symbol, null), context.IncrementOp().Symbol);
         }
 
         public override ASTNode VisitPrefix([NotNull] p4Parser.PrefixContext context)
         {
-            return new PrefixExprAstNode(Visit(context.Id()), context.IncrementOp().Symbol);
+            return new PrefixExprAstNode(new IdAstNode(context.Id().Symbol, null), context.IncrementOp().Symbol);
         }
 
         public override ASTNode VisitValue([NotNull] p4Parser.ValueContext context)

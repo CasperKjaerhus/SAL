@@ -10,7 +10,7 @@ namespace SALShell.Parser
         public IToken Type { get; set; }
         public IdAstNode(IToken idName, ASTNode type) : base(idName)
         {
-            Type = type.Token;
+            Type = type?.Token;
         }
         public override void PrintTrees(int depth)
         {
@@ -18,7 +18,7 @@ namespace SALShell.Parser
             {
                 System.Console.Write("\t");
             }
-            System.Console.WriteLine($"{Type.Text} {Token.Text}: {this.GetType()}");
+            System.Console.WriteLine($"{Type?.Text} {Token.Text}: {this.GetType()}");
 
             foreach (ASTNode child in Children)
             {

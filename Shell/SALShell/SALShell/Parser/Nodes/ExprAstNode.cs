@@ -12,6 +12,7 @@ namespace SALShell.Parser
 
         public ExprAstNode(IToken Operator) : base(Operator)
         {
+
         }
     }
 }

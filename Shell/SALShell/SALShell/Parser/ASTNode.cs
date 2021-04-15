@@ -22,7 +22,7 @@ namespace SALShell.Parser
             {
                 System.Console.Write("\t");
             }
-            System.Console.WriteLine($"{Token.Text}: {this.GetType()}");
+            System.Console.WriteLine($"{Token?.Text}: {this.GetType()}");
 
             foreach(ASTNode child in Children)
             {
