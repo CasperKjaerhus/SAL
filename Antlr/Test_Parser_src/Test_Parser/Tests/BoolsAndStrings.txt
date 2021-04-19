@@ -1,4 +1,4 @@
-﻿function main() returns void begin
+﻿function main(number strLength) returns void begin
     string stringVar = "This is a string";
     
     Serial.Print(getFirstChar(stringVar)); 
@@ -9,13 +9,11 @@ function getFirstChar(string stringInp) returns char begin
     
     char firstChar;
     bool isEmpty = true;
-    number strLength = getStringLength(stringInp)
+    number strLength = getStringLength(stringInp);
     
-    if(strLength > 0) then begin
-        isEmpty = false;
-    end
+    if(strLength > 0) then begin isEmpty = false; end
     
-    if(!isEmpty) then begin
+    if(isEmpty) then begin
         firstChar = stringInp[0];
     end
 

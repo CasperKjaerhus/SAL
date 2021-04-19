@@ -1,0 +1,3 @@
+include testLib; 
+
+number ledPins[] = {2, 7, 4, 6, 5, 3};

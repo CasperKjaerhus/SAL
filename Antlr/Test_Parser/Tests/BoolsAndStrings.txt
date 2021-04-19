@@ -1,7 +1,7 @@
-﻿function main() returns void begin
+﻿function main(number penisLength) returns void begin
     string stringVar = "This is a string";
     
-    Serial.Print(getFirstChar(stringVar)); 
+    Serial.Print(getFirstChar(!stringVar)); 
     // Prints "T" to the console using the arduino-specific functionality Serial.Print()
 end
 
@@ -11,9 +11,7 @@ function getFirstChar(string stringInp) returns char begin
     bool isEmpty = true;
     number strLength = getStringLength(stringInp);
     
-    if(strLength > 0) then begin
-        isEmpty = false;
-    end
+    if(strLength > 0) then begin isEmpty = false; end
     
     if(!isEmpty) then begin
         firstChar = stringInp[0];

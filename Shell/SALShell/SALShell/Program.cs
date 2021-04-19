@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using Antlr4.Runtime;
+using Antlr4.Runtime.Tree;
 using SALShell.Controller;
 using SALShell.Core;
+using SALShell.Parser;
 using SALShell.UI;
 
 namespace SALShell
@@ -9,10 +13,28 @@ namespace SALShell
     {
         static void Main(string[] args)
         {
-            ICore core = new Core.Core();
-            IShellUI ui = new ShellCLI();
-            ShellController sheeController = new ShellController(ui, core);
-            sheeController.Ui.Start();
+            //ICore core = new Core.Core();
+            //IShellUI ui = new ShellCLI();
+            //ShellController sheeController = new ShellController(ui, core);
+            //sheeController.Ui.Start();
+
+            string text = System.IO.File.ReadAllText(@"D:\Github Repos\SAL\Antlr\Test_Parser_src\Test_Parser\Tests\BoolsAndStrings.txt");
+            p4Lexer lexer = new p4Lexer(new AntlrInputStream(text));
+            CommonTokenStream stream = new CommonTokenStream(lexer);
+
+            //IList<IToken> asfd = lexer.GetAllTokens();
+            //Console.WriteLine("AMOUNT: " + asfd.Count);
+
+            //foreach(IToken token in asfd)
+            //{
+            //    Console.WriteLine($"{token.Text} : {lexer.Vocabulary.GetSymbolicName(token.Type)}");
+            //}
+
+            p4Parser parser = new p4Parser(stream);
+            IParseTree tree = parser.s();
+
+            ASTNode concreteP4Visitor = new ConcreteP4Visitor().Visit(tree);
+            concreteP4Visitor?.PrintTrees(0);
         }
     }
 }
