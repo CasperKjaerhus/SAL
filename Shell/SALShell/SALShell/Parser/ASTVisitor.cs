@@ -10,7 +10,7 @@ namespace SALShell.Parser
         {
             foreach(ASTNode child in node.Children)
             {
-                return Visit((dynamic) child);
+                return Visit((dynamic) child); // Using c#'s double dispatch feature
             }
             return default(T);
         }
