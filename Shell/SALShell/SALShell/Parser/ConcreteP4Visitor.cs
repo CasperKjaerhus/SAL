@@ -353,18 +353,16 @@ namespace SALShell.Parser
                 if (context.Modifier() != null)
                 {
                     id = new IdAstNode(context.Id().Symbol, Visit(context.valuetype()), context.Modifier().Symbol);
-                    return new DeclareAstNode(id, Visit(context.valuetype()), null);
+                    return new DeclareAstNode(id, null);
                 }
                 else
                 {
                     id = new IdAstNode(context.Id().Symbol, Visit(context.valuetype()));
-                    return new DeclareAstNode(id, Visit(context.valuetype()), null);
+                    return new DeclareAstNode(id, null);
                 }
             }
             
         }
-
-        
 
         public override ASTNode VisitValuetype([NotNull] p4Parser.ValuetypeContext context)
         {
@@ -389,7 +387,9 @@ namespace SALShell.Parser
 
         public override ASTNode VisitExpr([NotNull] p4Parser.ExprContext context)
         {
+
             ExprAstNode exprnode = (ExprAstNode) Visit(context.condExpr());
+            Console.WriteLine(context.Negation()?.Symbol);
             exprnode.Negation = context.Negation() != null;
 
             return exprnode;

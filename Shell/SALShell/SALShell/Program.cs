@@ -23,20 +23,19 @@ namespace SALShell
             p4Lexer lexer = new p4Lexer(new AntlrInputStream(text));
             CommonTokenStream stream = new CommonTokenStream(lexer);
 
-            
-            
+            //IList<IToken> asfd = lexer.GetAllTokens();
+            //Console.WriteLine("AMOUNT: " + asfd.Count);
+
+            //foreach(IToken token in asfd)
+            //{
+            //    Console.WriteLine($"{token.Text} : {lexer.Vocabulary.GetSymbolicName(token.Type)}");
+            //}
+
 
             p4Parser parser = new p4Parser(stream);
             IParseTree tree = parser.s();
 
-            IList<IToken> asfd = lexer.GetAllTokens();
-            Console.WriteLine("AMOUNT: " + asfd.Count);
 
-            foreach(IToken token in asfd)
-            {
-                Console.WriteLine($"{token.Text} : {lexer.Vocabulary.GetSymbolicName(token.Type)}");
-            }
-            
             ASTNode concreteP4Visitor = new ConcreteP4Visitor().Visit(tree);
             concreteP4Visitor?.PrintTrees(0);
         }

@@ -18,7 +18,7 @@ namespace SALShell.Parser
         public override void PrintTrees(int depth)
         {
             if(Negation)
-                Console.Write("negated");
+                Console.Write("Negation");
 
             base.PrintTrees(depth);
         }
