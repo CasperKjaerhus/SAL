@@ -19,7 +19,11 @@ namespace SALShell.CodeGen
 
         public override string Visit(AssignAstNode node)
         {
-            throw new NotImplementedException();
+            string assign = node.Token.Text;
+            string Id = Visit(node.Children[0]);
+            string Expression = Visit(node.Children[1]);
+
+            return Id + assign + Expression;
         }
 
         public override string Visit(CondAstNode node)
@@ -61,8 +65,8 @@ namespace SALShell.CodeGen
         {
             string typeAndId = Visit(node.Id);
             string Params = Visit(node.Parameters);
-            string FuncDecl = typeAndId + " " + Params;
-
+            string FuncDecl = typeAndId + Params;
+            string body = Visit(node.Body);
 
         }
 
@@ -110,7 +114,7 @@ namespace SALShell.CodeGen
             string parameters = "";
             foreach (ASTNode child in node.Children)
             {
-                parameters += child.Token.Text;
+                parameters += Visit(child);
                 parameters += ", ";
             }
             return parameters;
@@ -118,7 +122,7 @@ namespace SALShell.CodeGen
 
         public override string Visit(PlusAstNode node)
         {
-            throw new NotImplementedException();
+
         }
 
         public override string Visit(PostfixExprAstNode node)
