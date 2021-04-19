@@ -5,18 +5,18 @@ stmt 					: 		assignment Semicolon
 						|		declaration Semicolon
 						|		postfix Semicolon
 						|		prefix Semicolon
-						|		(Id'.')* functioncall Semicolon
+						|		functioncall Semicolon
 						| 		controlStructure
-						|		loopStructure;
+						|		loopStructure
+						|		returnExpr;
 
 block					:		Begin stmt* End;
 
 returnExpr				: 		Return expr Semicolon;
 
-funcDcl					:		Function Id Lparen params Rparen returnsStmt functionBody;
+funcDcl					:		Function Id Lparen params Rparen returnsStmt block;
 params					: 		(param (Comma param)*)?;
 param					: 		valuetype Id;
-functionBody			:		Begin stmt*  returnExpr? End;
 returnsStmt				: 		Returns returntype;
 
 assignment				:		Id assnOp expr;
@@ -53,7 +53,7 @@ relExpr                 :       relExpr RelOp addExpr | addExpr;
 addExpr                 :       addExpr AddOp multExpr | multExpr;
 multExpr                :       multExpr MultOp postExpr | postExpr;
 exprList                :       expr (Comma exprList)?;
-postExpr                :       primExpr | Lbrace exprList Rbrace | postExpr Lbracket expr Rbracket | postExpr'.'Id;
+postExpr                :       primExpr | Lbrace exprList Rbrace | Id Lbracket expr Rbracket;
 primExpr                :       literal | Lparen expr Rparen| Id | postfix | prefix | functioncall;
 literal					:	 	value;
 postfix					:		Id IncrementOp;
@@ -119,8 +119,9 @@ VOID					: 		'void';
 True					:		'true';
 False					:		'false';
 
+Id						:		Idregex (Dot Idregex)*;
 
-Id						: 		[a-zA-Z][a-zA-Z0-9_]*;
+fragment Idregex		: 		[a-zA-Z][a-zA-Z0-9_]*;
 fragment Digit			: 		'0'..'9';
 fragment Nonzero		: 		'1'..'9'Digit*;
 Decimal					: 		Digit+[.]Digit+;

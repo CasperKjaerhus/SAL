@@ -111,16 +111,6 @@ public interface Ip4Listener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitParam([NotNull] p4Parser.ParamContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="p4Parser.functionBody"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterFunctionBody([NotNull] p4Parser.FunctionBodyContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="p4Parser.functionBody"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitFunctionBody([NotNull] p4Parser.FunctionBodyContext context);
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="p4Parser.returnsStmt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

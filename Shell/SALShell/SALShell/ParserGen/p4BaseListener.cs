@@ -132,18 +132,6 @@ public partial class p4BaseListener : Ip4Listener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitParam([NotNull] p4Parser.ParamContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="p4Parser.functionBody"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterFunctionBody([NotNull] p4Parser.FunctionBodyContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="p4Parser.functionBody"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitFunctionBody([NotNull] p4Parser.FunctionBodyContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="p4Parser.returnsStmt"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

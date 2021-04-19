@@ -26,7 +26,7 @@ namespace SALShell.Parser
 
             foreach(ASTNode child in Children)
             {
-                child.PrintTrees(depth+1);
+                child?.PrintTrees(depth+1);
             }
             
         }

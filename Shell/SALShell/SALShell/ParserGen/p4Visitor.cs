@@ -80,12 +80,6 @@ public interface Ip4Visitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitParam([NotNull] p4Parser.ParamContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="p4Parser.functionBody"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitFunctionBody([NotNull] p4Parser.FunctionBodyContext context);
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="p4Parser.returnsStmt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

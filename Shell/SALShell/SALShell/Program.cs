@@ -18,7 +18,9 @@ namespace SALShell
             //ShellController sheeController = new ShellController(ui, core);
             //sheeController.Ui.Start();
 
-            p4Lexer lexer = new p4Lexer(new AntlrInputStream("number ledPins[] = {2, 7, 4, 6, 5, 3};"));
+
+            string text = System.IO.File.ReadAllText(@"D:\Github Repos\SAL\Antlr\Test_Parser_src\Test_Parser\Tests\BoolsAndStrings.txt");
+            p4Lexer lexer = new p4Lexer(new AntlrInputStream(text));
             CommonTokenStream stream = new CommonTokenStream(lexer);
 
             
@@ -36,7 +38,7 @@ namespace SALShell
             }
             
             ASTNode concreteP4Visitor = new ConcreteP4Visitor().Visit(tree);
-            concreteP4Visitor.PrintTrees(0);
+            concreteP4Visitor?.PrintTrees(0);
         }
     }
 }
