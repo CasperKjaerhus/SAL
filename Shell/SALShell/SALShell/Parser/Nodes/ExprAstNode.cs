@@ -22,5 +22,10 @@ namespace SALShell.Parser
 
             base.PrintTrees(depth);
         }
+
+        public void Accept(CodeGenVisitor codeGenVisitor)
+        {
+            codeGenVisitor.Visit(this);
+        }
     }
 }

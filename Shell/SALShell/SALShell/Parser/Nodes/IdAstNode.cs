@@ -1,4 +1,5 @@
 ﻿using Antlr4.Runtime;
+using SALShell.CodeGen;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -33,6 +34,10 @@ namespace SALShell.Parser
             {
                 child.PrintTrees(depth + 1);
             }
+        }
+        public void Accept(CodeGenVisitor codeGenVisitor)
+        {
+            codeGenVisitor.Visit(this);
         }
     }
 }
