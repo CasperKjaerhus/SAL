@@ -12,7 +12,7 @@ namespace SALShell.Parser
             {
                 return Visit((dynamic) child); // Using c#'s double dispatch feature
             }
-            return default(T);
+            return default;
         }
 
         public abstract T Visit(ArgumentsAstNode node);

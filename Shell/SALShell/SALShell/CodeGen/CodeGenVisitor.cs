@@ -68,6 +68,7 @@ namespace SALShell.CodeGen
             string FuncDecl = typeAndId + Params;
             string body = Visit(node.Body);
 
+            return FuncDecl + body;
         }
 
         public override string Visit(IdAstNode node)
@@ -122,7 +123,7 @@ namespace SALShell.CodeGen
 
         public override string Visit(PlusAstNode node)
         {
-
+            throw new NotImplementedException();
         }
 
         public override string Visit(PostfixExprAstNode node)

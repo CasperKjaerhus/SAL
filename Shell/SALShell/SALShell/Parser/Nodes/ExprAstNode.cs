@@ -1,4 +1,5 @@
 ﻿using Antlr4.Runtime;
+using SALShell.CodeGen;
 using SALShell.Parser;
 using System;
 using System.Collections.Generic;
@@ -21,11 +22,6 @@ namespace SALShell.Parser
                 Console.Write("Negation");
 
             base.PrintTrees(depth);
-        }
-
-        public void Accept(CodeGenVisitor codeGenVisitor)
-        {
-            codeGenVisitor.Visit(this);
         }
     }
 }
