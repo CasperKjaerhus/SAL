@@ -227,7 +227,7 @@ namespace SALShell.Parser
                 return Visit(context.ifStmt());
             }
 
-            throw new Exception("koljnmsdfg");
+            throw new Exception("VisitElseStmt Exception");
         }
 
         public override ASTNode VisitSwitchStmt([NotNull] p4Parser.SwitchStmtContext context)
@@ -265,7 +265,7 @@ namespace SALShell.Parser
             {
                 return new SwitchItemAstNode(Visit(context.expr()), Visit(context.block()), false, context.CaseKeyword().Symbol);
             }
-            throw new Exception("Something is ronk");
+            throw new Exception("VisitSwitchItem Exception");
         }
 
         public override ASTNode VisitAssignment([NotNull] p4Parser.AssignmentContext context)
@@ -312,7 +312,7 @@ namespace SALShell.Parser
                 return new ValueAstNode(context.Assign().Symbol);
             else if (context.CompoundOp() != null)
                 return new ValueAstNode(context.CompoundOp().Symbol);
-            throw new Exception("DISCONNECTED");
+            throw new Exception("VisitAssnOp Exception");
         }
 
         public override ASTNode VisitBlock([NotNull] p4Parser.BlockContext context)
@@ -382,7 +382,7 @@ namespace SALShell.Parser
             {
                 return new TypeAstNode(context.STRING().Symbol);
             }
-            throw new Exception("Parse errors lol");
+            throw new Exception("VisitValueType Exception");
         }
 
         public override ASTNode VisitExpr([NotNull] p4Parser.ExprContext context)
@@ -471,7 +471,7 @@ namespace SALShell.Parser
 
                 return new ArrayAccessAstNode(ArrayId, Visit(context.expr()), null);
             }
-            throw new Exception("Wrong parse get owned n00b");
+            throw new Exception("VisitPostExpr Exception");
         }
 
         public override ASTNode VisitPrimExpr([NotNull] p4Parser.PrimExprContext context)
@@ -500,7 +500,7 @@ namespace SALShell.Parser
             {
                 return new IdAstNode(context.Id().Symbol, null);
             }
-            throw new Exception("Wrong parse get rekt");
+            throw new Exception("VisitPrimExpr Exception");
         }
 
         public override ASTNode VisitPostfix([NotNull] p4Parser.PostfixContext context)
@@ -532,7 +532,7 @@ namespace SALShell.Parser
                 return Visit(context.@bool());
             }
 
-            throw new Exception("Parse error lul");
+            throw new Exception("VisitValue Exception");
         }
 
         public override ASTNode VisitBool([NotNull] p4Parser.BoolContext context)
@@ -546,12 +546,12 @@ namespace SALShell.Parser
                 return new ValueAstNode(context.False().Symbol);
             }
 
-            throw new Exception("Parse Error lulskibreski");
+            throw new Exception("VisitBool Exception");
         }
 
         public override ASTNode VisitErrorNode(IErrorNode node)
         {
-            throw new Exception("ERROR NODE?");
+            throw new Exception("This should not happen: ErrorNode Exception!");
         }
     }
 }
