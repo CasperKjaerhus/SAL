@@ -83,8 +83,9 @@ namespace SALShell.Parser
         }
         public override ASTNode VisitFuncDcl([NotNull] p4Parser.FuncDclContext context)
         {
-            ASTNode functionId = new IdAstNode(context.Id().Symbol, null);
-            return new FunctionDeclarationAstNode(functionId, Visit(context.@params()), Visit(context.block()), Visit(context.returnsStmt()), context.Function().Symbol);
+            ASTNode returntype = Visit(context.returnsStmt());
+            ASTNode functionId = new IdAstNode(context.Id().Symbol, returntype);
+            return new FunctionDeclarationAstNode(functionId, Visit(context.@params()), Visit(context.block()), context.Function().Symbol);
         }
 
         public override ASTNode VisitFunctioncall([NotNull] p4Parser.FunctioncallContext context)

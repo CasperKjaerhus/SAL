@@ -7,7 +7,7 @@ namespace SALShell.Parser
 {
     class LogicOrAstNode : ExprAstNode
     {
-        public LogicOrAstNode(ASTNode expr1, ASTNode expr2, IToken Operator) : base(Operator)
+        public LogicOrAstNode(ASTNode expr1, ASTNode expr2, IToken @operator) : base(@operator)
         {
             Children.Add(expr1);
             Children.Add(expr2);

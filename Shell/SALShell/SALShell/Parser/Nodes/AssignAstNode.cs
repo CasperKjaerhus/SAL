@@ -7,10 +7,10 @@ namespace SALShell.Parser
 {
     public class AssignAstNode : ASTNode
     {
-        public AssignAstNode(ASTNode id, IToken Assign, ASTNode Expr) : base(Assign)
+        public AssignAstNode(ASTNode id, IToken assign, ASTNode expr) : base(assign)
         {
             Children.Add(id);
-            Children.Add(Expr);
+            Children.Add(expr);
         }
     }
 }

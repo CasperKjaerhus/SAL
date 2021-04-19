@@ -10,7 +10,7 @@ namespace SALShell.Parser
     {
         public bool Negation { get; set; }
 
-        public ExprAstNode(IToken Operator) : base(Operator)
+        public ExprAstNode(IToken @operator) : base(@operator)
         {
 
         }

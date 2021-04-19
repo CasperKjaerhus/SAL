@@ -7,18 +7,18 @@ namespace SALShell.Parser
 {
     class FunctionDeclarationAstNode : ASTNode
     {
+        public ASTNode Id { get; }
         public ASTNode Parameters { get; }
         public ASTNode Body { get; }
-        public ASTNode Type { get; }
-        public FunctionDeclarationAstNode(ASTNode id, ASTNode parameters, ASTNode body, ASTNode type, IToken token) : base(token)
+        public FunctionDeclarationAstNode(ASTNode id, ASTNode parameters, ASTNode body, IToken token) : base(token)
         {
+            Id = id;
             Parameters = parameters;
             Body = body;
-            Type = type;
 
+            Children.Add(id);
             Children.Add(parameters);
             Children.Add(body);
-            Children.Add(type);
         }
     }
 }
