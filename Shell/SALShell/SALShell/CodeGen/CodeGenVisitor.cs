@@ -73,9 +73,15 @@ namespace SALShell.CodeGen
 
         public override string Visit(IdAstNode node)
         {
-            string IdentifierInfo = node.Type.Text;
-            IdentifierInfo += " ";
-            IdentifierInfo += node.Token.Text;
+            string IdentifierInfo;
+            if (node.ArraySize != null)
+            {
+                IdentifierInfo = node.Type.Text + " " + node.Token.Text + $"[{node.ArraySize}]";
+            }
+            else
+            {
+                IdentifierInfo = node.Type.Text + " " + node.Token.Text;
+            }
 
             return IdentifierInfo;
         }
