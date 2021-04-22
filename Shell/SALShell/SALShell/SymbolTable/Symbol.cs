@@ -6,20 +6,19 @@ namespace SALShell.SymbolTable
 {
     class Symbol
     {
-        public Symbol(string symbolName, string type, Symbol var, int level, int depth)
+        public Symbol(string symbolName, TypeInfo type, List<Symbol> level, int depth)
         {
             SymbolName = symbolName;
             Type = type;
-            Var = var;
             Level = level;
             Depth = depth;
-            Hash = GetHashCode();
+            HashCode = GetHashCode();
         }
-        public Symbol(Symbol var, int level)
+        public Symbol(Symbol var, List<Symbol> level)
         {
             Var = var;
             Level = level;
-            Hash = GetHashCode();
+            HashCode = GetHashCode();
         }
 
         public Symbol()
@@ -27,11 +26,12 @@ namespace SALShell.SymbolTable
         }
 
         public string SymbolName { get; }
-        public string Type { get; }
-        public Symbol Var { get; }
-        public int Level { get; }
+        public TypeInfo Type { get; }
+        public Symbol Var { get; set; }
+        public List<Symbol> Level { get; set; }
         public int Depth { get; }
-        public int Hash { get; } 
+        public Symbol Hash { get; }
+        public int HashCode { get; } 
 
         public override bool Equals(object obj)
         {
@@ -45,7 +45,7 @@ namespace SALShell.SymbolTable
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(SymbolName, Type, Var, Level, Depth);
+            return System.HashCode.Combine(SymbolName, Type, Var, Level, Depth);
         }
     }
 }
