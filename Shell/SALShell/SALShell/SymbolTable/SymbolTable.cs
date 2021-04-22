@@ -9,7 +9,6 @@ namespace SALShell.SymbolTable
     {
 
         //THIS SYMBOL TABLE PROBABLY HAVE A VERY BAD SPACE AND TIME COMPLEXITY BUT ¯\_(ツ)_/¯
-
         private int Depth = 0;
         private List<List<Symbol>> ScopeDisplay = new List<List<Symbol>>();
         private Dictionary<string, Symbol> Table = new Dictionary<string, Symbol>();

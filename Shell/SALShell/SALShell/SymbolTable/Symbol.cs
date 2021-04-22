@@ -30,7 +30,6 @@ namespace SALShell.SymbolTable
         public Symbol Var { get; set; }
         public List<Symbol> Level { get; set; }
         public int Depth { get; }
-        public Symbol Hash { get; }
         public int HashCode { get; } 
 
         public override bool Equals(object obj)
