@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace SALShell.SymbolTable
 {
-    class SymbolTable : ISymbolTable<Symbol, TypeInfo>
+    class SymbolTableActual : ISymbolTable<Symbol, TypeInfo>
     {
 
         //THIS SYMBOL TABLE PROBABLY HAVE A VERY BAD SPACE AND TIME COMPLEXITY BUT ¯\_(ツ)_/¯
@@ -14,11 +14,16 @@ namespace SALShell.SymbolTable
         private Dictionary<string, Symbol> Table = new Dictionary<string, Symbol>();
         private List<Symbol> RemovedSymbols = new List<Symbol>();
 
+        public SymbolTableActual()
+        {
+            ScopeDisplay.Add(new List<Symbol>());
+        }
+
         // Counts up depth, and sets clears indexed list (the higher the depth, the inner the scope)
         public void OpenScope()
         {
             Depth++;
-            ScopeDisplay[Depth].Clear();
+            ScopeDisplay.Add(new List<Symbol>());
         }
         // Counts up depth, and sets clears indexed list (the higher the depth, the inner the scope)
         public void CloseScope()
@@ -61,7 +66,7 @@ namespace SALShell.SymbolTable
         //Gets the symbol out of the table according to name.
         public Symbol RetrieveSymbol(string name)
         {
-            if (Table[name] != null)
+            if (Table.ContainsKey(name) && Table[name] != null)
                 return Table[name];
             else
                 return null;
@@ -78,7 +83,19 @@ namespace SALShell.SymbolTable
         {
             Symbol removedSym;
             Table.Remove(sym.SymbolName, out removedSym);
-            RemovedSymbols.Add(new Symbol(removedSym.Var, removedSym.Level));
+            RemovedSymbols.Add(removedSym);
+        }
+        
+        public void PrintSymbols()
+        {
+            foreach (Symbol symbol in Table.Values)
+            {
+                Console.WriteLine($"{symbol.SymbolName} is of type {symbol.Type.Type.Text}, declared at {symbol.Depth}");
+            }
+            foreach (Symbol sym in RemovedSymbols)
+            {
+                Console.WriteLine($"{sym.SymbolName} is of type {sym.Type.Type.Text}, declared at {sym.Depth}");
+            }
         }
     }
 }

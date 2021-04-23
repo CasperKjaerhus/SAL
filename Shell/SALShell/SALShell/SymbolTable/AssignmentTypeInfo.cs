@@ -7,8 +7,14 @@ namespace SALShell.SymbolTable
 {
     class AssignmentTypeInfo : TypeInfo
     {
+        public AssignmentTypeInfo(IToken id, TypeInfo assigment, IToken type):base(type)
+        {
+            this.id = id;
+            this.assigment = assigment;
+        }
+
         IToken id { get; }
-        IToken assigment { get; }
+        TypeInfo assigment { get; }
         
     }
 }

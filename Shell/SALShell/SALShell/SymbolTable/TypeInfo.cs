@@ -5,14 +5,14 @@ using System.Text;
 
 namespace SALShell.SymbolTable
 {
-    abstract class TypeInfo
+    public class TypeInfo
     {
-        protected TypeInfo(IToken type)
+        public TypeInfo(IToken type)
         {
             Type = type;
         }
 
-        IToken Type { get; }
+        public IToken Type { get; }
 
     }
 }

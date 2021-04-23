@@ -1,4 +1,5 @@
-﻿using SALShell.Parser;
+﻿using Antlr4.Runtime;
+using SALShell.Parser;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,7 +20,14 @@ namespace SALShell.SymbolTable
 
         public override TypeInfo Visit(AssignAstNode node)
         {
-            throw new NotImplementedException();
+            IdAstNode idNode = (IdAstNode)node.Children[0]; 
+
+            //if(Visit(node.Children[1]) != idNode.Type)
+            //{
+            //    throw new ArgumentException("This is not the same type");
+            //}
+
+            return new AssignmentTypeInfo(idNode.Token, Visit(node.Children[1]), idNode.Type);
         }
 
         public override TypeInfo Visit(CondAstNode node)
@@ -29,7 +37,11 @@ namespace SALShell.SymbolTable
 
         public override TypeInfo Visit(DeclareAstNode node)
         {
-            throw new NotImplementedException();
+            IdAstNode id = (IdAstNode)node.Id;
+            //if(id.ArraySize != null)
+            //    return new DeclTypeInfo(id.Type);
+            //else
+                return new DeclTypeInfo(id.Type, id.ArraySize);
         }
 
         public override TypeInfo Visit(ExprAstNode node)
@@ -57,9 +69,19 @@ namespace SALShell.SymbolTable
             throw new NotImplementedException();
         }
 
+        //should return the type, and it's parameters return type
         public override TypeInfo Visit(FunctionDeclarationAstNode node)
         {
-            throw new NotImplementedException();
+            IdAstNode IDinfo = (IdAstNode)node.Id;
+            ParameterListAstNode Paraminfo = (ParameterListAstNode)node.Parameters;
+            List<IToken> tokens = new List<IToken>();
+            foreach (IdAstNode param in Paraminfo.Children)
+            {
+                tokens.Add(param.Type);
+            }
+
+            FuncTypeInfo funcTypeInfo = new FuncTypeInfo(IDinfo.Type, tokens);
+            return funcTypeInfo;
         }
 
         public override TypeInfo Visit(IdAstNode node)
