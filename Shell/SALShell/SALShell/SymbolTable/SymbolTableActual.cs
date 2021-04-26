@@ -10,25 +10,28 @@ namespace SALShell.SymbolTable
 
         //THIS SYMBOL TABLE PROBABLY HAVE A VERY BAD SPACE AND TIME COMPLEXITY BUT ¯\_(ツ)_/¯
         private int Depth = 0;
-        private List<List<Symbol>> ScopeDisplay = new List<List<Symbol>>();
+        private int scopeindex = 0;
+        private List<Scope> ScopeDisplay = new List<Scope>();
         private Dictionary<string, Symbol> Table = new Dictionary<string, Symbol>();
         private List<Symbol> RemovedSymbols = new List<Symbol>();
 
         public SymbolTableActual()
         {
-            ScopeDisplay.Add(new List<Symbol>());
+            ScopeDisplay.Add(new Scope(null, "global"));
         }
 
         // Counts up depth, and sets clears indexed list (the higher the depth, the inner the scope)
-        public void OpenScope()
+        public void OpenScope(string scopeName)
         {
             Depth++;
-            ScopeDisplay.Add(new List<Symbol>());
+            ScopeDisplay.Add(new Scope(ScopeDisplay[Depth-1], scopeName));
+            scopeindex = ScopeDisplay.FindIndex(x => x.scopeName == scopeName);
         }
+
         // Counts up depth, and sets clears indexed list (the higher the depth, the inner the scope)
         public void CloseScope()
         {
-            foreach (Symbol sym in ScopeDisplay[Depth])     
+            foreach (Symbol sym in ScopeDisplay[scopeindex].symbols)     
             {
                 Symbol prevSym = sym.Var;
                 DeleteSym(sym);
@@ -37,7 +40,7 @@ namespace SALShell.SymbolTable
                     Table.Add(prevSym.SymbolName, sym);
                 }
             }
-            Depth--;
+            scopeindex = --Depth;
         }
 
         // Creates a new symbol with a given name, and the relevant typeinfo
@@ -47,12 +50,15 @@ namespace SALShell.SymbolTable
         {
             Symbol oldSym = RetrieveSymbol(name);
 
-            if (oldSym != null && oldSym.Depth == Depth){
-                throw new ArgumentException($"Duplicate definition of {name}");
+            if ((oldSym != null && oldSym.Depth == Depth) && oldSym.Type.GetType() == typeinf.GetType())
+            {
+                //throw new ArgumentException($"Duplicate definition of {name}");
+                Console.WriteLine("duplicate? " + $"{oldSym.SymbolName}");
             }
 
-            Symbol newSym = new Symbol(name, typeinf, ScopeDisplay[Depth], Depth);
-            ScopeDisplay[Depth].Add(newSym);
+            Symbol newSym = new Symbol(name, typeinf, ScopeDisplay[scopeindex].symbols, Depth, ScopeDisplay[scopeindex].scopeName);
+
+            ScopeDisplay[scopeindex].symbols.Add(newSym);
 
             if(oldSym == null)
                 Table.Add(newSym.SymbolName, newSym);
@@ -66,7 +72,7 @@ namespace SALShell.SymbolTable
         //Gets the symbol out of the table according to name.
         public Symbol RetrieveSymbol(string name)
         {
-            if (Table.ContainsKey(name) && Table[name] != null)
+            if (Table.ContainsKey(name))
                 return Table[name];
             else
                 return null;
@@ -75,7 +81,7 @@ namespace SALShell.SymbolTable
         //Returns true if their exists a symbol with the name, in the given scope, else false.
         public bool DeclaredLocally(string name)
         {
-            return ScopeDisplay[Depth].Any(x => x.SymbolName == name);
+            return ScopeDisplay[Depth].symbols.Any(x => x.SymbolName == name);
         }
 
         //Deletes the symbols from the dictionary, and adds them to a list of removed symbols.
@@ -88,13 +94,16 @@ namespace SALShell.SymbolTable
         
         public void PrintSymbols()
         {
-            foreach (Symbol symbol in Table.Values)
+            foreach (Scope scope in ScopeDisplay)
             {
-                Console.WriteLine($"{symbol.SymbolName} is of type {symbol.Type.Type.Text}, declared at {symbol.Depth}");
-            }
-            foreach (Symbol sym in RemovedSymbols)
-            {
-                Console.WriteLine($"{sym.SymbolName} is of type {sym.Type.Type.Text}, declared at {sym.Depth}");
+                if(scope.Parent != null)
+                    Console.WriteLine($"In scope: {scope.scopeName}, parent: {scope.Parent.scopeName}");
+                else
+                    Console.WriteLine($"In scope: {scope.scopeName}");
+                foreach (Symbol item in scope.symbols)
+                {
+                    Console.WriteLine(item);
+                }
             }
         }
     }

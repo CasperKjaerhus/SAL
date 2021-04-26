@@ -66,7 +66,17 @@ namespace SALShell.SymbolTable
 
         public override TypeInfo Visit(FunctioncallAstNode node)
         {
-            throw new NotImplementedException();
+            IdAstNode IDinfo = (IdAstNode)node.FunctionId;
+            ArgumentsAstNode argumentNode = (ArgumentsAstNode)node.Arguments;
+            List<TypeInfo> argus = new List<TypeInfo>();
+
+            foreach (ASTNode child in argumentNode.Children)
+            {
+                argus.Add(Visit(child));
+            }
+
+            return new FuncCallTypeInfo(IDinfo.Type, argus);
+
         }
 
         //should return the type, and it's parameters return type
@@ -86,7 +96,7 @@ namespace SALShell.SymbolTable
 
         public override TypeInfo Visit(IdAstNode node)
         {
-            throw new NotImplementedException();
+            return new IdTypeInfo(node.Token, node.ArraySize, node.Type);
         }
 
         public override TypeInfo Visit(IfStructureAstNode node)

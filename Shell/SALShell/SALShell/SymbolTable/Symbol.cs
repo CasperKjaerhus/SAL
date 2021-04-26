@@ -6,12 +6,13 @@ namespace SALShell.SymbolTable
 {
     class Symbol
     {
-        public Symbol(string symbolName, TypeInfo type, List<Symbol> level, int depth)
+        public Symbol(string symbolName, TypeInfo type, List<Symbol> level, int depth, string scopename)
         {
             SymbolName = symbolName;
             Type = type;
             Level = level;
             Depth = depth;
+            scopeName = scopename;
             HashCode = GetHashCode();
         }
         public Symbol(Symbol var, List<Symbol> level)
@@ -25,6 +26,7 @@ namespace SALShell.SymbolTable
         {
         }
 
+        public string scopeName { get; } 
         public string SymbolName { get; }
         public TypeInfo Type { get; }
         public Symbol Var { get; set; }
@@ -45,6 +47,11 @@ namespace SALShell.SymbolTable
         public override int GetHashCode()
         {
             return System.HashCode.Combine(SymbolName, Type, Var, Level, Depth);
+        }
+
+        public override string ToString()
+        {
+            return $"{SymbolName}, at depth: {Depth}, in {scopeName}";
         }
     }
 }

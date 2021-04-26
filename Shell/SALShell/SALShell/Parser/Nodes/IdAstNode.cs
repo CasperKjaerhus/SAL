@@ -10,6 +10,7 @@ namespace SALShell.Parser
     {
         public IToken Type { get; set; }
         public IToken ArraySize { get; }
+
         public IdAstNode(IToken idName, ASTNode type) : base(idName)
         {
             Type = type?.Token;
@@ -19,6 +20,7 @@ namespace SALShell.Parser
             Type = type?.Token;
             ArraySize = modifier;
         }
+
         public override void PrintTrees(int depth)
         {
             if (Negation)
