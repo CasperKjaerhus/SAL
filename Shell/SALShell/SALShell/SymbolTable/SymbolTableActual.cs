@@ -100,9 +100,9 @@ namespace SALShell.SymbolTable
                     Console.WriteLine($"In scope: {scope.scopeName}, parent: {scope.Parent.scopeName}");
                 else
                     Console.WriteLine($"In scope: {scope.scopeName}");
-                foreach (Symbol item in scope.symbols)
+                foreach (Symbol sym in scope.symbols)
                 {
-                    Console.WriteLine(item);
+                    Console.WriteLine(sym + $"\t\t {sym.Type}");
                 }
             }
         }

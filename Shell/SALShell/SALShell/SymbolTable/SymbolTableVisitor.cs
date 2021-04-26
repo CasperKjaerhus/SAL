@@ -20,14 +20,19 @@ namespace SALShell.SymbolTable
 
         public override TypeInfo Visit(AssignAstNode node)
         {
-            IdAstNode idNode = (IdAstNode)node.Children[0]; 
+            IdAstNode idNode = (IdAstNode)node.Children[0];
+            TypeInfo operationTypeInfo = null;
 
-            //if(Visit(node.Children[1]) != idNode.Type)
-            //{
-            //    throw new ArgumentException("This is not the same type");
-            //}
+            switch (node.Children[1])
+            {
+                case PlusAstNode plus:
+                    operationTypeInfo = Visit(plus);
+                    break;
+                default:
+                    break;
+            }
 
-            return new AssignmentTypeInfo(idNode.Token, Visit(node.Children[1]), idNode.Type);
+            return new AssignmentTypeInfo(idNode.Token, operationTypeInfo, idNode.Type);
         }
 
         public override TypeInfo Visit(CondAstNode node)
@@ -136,7 +141,7 @@ namespace SALShell.SymbolTable
 
         public override TypeInfo Visit(PlusAstNode node)
         {
-            throw new NotImplementedException();
+            return new OperationTypeInfo(Visit(node.Children[0]), Visit(node.Children[1]), node.Token);
         }
 
         public override TypeInfo Visit(PostfixExprAstNode node)
@@ -186,12 +191,12 @@ namespace SALShell.SymbolTable
 
         public override TypeInfo Visit(ValueAstNode node)
         {
-            throw new NotImplementedException();
+            return new ValueTypeInfo(node.Token);
         }
 
         public override TypeInfo Visit(WhileAstNode node)
         {
-            throw new NotImplementedException();
+            return Visit(node.Condition);
         }
     }
 }

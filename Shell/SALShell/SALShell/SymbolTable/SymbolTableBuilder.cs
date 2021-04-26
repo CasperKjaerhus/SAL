@@ -27,7 +27,7 @@ namespace SALShell.SymbolTable
 
         private void ProcessNode(ASTNode node)
         {
-            switch (node) //Switches on the type of node
+            switch (node) //Switches on the type of node, calls the visitor which grabs typeinfo from the ASTNode, then put it into symbol-table using the .EnterSymbol() 
             {
                 case FunctionDeclarationAstNode funcDcl:
                     TypeInfo typeInfFuncDcl = symVisitor.Visit(funcDcl);
@@ -38,10 +38,6 @@ namespace SALShell.SymbolTable
                     TypeInfo typeInfAsmnt = symVisitor.Visit(asmntNode);
                     SymbolTable.EnterSymbol(asmntNode.Children[0].Token.Text, typeInfAsmnt);
                     break;
-                //case IdAstNode idNode:
-                //    TypeInfo typeInfId = symVisitor.Visit(idNode);
-                //    SymbolTable.EnterSymbol(idNode.Token.Text, typeInfId);
-                //    break;
                 case SwitchStructureAstNode switchS:
                     SymbolTable.OpenScope("Switch");
                     break;
@@ -50,9 +46,11 @@ namespace SALShell.SymbolTable
                     IdAstNode Idinfo = (IdAstNode)funcCallRef.FunctionId;
                     SymbolTable.EnterSymbol(Idinfo.Token.Text, typeInfFuncCall);
                     break;
-                case WhileAstNode WhileAstNode:
-                    TypeInfo typeInfWhile = symVisitor.Visit(WhileAstNode);
+                case WhileAstNode whileAstNode:
                     SymbolTable.OpenScope("While");
+                    break;
+                case ForAstNode forAstNode:
+                    SymbolTable.OpenScope("For-loop");
                     break;
                 case DeclareAstNode dclNode:
                     TypeInfo typeInfoDcl = symVisitor.Visit(dclNode);
@@ -65,6 +63,9 @@ namespace SALShell.SymbolTable
                         SymbolTable.EnterSymbol(astnode.Token.Text, new IdTypeInfo(astnode.Token, astnode.ArraySize, astnode.Type));
                     }
                     break;
+                //case ValueAstNode valNode:
+                //    SymbolTable.EnterSymbol(valNode.Token.Text, symVisitor.Visit(valNode));
+                //    break;
                 default:
                     break;
             }
@@ -76,7 +77,7 @@ namespace SALShell.SymbolTable
                         ProcessNode(astnode);
                 }
             }
-            if (node is FunctionDeclarationAstNode || node is WhileAstNode || node is SwitchStructureAstNode)
+            if (node is FunctionDeclarationAstNode || node is WhileAstNode || node is SwitchStructureAstNode || node is ForAstNode)
                 SymbolTable.CloseScope();
         }
 
