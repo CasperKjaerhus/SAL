@@ -10,6 +10,8 @@ namespace SALShell.SymbolTable
     {
         SymbolTableActual SymbolTable = new SymbolTableActual();
         SymbolTableVisitor symVisitor = new SymbolTableVisitor();
+        int forloopCount = 0;
+        int WhileCount = 0;
 
         private ASTNode ASTroot { get; }
 
@@ -47,10 +49,10 @@ namespace SALShell.SymbolTable
                     SymbolTable.EnterSymbol(Idinfo.Token.Text, typeInfFuncCall);
                     break;
                 case WhileAstNode whileAstNode:
-                    SymbolTable.OpenScope("While");
+                    SymbolTable.OpenScope($"While{WhileCount++}");
                     break;
                 case ForAstNode forAstNode:
-                    SymbolTable.OpenScope("For-loop");
+                    SymbolTable.OpenScope($"For-loop{forloopCount++}");
                     break;
                 case DeclareAstNode dclNode:
                     TypeInfo typeInfoDcl = symVisitor.Visit(dclNode);

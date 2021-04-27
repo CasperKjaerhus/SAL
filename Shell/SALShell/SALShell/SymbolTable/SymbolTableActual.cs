@@ -11,21 +11,29 @@ namespace SALShell.SymbolTable
         //THIS SYMBOL TABLE PROBABLY HAVE A VERY BAD SPACE AND TIME COMPLEXITY BUT ¯\_(ツ)_/¯
         private int Depth = 0;
         private int scopeindex = 0;
+        private Scope ParentScope = new Scope(null, "global", 0);
         private List<Scope> ScopeDisplay = new List<Scope>();
         private Dictionary<string, Symbol> Table = new Dictionary<string, Symbol>();
         private List<Symbol> RemovedSymbols = new List<Symbol>();
 
         public SymbolTableActual()
         {
-            ScopeDisplay.Add(new Scope(null, "global"));
+            ScopeDisplay.Add(ParentScope);
         }
 
         // Counts up depth, and sets clears indexed list (the higher the depth, the inner the scope)
         public void OpenScope(string scopeName)
         {
-            Depth++;
-            ScopeDisplay.Add(new Scope(ScopeDisplay[Depth-1], scopeName));
+            if (Depth == 0)
+            {
+                ParentScope = ScopeDisplay[0];
+            }
+            else
+                ParentScope = ScopeDisplay.FindLast(x => x.Depth == Depth - 1);
+            Scope NewScope = new Scope(ParentScope, scopeName, Depth);
+            ScopeDisplay.Add(NewScope);
             scopeindex = ScopeDisplay.FindIndex(x => x.scopeName == scopeName);
+            Depth++;
         }
 
         // Counts up depth, and sets clears indexed list (the higher the depth, the inner the scope)
@@ -40,7 +48,10 @@ namespace SALShell.SymbolTable
                     Table.Add(prevSym.SymbolName, sym);
                 }
             }
-            scopeindex = --Depth;
+            Depth--;
+            string scopeParent = ScopeDisplay[scopeindex].Parent.scopeName;
+            scopeindex = ScopeDisplay.FindIndex(x => x.scopeName == scopeParent);
+
         }
 
         // Creates a new symbol with a given name, and the relevant typeinfo
@@ -106,7 +117,6 @@ namespace SALShell.SymbolTable
                 }
             }
         }
-
         public List<Scope> GetScopes()
         {
             return ScopeDisplay;
