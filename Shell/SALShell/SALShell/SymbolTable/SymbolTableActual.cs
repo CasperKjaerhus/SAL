@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace SALShell.SymbolTable
 {
-    class SymbolTableActual : ISymbolTable<Symbol, TypeInfo>
+    class SymbolTableActual : ISymbolTable<Symbol, TypeInfo, Scope>
     {
 
         //THIS SYMBOL TABLE PROBABLY HAVE A VERY BAD SPACE AND TIME COMPLEXITY BUT ¯\_(ツ)_/¯
@@ -106,5 +106,11 @@ namespace SALShell.SymbolTable
                 }
             }
         }
+
+        public List<Scope> GetScopes()
+        {
+            return ScopeDisplay;
+        }
+
     }
 }
