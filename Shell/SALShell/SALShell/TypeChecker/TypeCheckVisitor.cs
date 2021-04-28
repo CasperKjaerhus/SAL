@@ -6,221 +6,171 @@ using SALShell.Parser;
 
 namespace SALShell.TypeChecker
 {
-    class TypeCheckVisitor : ASTVisitor<List<TypeError>>
+    class TypeCheckVisitor : ASTVisitor<SALType>
     {
+        public List<TypeError> TypeErrors = new List<TypeError>();
         public TypeCheckVisitor(ASTNode tree)
         {
-            Root = tree;
         }
 
-        public ASTNode Root { get; set; }
-
-        public override List<TypeError> Visit(ArgumentsAstNode node)
+        public override SALType Visit(ArgumentsAstNode node)
         {
             throw new NotImplementedException();
         }
 
-        public override List<TypeError> Visit(ArrayAccessAstNode node)
+        public override SALType Visit(ArrayAccessAstNode node)
         {
             throw new NotImplementedException();
         }
 
-        public override List<TypeError> Visit(AssignAstNode node)
+        public override SALType Visit(AssignAstNode node)
         {
             throw new NotImplementedException();
         }
 
-        public override List<TypeError> Visit(CondAstNode node)
+        public override SALType Visit(CondAstNode node)
         {
             throw new NotImplementedException();
         }
 
-        public override List<TypeError> Visit(DeclareAstNode node)
+        public override SALType Visit(DeclareAstNode node)
         {
             throw new NotImplementedException();
         }
 
-        public override List<TypeError> Visit(ExprAstNode expr)
+        public override SALType Visit(ExprAstNode node)
         {
             throw new NotImplementedException();
         }
 
-        public override List<TypeError> Visit(ExprListAstNode node)
+        public override SALType Visit(ExprListAstNode node)
         {
             throw new NotImplementedException();
         }
 
-        public override List<TypeError> Visit(ForAstNode node)
+        public override SALType Visit(ForAstNode node)
         {
             throw new NotImplementedException();
         }
 
-        public override List<TypeError> Visit(ForeachAstNode node)
+        public override SALType Visit(ForeachAstNode node)
         {
             throw new NotImplementedException();
         }
 
-        public override List<TypeError> Visit(FunctioncallAstNode node)
+        public override SALType Visit(FunctioncallAstNode node)
         {
             throw new NotImplementedException();
         }
 
-        public override List<TypeError> Visit(FunctionDeclarationAstNode node)
+        public override SALType Visit(FunctionDeclarationAstNode node)
         {
             throw new NotImplementedException();
         }
 
-        public override List<TypeError> Visit(IdAstNode node)
+        public override SALType Visit(IdAstNode node)
+        {
+            return SymbolTable.RetrieveSymbol(node.Token.Text).Type;
+        }
+
+        public override SALType Visit(IfStructureAstNode node)
         {
             throw new NotImplementedException();
         }
 
-        public override List<TypeError> Visit(IfStructureAstNode node)
+        public override SALType Visit(ImportStatementAstNode node)
         {
-            List<TypeError> errors = new List<TypeError>();
-            SALType exprType = RetrieveSymbol(node.Expr);
-            if (!exprType.Equals(SALType.@bool))
+            throw new NotImplementedException();
+        }
+
+        public override SALType Visit(LogicAndAstNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override SALType Visit(LogicEqualityAstNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override SALType Visit(LogicOrAstNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override SALType Visit(MultAstNode node)
+        {
+            SALType expr1 = Visit(node.Left);
+            SALType expr2 = Visit(node.Right);
+
+            if(expr1 != expr2)
             {
-                errors.Add(new TypeError(node.Token.Line, "If Condition is not of type 'bool'"));
+                TypeErrors.Add(new TypeError(node.Token.Line, $"{node.Left.Token.Text} is not same type as {node.Right.Token.Text}"));
             }
-
-            return errors;
+            return expr1;
         }
 
-        public override List<TypeError> Visit(ImportStatementAstNode node)
+        public override SALType Visit(ParameterListAstNode node)
         {
             throw new NotImplementedException();
         }
 
-        public override List<TypeError> Visit(LogicAndAstNode node)
-        {
-            List<TypeError> errors = new List<TypeError>();
-            SALType e1 = RetrieveSymbol(node.E1).type;
-            SALType e2 = RetrieveSymbol(node.E2).type;
-            if (e1 != SALType.@bool && e2 != SALType.@bool)
-            {
-                errors.Add(new TypeError(node.Token.Line, "atleast one of e1 and e2 are not of type boolean"));
-            }
-
-            return errors;
-        }
-
-        public override List<TypeError> Visit(LogicEqualityAstNode node) //TODO what about int vs float?
-        {
-            List<TypeError> errors = new List<TypeError>();
-            SALType e1 = RetrieveSymbol(node.E1).type;
-            SALType e2 = RetrieveSymbol(node.E2).type;
-            if (e1 != SALType.@number && e2 != SALType.@number)
-            {
-                errors.Add(new TypeError(node.Token.Line, "atleast one of e1 and e2 are not of type number"));
-            }
-
-            return errors;
-        }
-
-        public override List<TypeError> Visit(LogicOrAstNode node)
-        {
-            List<TypeError> errors = new List<TypeError>();
-            SALType e1 = RetrieveSymbol(node.E1).type;
-            SALType e2 = RetrieveSymbol(node.E2).type;
-            if (e1 != SALType.@bool && e2 != SALType.@bool)
-            {
-                errors.Add(new TypeError(node.Token.Line, "atleast one of e1 and e2 are not of type boolean"));
-            }
-
-            return errors;
-        }
-
-        public override List<TypeError> Visit(MultAstNode node)
-        {
-            List<TypeError> errors = new List<TypeError>();
-            SALType e1 = RetrieveSymbol(node.E1).type;
-            SALType e2 = RetrieveSymbol(node.E2).type;
-            if (e1 != SALType.@number && e2 != SALType.@number)
-            {
-                errors.Add(new TypeError(node.Token.Line, "atleast one of e1 and e2 are not of type number"));
-            }
-
-            return errors;
-        }
-
-        public override List<TypeError> Visit(ParameterListAstNode node)
+        public override SALType Visit(PlusAstNode node)
         {
             throw new NotImplementedException();
         }
 
-        public override List<TypeError> Visit(PlusAstNode node)
-        {
-            List<TypeError> errors = new List<TypeError>();
-            SALType e1 = RetrieveSymbol(node.E1).type;
-            SALType e2 = RetrieveSymbol(node.E2).type;
-            if (e1 != SALType.@number && e2 != SALType.@number)
-            {
-                errors.Add(new TypeError(node.Token.Line, "atleast one of e1 and e2 are not of type number"));
-            }
-
-            return errors;
-        }
-
-        public override List<TypeError> Visit(PostfixExprAstNode node)
+        public override SALType Visit(PostfixExprAstNode node)
         {
             throw new NotImplementedException();
         }
 
-        public override List<TypeError> Visit(PrefixExprAstNode node)
+        public override SALType Visit(PrefixExprAstNode node)
         {
             throw new NotImplementedException();
         }
 
-        public override List<TypeError> Visit(RelationalExprAstNode node)
-        {
-            List<TypeError> errors = new List<TypeError>();
-            SALType e1 = RetrieveSymbol(node.E1).type;
-            SALType e2 = RetrieveSymbol(node.E2).type;
-            if (e1 != SALType.@number && e2 != SALType.@number)
-            {
-                errors.Add(new TypeError(node.Token.Line, "atleast one of e1 and e2 are not of type number"));
-            }
-
-            return errors;
-        }
-
-        public override List<TypeError> Visit(ReturnAstNode node)
+        public override SALType Visit(RelationalExprAstNode node)
         {
             throw new NotImplementedException();
         }
 
-        public override List<TypeError> Visit(StatementAstNode node)
+        public override SALType Visit(ReturnAstNode node)
         {
             throw new NotImplementedException();
         }
 
-        public override List<TypeError> Visit(SwitchBodyAstNode node)
+        public override SALType Visit(StatementAstNode node)
         {
             throw new NotImplementedException();
         }
 
-        public override List<TypeError> Visit(SwitchItemAstNode node)
+        public override SALType Visit(SwitchBodyAstNode node)
         {
             throw new NotImplementedException();
         }
 
-        public override List<TypeError> Visit(SwitchStructureAstNode node)
+        public override SALType Visit(SwitchItemAstNode node)
         {
             throw new NotImplementedException();
         }
 
-        public override List<TypeError> Visit(TypeAstNode node)
+        public override SALType Visit(SwitchStructureAstNode node)
         {
             throw new NotImplementedException();
         }
 
-        public override List<TypeError> Visit(ValueAstNode node)
+        public override SALType Visit(TypeAstNode node)
         {
             throw new NotImplementedException();
         }
 
-        public override List<TypeError> Visit(WhileAstNode node)
+        public override SALType Visit(ValueAstNode node)
+        {
+            return node.Type;
+        }
+
+        public override SALType Visit(WhileAstNode node)
         {
             throw new NotImplementedException();
         }
