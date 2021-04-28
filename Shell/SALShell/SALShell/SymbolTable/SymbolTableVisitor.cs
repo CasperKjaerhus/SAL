@@ -34,7 +34,7 @@ namespace SALShell.SymbolTable
             //        break;
             //}
 
-            return new AssignmentTypeInfo(idNode.Token, idNode.Type);
+            return new AssignmentTypeInfo(idNode.Type);
         }
 
         public override TypeInfo Visit(CondAstNode node)
@@ -108,7 +108,7 @@ namespace SALShell.SymbolTable
 
         public override TypeInfo Visit(IdAstNode node)
         {
-            return new IdTypeInfo(node.Token, node.ArraySize, node.Type);
+            return new IdTypeInfo(node.ArraySize, node.Type);
         }
 
         public override TypeInfo Visit(IfStructureAstNode node)

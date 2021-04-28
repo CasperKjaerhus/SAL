@@ -7,10 +7,20 @@ namespace SALShell.SymbolTable
 {
     class IdTypeInfo : TypeInfo
     {
-        public IdTypeInfo(IToken idName, IToken arraySize, IToken type):base(type)
+        bool isArray { get; }
+        bool isReference { get; }
+        public IdTypeInfo(IToken arraySize, IToken type):base(type)
         {
-            this.idName = idName;
             this.arraySize = arraySize;
+            if (arraySize == null)
+                isArray = false;
+            else
+                isArray = true;
+
+            if (type == null)
+                isReference = true;
+            else
+                isReference = false;
         }
 
         IToken idName { get; }
@@ -18,10 +28,10 @@ namespace SALShell.SymbolTable
 
         public override string ToString()
         {
-            if (Type == null)
-                return $"Id Reference with name {idName.Text}";
+            if (isReference)
+                return $"Id is reference";
             else
-                return $"Id name {idName.Text} with type {Type.Text}";
+                return $"Id type {Type.Text}";
         }
     }
 }

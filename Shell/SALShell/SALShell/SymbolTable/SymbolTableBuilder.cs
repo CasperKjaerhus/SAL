@@ -63,7 +63,7 @@ namespace SALShell.SymbolTable
                 case ParameterListAstNode paramListNode:
                     foreach (IdAstNode astnode in paramListNode.Children)
                     {
-                        SymbolTable.EnterSymbol(astnode.Token.Text, new IdTypeInfo(astnode.Token, astnode.ArraySize, astnode.Type));
+                        SymbolTable.EnterSymbol(astnode.Token.Text, new IdTypeInfo(astnode.ArraySize, astnode.Type));
                     }
                     break;
                 case IfStructureAstNode ifStructureAstNode:
