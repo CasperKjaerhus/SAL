@@ -13,7 +13,7 @@ namespace SALShell.SymbolTable
 
         public override string ToString()
         {
-            return Type.Text;
+            return Type.Text + Type.Type;
         }
     }
 }

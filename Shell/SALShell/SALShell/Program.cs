@@ -40,6 +40,7 @@ namespace SALShell
             Console.WriteLine("----- \n \n");
             SymbolTableActual symbolTable = new SymbolTableBuilder(concreteP4Visitor).BuildSymbolTable();
             symbolTable.PrintSymbols();
+            Console.WriteLine("----- \n \n");
 
         }
     }

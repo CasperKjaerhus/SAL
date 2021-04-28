@@ -122,5 +122,16 @@ namespace SALShell.SymbolTable
             return ScopeDisplay;
         }
 
+        public List<Symbol> RetrieveSymbolsWithName(string Name)
+        {
+            List<Symbol> symbols = new List<Symbol>();
+            foreach (Scope scope in ScopeDisplay)
+            {
+                symbols.AddRange(scope.symbols.FindAll(x => x.SymbolName == Name));
+            }
+
+            return symbols;
+        }
+
     }
 }
