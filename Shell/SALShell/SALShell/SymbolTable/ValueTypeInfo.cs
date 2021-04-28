@@ -10,5 +10,10 @@ namespace SALShell.SymbolTable
         public ValueTypeInfo(IToken token):base(token)
         {
         }
+
+        public override string ToString()
+        {
+            return Type.Text;
+        }
     }
 }

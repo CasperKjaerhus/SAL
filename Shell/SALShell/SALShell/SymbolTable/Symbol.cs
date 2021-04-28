@@ -19,7 +19,7 @@ namespace SALShell.SymbolTable
         {
             Var = var;
             Level = level;
-            HashCode = GetHashCode();
+            HashCode = GetHashCode(); // Hash can (probably) be removed 
         }
 
         public Symbol()
@@ -51,7 +51,7 @@ namespace SALShell.SymbolTable
 
         public override string ToString()
         {
-            return $"{SymbolName}, at depth: {Depth}, in {scopeName}";
+            return $"{SymbolName} declared in: {scopeName}, at depth: {Depth}";
         }
     }
 }

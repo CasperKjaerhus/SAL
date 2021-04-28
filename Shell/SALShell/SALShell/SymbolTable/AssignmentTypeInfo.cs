@@ -13,8 +13,15 @@ namespace SALShell.SymbolTable
             this.assigment = assigment;
         }
 
-        IToken id { get; }
-        TypeInfo assigment { get; }
-        
+        public IToken id { get; }
+        public TypeInfo assigment { get; }
+        public override string ToString()
+        {
+            return $"Assignment is of type {Type.Text}, with name {id.Text} and assignment is: {assigment}";
+        }
+
+
+
     }
+
 }
