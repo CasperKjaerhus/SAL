@@ -1,4 +1,4 @@
-﻿namespace SALShell.TypeChecker
+﻿namespace SALShell.Parser
 {
     public enum SALType
     {
