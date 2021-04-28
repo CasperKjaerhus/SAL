@@ -15,5 +15,13 @@ namespace SALShell.SymbolTable
 
         IToken idName { get; }
         IToken arraySize { get; }
+
+        public override string ToString()
+        {
+            if (Type == null)
+                return $"Id Reference with name {idName.Text}";
+            else
+                return $"Id name {idName.Text} with type {Type.Text}";
+        }
     }
 }

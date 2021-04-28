@@ -81,7 +81,7 @@ namespace SALShell.SymbolTable
         }
 
         //Gets the symbol out of the table according to name.
-        public Symbol RetrieveSymbol(string name)
+        private Symbol RetrieveSymbol(string name)
         {
             if (Table.ContainsKey(name))
                 return Table[name];
@@ -113,10 +113,11 @@ namespace SALShell.SymbolTable
                     Console.WriteLine($"In scope: {scope.scopeName}");
                 foreach (Symbol sym in scope.symbols)
                 {
-                    Console.WriteLine(sym + $"\t\t {sym.Type}");
+                    Console.WriteLine(sym + $"\t\t\t {sym.Type}");
                 }
             }
         }
+
         public List<Scope> GetScopes()
         {
             return ScopeDisplay;

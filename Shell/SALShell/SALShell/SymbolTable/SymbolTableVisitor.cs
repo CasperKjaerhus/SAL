@@ -21,21 +21,20 @@ namespace SALShell.SymbolTable
         public override TypeInfo Visit(AssignAstNode node)
         {
             IdAstNode idNode = (IdAstNode)node.Children[0];
-            TypeInfo assignmentInfo = null;
 
-            switch (node.Children[1])
-            {
-                case PlusAstNode plus:
-                    assignmentInfo = Visit(plus);
-                    break;
-                case ExprListAstNode expr:
-                    assignmentInfo = Visit(expr);
-                    break;
-                default:
-                    break;
-            }
+            //switch (node.Children[1])
+            //{
+            //    case PlusAstNode plus:
+            //        assignmentInfo = Visit(plus);
+            //        break;
+            //    case ExprListAstNode expr:
+            //        assignmentInfo = Visit(expr);
+            //        break;
+            //    default:
+            //        break;
+            //}
 
-            return new AssignmentTypeInfo(idNode.Token, assignmentInfo, idNode.Type);
+            return new AssignmentTypeInfo(idNode.Token, idNode.Type);
         }
 
         public override TypeInfo Visit(CondAstNode node)
@@ -59,13 +58,12 @@ namespace SALShell.SymbolTable
 
         public override TypeInfo Visit(ExprListAstNode node)
         {
-            List<TypeInfo> values = new List<TypeInfo>();
-            foreach (ValueAstNode value in node.Children)
-            {
-                values.Add(Visit(value));
-            }
-
-            return new ExprListTypeInfo(values);
+            //List<TypeInfo> values = new List<TypeInfo>();
+            //foreach (ValueAstNode value in node.Children)
+            //{
+            //    values.Add(Visit(value));
+            //}
+            throw new NotImplementedException();
         }
 
         public override TypeInfo Visit(ForAstNode node)
@@ -81,15 +79,15 @@ namespace SALShell.SymbolTable
         public override TypeInfo Visit(FunctioncallAstNode node)
         {
             IdAstNode IDinfo = (IdAstNode)node.FunctionId;
-            ArgumentsAstNode argumentNode = (ArgumentsAstNode)node.Arguments;
-            List<TypeInfo> argus = new List<TypeInfo>();
+            //ArgumentsAstNode argumentNode = (ArgumentsAstNode)node.Arguments;
+            //List<TypeInfo> argus = new List<TypeInfo>();
 
-            foreach (ASTNode argument in argumentNode.Children)
-            {
-                argus.Add(Visit(argument));
-            }
+            //foreach (ASTNode argument in argumentNode.Children)
+            //{
+            //    argus.Add(Visit(argument));
+            //}
 
-            return new FuncCallTypeInfo(IDinfo.Type, argus);
+            return new FuncCallTypeInfo(IDinfo.Type);
 
         }
 
@@ -150,14 +148,15 @@ namespace SALShell.SymbolTable
 
         public override TypeInfo Visit(PlusAstNode node)
         {
-            List<TypeInfo> values = new List<TypeInfo>();
+            //List<TypeInfo> values = new List<TypeInfo>();
 
-            foreach (ValueAstNode val in node.Children)
-            {
-                values.Add(Visit(val));
-            }
+            //foreach (ValueAstNode val in node.Children)
+            //{
+            //    values.Add(Visit(val));
+            //}
 
-            return new OperationTypeInfo(values[0], values[1], node.Token);
+            //return new OperationTypeInfo(values[0], values[1], node.Token);
+            throw new NotImplementedException();
         }
 
         public override TypeInfo Visit(PostfixExprAstNode node)
@@ -207,7 +206,7 @@ namespace SALShell.SymbolTable
 
         public override TypeInfo Visit(ValueAstNode node)
         {
-            return new ValueTypeInfo(node.Token);
+            throw new NotImplementedException();
         }
 
         public override TypeInfo Visit(WhileAstNode node)
