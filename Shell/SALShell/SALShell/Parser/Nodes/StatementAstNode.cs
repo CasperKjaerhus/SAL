@@ -12,13 +12,16 @@ namespace SALShell.Parser
         public StatementAstNode(ASTNode action, IToken token) : base(token)
         {
             this.Action = action;
+            Children.Add(action);
         }
 
         public void Push(StatementAstNode item)
         {
             if (NextNode == null)
+            {
                 NextNode = item;
-            else
+                Children.Add(item);
+            }else
                 NextNode.Push(item);
         }
 
