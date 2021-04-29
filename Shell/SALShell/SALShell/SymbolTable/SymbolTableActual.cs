@@ -88,8 +88,8 @@ namespace SALShell.SymbolTable
                 return null;
         }
 
-        //Returns true if their exists a symbol with the name, in the given scope, else false.
-        public bool DeclaredLocally(string symbolName, string ScopeName)
+        //Returns true if their exists a symbol with the name in the scope, in the given scope, else false.
+        public bool DeclaredInScope(string symbolName, string ScopeName)
         {
             return ScopeDisplay[ScopeDisplay.FindIndex(x => x.scopeName == ScopeName)].symbols.Any(x => x.SymbolName == symbolName);
         }

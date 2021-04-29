@@ -9,7 +9,7 @@ namespace SALShell.SymbolTable
         public void OpenScope(string scopename);
         public void CloseScope();
         public void EnterSymbol(string name, K typeinfo);
-        public bool DeclaredLocally(string name);
+        public bool DeclaredLocally(string name, string scopename);
         public List<S> GetScopes();
     }
 }
