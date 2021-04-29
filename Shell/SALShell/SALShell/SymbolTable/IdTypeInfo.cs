@@ -7,8 +7,8 @@ namespace SALShell.SymbolTable
 {
     class IdTypeInfo : TypeInfo
     {
-        bool isArray { get; }
-        bool isReference { get; }
+        public bool isArray { get; }
+        public bool isReference { get; }
         public IdTypeInfo(IToken arraySize, IToken type):base(type)
         {
             this.arraySize = arraySize;

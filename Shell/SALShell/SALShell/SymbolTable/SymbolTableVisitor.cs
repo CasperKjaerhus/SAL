@@ -33,7 +33,7 @@ namespace SALShell.SymbolTable
         public override TypeInfo Visit(DeclareAstNode node)
         {
             IdAstNode id = (IdAstNode)node.Id;
-            return new DeclTypeInfo(id.Type, id.ArraySize);
+            return Visit(id);
         }
 
         public override TypeInfo Visit(ExprAstNode node)

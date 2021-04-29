@@ -13,6 +13,7 @@ namespace SALShell.SymbolTable
         int forloopCount = 0;
         int WhileCount = 0;
         int ifCount = 0;
+        int switchCount = 0;
 
         private ASTNode ASTroot { get; }
 
@@ -42,7 +43,7 @@ namespace SALShell.SymbolTable
                     SymbolTable.EnterSymbol(asmntNode.Children[0].Token.Text, typeInfAsmnt);
                     break;
                 case SwitchStructureAstNode switchS:
-                    SymbolTable.OpenScope("Switch");
+                    SymbolTable.OpenScope($"{switchCount++}");
                     break;
                 case FunctioncallAstNode funcCallRef: 
                     TypeInfo typeInfFuncCall = symVisitor.Visit(funcCallRef);
@@ -75,6 +76,7 @@ namespace SALShell.SymbolTable
                 default:
                     break;
             }
+
             if(node != null)
             {
                 foreach (ASTNode astnode in node.Children)

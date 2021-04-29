@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace SALShell.SymbolTable
 {
-    class SymbolTableActual : ISymbolTable<Symbol, TypeInfo, Scope>
+    class SymbolTableActual : ISymbolTable<Symbol, TypeInfo>
     {
 
         //THIS SYMBOL TABLE PROBABLY HAVE A VERY BAD SPACE AND TIME COMPLEXITY BUT ¯\_(ツ)_/¯
@@ -52,7 +52,6 @@ namespace SALShell.SymbolTable
             Depth--;
             string scopeParent = ScopeDisplay[scopeindex].Parent.scopeName;
             scopeindex = ScopeDisplay.FindIndex(x => x.scopeName == scopeParent);
-
         }
 
         // Creates a new symbol with a given name, and the relevant typeinfo
@@ -61,6 +60,21 @@ namespace SALShell.SymbolTable
         public void EnterSymbol(string name, TypeInfo typeinf)
         {
             Symbol oldSym = RetrieveSymbol(name);
+
+            switch (typeinf)
+            {
+                //case FuncCallTypeInfo fRef:
+                //    ReferenceExists(name);
+                //    break;
+                case IdTypeInfo idRef:
+                    ReferenceExists(name, idRef);
+                    break;
+                case AssignmentTypeInfo asmnRef:
+                    ReferenceExists(name, asmnRef);
+                    break;
+                default:
+                    break;
+            }
 
             if ((oldSym != null && oldSym.Depth == Depth) && oldSym.Type.GetType() == typeinf.GetType())
             {
@@ -79,6 +93,47 @@ namespace SALShell.SymbolTable
                 DeleteSym(oldSym);
             }
         }
+
+        private void ReferenceExists(string name, IdTypeInfo idRef)
+        {
+            if (!idRef.isReference)
+                return;
+
+            Scope scope = ScopeDisplay[scopeindex];
+
+            while(!(scope.symbols.Any(x => x.SymbolName == name)))
+            {
+                scope = scope.Parent;
+                if (scope == null)
+                {
+                    Console.WriteLine($"Symbol reference not found {name}");
+                    return;
+                }
+            }
+
+            Console.WriteLine($"Symbol reference found {name}");
+        }
+
+        private void ReferenceExists(string name, AssignmentTypeInfo asmnRef)
+        {
+            if (!asmnRef.isReference)
+                return;
+
+            Scope scope = ScopeDisplay[scopeindex];
+
+            while (!(scope.symbols.Any(x => x.SymbolName == name)))
+            {
+                scope = scope.Parent;
+                if (scope == null)
+                {
+                    Console.WriteLine($"Symbol reference not found {name}");
+                    return;
+                }
+            }
+
+            Console.WriteLine($"Symbol reference found {name}");
+        }
+
 
         //Gets the symbol out of the table according to name.
         private Symbol RetrieveSymbol(string name)
@@ -125,7 +180,6 @@ namespace SALShell.SymbolTable
             {
                 symbols.AddRange(scope.symbols.FindAll(x => x.SymbolName == Name));
             }
-
             return symbols;
         }
 
