@@ -63,7 +63,6 @@ namespace SALShell.SymbolTable
 
             if ((oldSym != null && oldSym.Depth == Depth) && oldSym.Type.GetType() == typeinf.GetType())
             {
-                //throw new ArgumentException($"Duplicate definition of {name}");
                 Console.WriteLine("duplicate? " + $"{oldSym.SymbolName}");
             }
 
@@ -90,9 +89,9 @@ namespace SALShell.SymbolTable
         }
 
         //Returns true if their exists a symbol with the name, in the given scope, else false.
-        public bool DeclaredLocally(string name)
+        public bool DeclaredLocally(string symbolName, string ScopeName)
         {
-            return ScopeDisplay[Depth].symbols.Any(x => x.SymbolName == name);
+            return ScopeDisplay[ScopeDisplay.FindIndex(x => x.scopeName == ScopeName)].symbols.Any(x => x.SymbolName == symbolName);
         }
 
         //Deletes the symbols from the dictionary, and adds them to a list of removed symbols.
@@ -123,7 +122,7 @@ namespace SALShell.SymbolTable
             return ScopeDisplay;
         }
 
-        public List<Symbol> RetrieveSymbolsWithName(string Name)
+        public List<Symbol> RetrieveSymbols(string Name)
         {
             List<Symbol> symbols = new List<Symbol>();
             foreach (Scope scope in ScopeDisplay)

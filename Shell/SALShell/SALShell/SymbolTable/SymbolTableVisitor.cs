@@ -22,18 +22,6 @@ namespace SALShell.SymbolTable
         {
             IdAstNode idNode = (IdAstNode)node.Children[0];
 
-            //switch (node.Children[1])
-            //{
-            //    case PlusAstNode plus:
-            //        assignmentInfo = Visit(plus);
-            //        break;
-            //    case ExprListAstNode expr:
-            //        assignmentInfo = Visit(expr);
-            //        break;
-            //    default:
-            //        break;
-            //}
-
             return new AssignmentTypeInfo(idNode.Type);
         }
 
@@ -45,10 +33,7 @@ namespace SALShell.SymbolTable
         public override TypeInfo Visit(DeclareAstNode node)
         {
             IdAstNode id = (IdAstNode)node.Id;
-            //if(id.ArraySize != null)
-            //    return new DeclTypeInfo(id.Type);
-            //else
-                return new DeclTypeInfo(id.Type, id.ArraySize);
+            return new DeclTypeInfo(id.Type, id.ArraySize);
         }
 
         public override TypeInfo Visit(ExprAstNode node)
@@ -58,11 +43,6 @@ namespace SALShell.SymbolTable
 
         public override TypeInfo Visit(ExprListAstNode node)
         {
-            //List<TypeInfo> values = new List<TypeInfo>();
-            //foreach (ValueAstNode value in node.Children)
-            //{
-            //    values.Add(Visit(value));
-            //}
             throw new NotImplementedException();
         }
 
@@ -79,13 +59,6 @@ namespace SALShell.SymbolTable
         public override TypeInfo Visit(FunctioncallAstNode node)
         {
             IdAstNode IDinfo = (IdAstNode)node.FunctionId;
-            //ArgumentsAstNode argumentNode = (ArgumentsAstNode)node.Arguments;
-            //List<TypeInfo> argus = new List<TypeInfo>();
-
-            //foreach (ASTNode argument in argumentNode.Children)
-            //{
-            //    argus.Add(Visit(argument));
-            //}
 
             return new FuncCallTypeInfo(IDinfo.Type);
 
@@ -148,14 +121,6 @@ namespace SALShell.SymbolTable
 
         public override TypeInfo Visit(PlusAstNode node)
         {
-            //List<TypeInfo> values = new List<TypeInfo>();
-
-            //foreach (ValueAstNode val in node.Children)
-            //{
-            //    values.Add(Visit(val));
-            //}
-
-            //return new OperationTypeInfo(values[0], values[1], node.Token);
             throw new NotImplementedException();
         }
 
