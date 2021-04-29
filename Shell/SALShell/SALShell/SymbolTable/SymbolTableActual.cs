@@ -12,12 +12,13 @@ namespace SALShell.SymbolTable
         private int Depth = 0;
         private int scopeindex = 0;
         private Scope ParentScope = new Scope(null, "global", 0);
-        private List<Scope> ScopeDisplay = new List<Scope>();
+        public List<Scope> ScopeDisplay { private set; get; }
         private Dictionary<string, Symbol> Table = new Dictionary<string, Symbol>();
         private List<Symbol> RemovedSymbols = new List<Symbol>();
 
         public SymbolTableActual()
         {
+            ScopeDisplay = new List<Scope>();
             ScopeDisplay.Add(ParentScope);
         }
 
@@ -115,11 +116,6 @@ namespace SALShell.SymbolTable
                     Console.WriteLine(sym + $"\t\t\t {sym.Type}");
                 }
             }
-        }
-
-        public List<Scope> GetScopes()
-        {
-            return ScopeDisplay;
         }
 
         public List<Symbol> RetrieveSymbols(string Name)
