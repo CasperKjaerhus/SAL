@@ -26,6 +26,7 @@ namespace SALShell.SymbolTable
         public SymbolTableActual BuildSymbolTable()
         {
             ProcessNode(ASTroot);
+            SymbolTable.CheckFunctionReferences();
             return SymbolTable;
         }
 

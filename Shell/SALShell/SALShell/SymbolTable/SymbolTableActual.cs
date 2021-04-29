@@ -63,9 +63,6 @@ namespace SALShell.SymbolTable
 
             switch (typeinf)
             {
-                //case FuncCallTypeInfo fRef:
-                //    ReferenceExists(name);
-                //    break;
                 case IdTypeInfo idRef:
                     ReferenceExists(name, idRef);
                     break;
@@ -103,12 +100,12 @@ namespace SALShell.SymbolTable
 
             while(!(scope.symbols.Any(x => x.SymbolName == name)))
             {
-                scope = scope.Parent;
                 if (scope == null)
                 {
                     Console.WriteLine($"Symbol reference not found {name}");
                     return;
                 }
+                scope = scope.Parent;
             }
 
             Console.WriteLine($"Symbol reference found {name}");
@@ -132,6 +129,21 @@ namespace SALShell.SymbolTable
             }
 
             Console.WriteLine($"Symbol reference found {name}");
+        }
+
+        public void CheckFunctionReferences()
+        {
+            List<Symbol> functions = new List<Symbol>();
+            functions.AddRange(ScopeDisplay[0].symbols.Where(x => x.Type is FuncTypeInfo).ToList());
+
+            foreach (Scope scope in ScopeDisplay)
+            {
+                foreach(Symbol sym in scope.symbols.Where(x => x.Type is FuncCallTypeInfo).ToList())
+                {
+                    if (!(functions.Any(x => x.SymbolName == sym.SymbolName)))
+                        Console.WriteLine($"No such function {sym.SymbolName}");
+                }
+            }
         }
 
 
