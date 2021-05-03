@@ -13,8 +13,6 @@ namespace SALShell.SymbolTable
         private int scopeindex = 0;
         private Scope ParentScope = new Scope(null, "global", 0);
         public List<Scope> ScopeDisplay { private set; get; }
-        private Dictionary<string, Symbol> Table = new Dictionary<string, Symbol>();
-        private List<Symbol> RemovedSymbols = new List<Symbol>();
 
         public SymbolTableActual()
         {
@@ -22,7 +20,7 @@ namespace SALShell.SymbolTable
             ScopeDisplay.Add(ParentScope);
         }
 
-        // Counts up depth, and sets clears indexed list (the higher the depth, the inner the scope)
+        // Counts up depth, and creates a new scope, and changes the scope index to the current scope. 
         public void OpenScope(string scopeName)
         {
             if (Depth == 0)
@@ -31,24 +29,16 @@ namespace SALShell.SymbolTable
             }
             else
                 ParentScope = ScopeDisplay.FindLast(x => x.Depth == Depth - 1);
+
             Scope NewScope = new Scope(ParentScope, scopeName, Depth);
             ScopeDisplay.Add(NewScope);
             scopeindex = ScopeDisplay.FindIndex(x => x.scopeName == scopeName);
             Depth++;
         }
 
-        // Counts up depth, and sets clears indexed list (the higher the depth, the inner the scope)
+        //Counts down the depth, and change the scope index to be the parent of the previous scope
         public void CloseScope()
         {
-            foreach (Symbol sym in ScopeDisplay[scopeindex].symbols)     
-            {
-                Symbol prevSym = sym.Var;
-                DeleteSym(sym);
-                if(prevSym != null)
-                {
-                    Table.Add(prevSym.SymbolName, sym);
-                }
-            }
             Depth--;
             string scopeParent = ScopeDisplay[scopeindex].Parent.scopeName;
             scopeindex = ScopeDisplay.FindIndex(x => x.scopeName == scopeParent);
@@ -59,7 +49,6 @@ namespace SALShell.SymbolTable
         // Else if a symbol is declared in the same scope call error, or else set the "Var" of the symbol to previous symbol.
         public void EnterSymbol(string name, TypeInfo typeinf)
         {
-            Symbol oldSym = RetrieveSymbol(name);
 
             switch (typeinf)
             {
@@ -70,27 +59,13 @@ namespace SALShell.SymbolTable
                     ReferenceExists(name, asmnRef);
                     break;
                 default:
+                    Symbol newSym = new Symbol(name, typeinf, ScopeDisplay[scopeindex].symbols, Depth, ScopeDisplay[scopeindex].scopeName);
+                    ScopeDisplay[scopeindex].symbols.Add(newSym);
                     break;
-            }
-
-            if ((oldSym != null && oldSym.Depth == Depth) && oldSym.Type.GetType() == typeinf.GetType())
-            {
-                Console.WriteLine("duplicate? " + $"{oldSym.SymbolName}");
-            }
-
-            Symbol newSym = new Symbol(name, typeinf, ScopeDisplay[scopeindex].symbols, Depth, ScopeDisplay[scopeindex].scopeName);
-
-            ScopeDisplay[scopeindex].symbols.Add(newSym);
-
-            if(oldSym == null)
-                Table.Add(newSym.SymbolName, newSym);
-            else
-            {
-                newSym.Var = oldSym;
-                DeleteSym(oldSym);
             }
         }
 
+        //Checks if reference for variable exists
         private void ReferenceExists(string name, IdTypeInfo idRef)
         {
             if (!idRef.isReference)
@@ -111,6 +86,7 @@ namespace SALShell.SymbolTable
             Console.WriteLine($"Symbol reference found {name}");
         }
 
+        //Checks if reference for variable assignment exists
         private void ReferenceExists(string name, AssignmentTypeInfo asmnRef)
         {
             if (!asmnRef.isReference)
@@ -131,6 +107,7 @@ namespace SALShell.SymbolTable
             Console.WriteLine($"Symbol reference found {name}");
         }
 
+        //Checks if all function calls can be made, if all functions are declared in global
         public void CheckFunctionReferences()
         {
             List<Symbol> functions = new List<Symbol>();
@@ -146,28 +123,10 @@ namespace SALShell.SymbolTable
             }
         }
 
-
-        //Gets the symbol out of the table according to name.
-        private Symbol RetrieveSymbol(string name)
-        {
-            if (Table.ContainsKey(name))
-                return Table[name];
-            else
-                return null;
-        }
-
         //Returns true if their exists a symbol with the name in the scope, in the given scope, else false.
         public bool DeclaredInScope(string symbolName, string ScopeName)
         {
             return ScopeDisplay[ScopeDisplay.FindIndex(x => x.scopeName == ScopeName)].symbols.Any(x => x.SymbolName == symbolName);
-        }
-
-        //Deletes the symbols from the dictionary, and adds them to a list of removed symbols.
-        private void DeleteSym(Symbol sym)
-        {
-            Symbol removedSym;
-            Table.Remove(sym.SymbolName, out removedSym);
-            RemovedSymbols.Add(removedSym);
         }
         
         public void PrintSymbols()
@@ -185,6 +144,7 @@ namespace SALShell.SymbolTable
             }
         }
 
+        //Gets a list of the symbols with the given name.
         public List<Symbol> RetrieveSymbols(string Name)
         {
             List<Symbol> symbols = new List<Symbol>();
