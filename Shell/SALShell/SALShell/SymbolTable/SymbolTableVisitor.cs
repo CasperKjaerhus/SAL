@@ -119,7 +119,7 @@ namespace SALShell.SymbolTable
             throw new NotImplementedException();
         }
 
-        public override TypeInfo Visit(LogicEqualityAstNode node)
+        public override TypeInfo Visit(EqualityAstNode node)
         {
             throw new NotImplementedException();
         }

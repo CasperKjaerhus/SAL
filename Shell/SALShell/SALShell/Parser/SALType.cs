@@ -7,5 +7,6 @@
         @char,
         @string,
         @void,
+        error
     }
 }

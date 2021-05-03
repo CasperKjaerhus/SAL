@@ -101,7 +101,7 @@ namespace SALShell.CodeGen
             throw new NotImplementedException();
         }
 
-        public override string Visit(LogicEqualityAstNode node)
+        public override string Visit(EqualityAstNode node)
         {
             throw new NotImplementedException();
         }

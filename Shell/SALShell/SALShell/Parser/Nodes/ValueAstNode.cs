@@ -26,8 +26,11 @@ namespace SALShell.Parser
                 case "char":
                     Type = SALType.@char;
                     break;
-                default:
+                case "void":
                     Type = SALType.@void;
+                    break;
+                default:
+                    Type = SALType.error;
                     break;
             }
             
