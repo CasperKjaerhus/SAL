@@ -13,5 +13,15 @@ namespace SALShell.SymbolTable
         {
             parameters = tokens;
         }
+
+        public override string ToString()
+        {
+            string funcString = "Function declaration taking the paremeters: ";
+            foreach (IToken parameter in parameters)
+            {
+                funcString += parameter.Text + " ";
+            }
+            return funcString;
+        }
     }
 }

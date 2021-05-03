@@ -12,6 +12,8 @@ namespace SALShell.SymbolTable
         SymbolTableVisitor symVisitor = new SymbolTableVisitor();
         int forloopCount = 0;
         int WhileCount = 0;
+        int ifCount = 0;
+        int switchCount = 0;
 
         private ASTNode ASTroot { get; }
 
@@ -24,6 +26,7 @@ namespace SALShell.SymbolTable
         public SymbolTableActual BuildSymbolTable()
         {
             ProcessNode(ASTroot);
+            SymbolTable.CheckFunctionReferences();
             return SymbolTable;
         }
 
@@ -41,7 +44,7 @@ namespace SALShell.SymbolTable
                     SymbolTable.EnterSymbol(asmntNode.Children[0].Token.Text, typeInfAsmnt);
                     break;
                 case SwitchStructureAstNode switchS:
-                    SymbolTable.OpenScope("Switch");
+                    SymbolTable.OpenScope($"{switchCount++}");
                     break;
                 case FunctioncallAstNode funcCallRef: 
                     TypeInfo typeInfFuncCall = symVisitor.Visit(funcCallRef);
@@ -62,8 +65,11 @@ namespace SALShell.SymbolTable
                 case ParameterListAstNode paramListNode:
                     foreach (IdAstNode astnode in paramListNode.Children)
                     {
-                        SymbolTable.EnterSymbol(astnode.Token.Text, new IdTypeInfo(astnode.Token, astnode.ArraySize, astnode.Type));
+                        SymbolTable.EnterSymbol(astnode.Token.Text, new IdTypeInfo(astnode.ArraySize, astnode.Type));
                     }
+                    break;
+                case IfStructureAstNode ifStructureAstNode:
+                    SymbolTable.OpenScope($"ifStatement{ifCount++}");
                     break;
                 //case ValueAstNode valNode:
                 //    SymbolTable.EnterSymbol(valNode.Token.Text, symVisitor.Visit(valNode));
@@ -71,6 +77,7 @@ namespace SALShell.SymbolTable
                 default:
                     break;
             }
+
             if(node != null)
             {
                 foreach (ASTNode astnode in node.Children)
@@ -79,7 +86,7 @@ namespace SALShell.SymbolTable
                         ProcessNode(astnode);
                 }
             }
-            if (node is FunctionDeclarationAstNode || node is WhileAstNode || node is SwitchStructureAstNode || node is ForAstNode)
+            if (node is FunctionDeclarationAstNode || node is WhileAstNode || node is SwitchStructureAstNode || node is ForAstNode || node is IfStructureAstNode)
                 SymbolTable.CloseScope();
         }
 

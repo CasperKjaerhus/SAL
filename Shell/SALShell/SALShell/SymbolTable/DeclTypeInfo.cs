@@ -15,5 +15,10 @@ namespace SALShell.SymbolTable
         {
             this.arraySize = arraysize;
         }
+
+        public override string ToString()
+        {
+            return $"Declaration is of {Type.Text}";
+        }
     }
 }
