@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SALShell.SymbolTable
 {
-    class DeclTypeInfo : TypeInfo
+    public class DeclTypeInfo : TypeInfo
     {
         IToken arraySize { get; }
         public DeclTypeInfo(IToken type) : base(type)

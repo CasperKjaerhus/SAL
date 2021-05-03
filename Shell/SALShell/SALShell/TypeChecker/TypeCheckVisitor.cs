@@ -87,7 +87,8 @@ namespace SALShell.TypeChecker
 
         public override SALType Visit(IdAstNode node)
         {
-            return SymbolTable.RetrieveSymbol(node.Token.Text).Type;
+            //return SymbolTable.RetrieveSymbols(node.Token.Text).Type;
+            throw new NotImplementedException();
         }
 
         public override SALType Visit(IfStructureAstNode node)
