@@ -60,7 +60,7 @@ namespace SALShell.SymbolTable
                     ReferenceExists(name, asmnRef);
                     break;
                 default:
-                    newSym = new Symbol(name, typeinf, ScopeDisplay[scopeindex].symbols, Depth, ScopeDisplay[scopeindex].scopeName);
+                    newSym = new Symbol(name, typeinf, Depth, ScopeDisplay[scopeindex].scopeName);
                     ScopeDisplay[scopeindex].symbols.Add(newSym);
                     break;
             }
