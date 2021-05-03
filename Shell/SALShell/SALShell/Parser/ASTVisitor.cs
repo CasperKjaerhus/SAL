@@ -30,7 +30,7 @@ namespace SALShell.Parser
         public abstract T Visit(IfStructureAstNode node);
         public abstract T Visit(ImportStatementAstNode node);
         public abstract T Visit(LogicAndAstNode node);
-        public abstract T Visit(LogicEqualityAstNode node);
+        public abstract T Visit(EqualityAstNode node);
         public abstract T Visit(LogicOrAstNode node);
         public abstract T Visit(MultAstNode node);
         public abstract T Visit(ParameterListAstNode node);
