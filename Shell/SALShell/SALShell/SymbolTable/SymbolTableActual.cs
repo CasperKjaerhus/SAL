@@ -54,25 +54,33 @@ namespace SALShell.SymbolTable
             switch (typeinf)
             {
                 case IdTypeInfo idRef:
-                    ReferenceExists(name, idRef);
+                    newSym = ReferenceExists(name, idRef);
                     break;
                 case AssignmentTypeInfo asmnRef:
-                    ReferenceExists(name, asmnRef);
+                    newSym = ReferenceExists(name, asmnRef);
                     break;
                 default:
-                    newSym = new Symbol(name, typeinf, Depth, ScopeDisplay[scopeindex].scopeName);
-                    ScopeDisplay[scopeindex].symbols.Add(newSym);
+                    if(!DeclaredInScope(name, ScopeDisplay[scopeindex].scopeName))
+                    {
+                        newSym = new Symbol(name, typeinf, Depth, ScopeDisplay[scopeindex].scopeName);
+                        ScopeDisplay[scopeindex].symbols.Add(newSym);
+                    }
                     break;
+            }
+
+            if (newSym != null)
+            {
+                ScopeDisplay[scopeindex].symbols.Add(newSym);
             }
 
             return newSym;
         }
 
         //Checks if reference for variable exists
-        private void ReferenceExists(string name, IdTypeInfo idRef)
+        private Symbol ReferenceExists(string name, IdTypeInfo idRef)
         {
             if (!idRef.isReference)
-                return;
+                return new Symbol(name, idRef, Depth, ScopeDisplay[scopeindex].scopeName);
 
             Scope scope = ScopeDisplay[scopeindex];
 
@@ -81,19 +89,20 @@ namespace SALShell.SymbolTable
                 if (scope == null)
                 {
                     Console.WriteLine($"Symbol reference not found {name}");
-                    return;
+                    return null;
                 }
                 scope = scope.Parent;
             }
 
             Console.WriteLine($"Symbol reference found {name}");
+            return null;
         }
 
         //Checks if reference for variable assignment exists
-        private void ReferenceExists(string name, AssignmentTypeInfo asmnRef)
+        private Symbol ReferenceExists(string name, AssignmentTypeInfo asmnRef)
         {
             if (!asmnRef.isReference)
-                return;
+                return new Symbol(name, asmnRef, Depth, ScopeDisplay[scopeindex].scopeName);
 
             Scope scope = ScopeDisplay[scopeindex];
 
@@ -103,11 +112,12 @@ namespace SALShell.SymbolTable
                 if (scope == null)
                 {
                     Console.WriteLine($"Symbol reference not found {name}");
-                    return;
+                    return null;
                 }
             }
 
             Console.WriteLine($"Symbol reference found {name}");
+            return null;
         }
 
         //Checks if all function calls can be made, if all functions are declared in global

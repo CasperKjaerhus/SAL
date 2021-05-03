@@ -71,11 +71,9 @@ namespace SALShell.SymbolTable
                 case IfStructureAstNode ifStructureAstNode:
                     SymbolTable.OpenScope($"ifStatement{ifCount++}");
                     break;
-                //case ValueAstNode valNode:
-                //    SymbolTable.EnterSymbol(valNode.Token.Text, symVisitor.Visit(valNode));
-                //    break;
                 default:
                     break;
+
             }
 
             if(node != null)
