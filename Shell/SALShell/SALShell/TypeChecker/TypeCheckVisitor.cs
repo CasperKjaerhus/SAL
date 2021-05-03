@@ -22,12 +22,12 @@ namespace SALShell.TypeChecker
         public override SALType Visit(ArgumentsAstNode node)
         {
             throw new NotImplementedException();
-        }
+        }   //TODO: redundant?
 
         public override SALType Visit(ArrayAccessAstNode node)
         {
             throw new NotImplementedException();
-        }
+        } //TODO: redundant?
 
         public override SALType Visit(AssignAstNode node)
         {
@@ -52,23 +52,23 @@ namespace SALShell.TypeChecker
 
         public override SALType Visit(DeclareAstNode node)
         {
-            throw new NotImplementedException();
+            return node.Symbol.Type;
         }
 
         public override SALType Visit(ExprAstNode node)
         {
             throw new NotImplementedException();
-        }
+        } //TODO: redundant?
 
         public override SALType Visit(ExprListAstNode node)
         {
             throw new NotImplementedException();
-        }
+        } //TODO: redundant?
 
         public override SALType Visit(ForAstNode node)
         {
             throw new NotImplementedException();
-        }
+        } 
 
         public override SALType Visit(ForeachAstNode node)
         {
@@ -77,7 +77,23 @@ namespace SALShell.TypeChecker
 
         public override SALType Visit(FunctioncallAstNode node)
         {
-            throw new NotImplementedException();
+            SALType returnType = node.Symbol.Type;
+
+            foreach (var argument in node.Arguments.Children)
+            {
+                SALType actualArgumentType = Visit(argument);
+                if (actualArgumentType == SALType.error) { return SALType.error; }
+
+                SALType declaredArgumentType = SymbolTable.RetrieveSymbols(argument.Token.Text);
+
+                if (actualArgumentType != declaredArgumentType)
+                {
+                    TypeErrors.Add(new TypeError(node.Token.Line, $"{argument.Token.Text} is not of type {argument.Symbol.Type}."));
+                    returnType = SALType.error;
+                }
+            }
+
+            return returnType;
         }
 
         public override SALType Visit(FunctionDeclarationAstNode node)
@@ -87,7 +103,7 @@ namespace SALShell.TypeChecker
 
         public override SALType Visit(IdAstNode node)
         {
-            return SymbolTable.RetrieveSymbol(node.Token.Text).Type;
+            return node.Symbol.Type;
         }
 
         public override SALType Visit(IfStructureAstNode node)
@@ -107,7 +123,7 @@ namespace SALShell.TypeChecker
         public override SALType Visit(ImportStatementAstNode node)
         {
             throw new NotImplementedException();
-        }
+        }//TODO: redundant?
 
         public override SALType Visit(LogicAndAstNode node)
         {
@@ -216,12 +232,12 @@ namespace SALShell.TypeChecker
         public override SALType Visit(PostfixExprAstNode node)
         {
             throw new NotImplementedException();
-        }
+        }//TODO: redundant?
 
         public override SALType Visit(PrefixExprAstNode node)
         {
             throw new NotImplementedException();
-        }
+        }//TODO: redundant?
 
         public override SALType Visit(RelationalExprAstNode node)
         {
@@ -251,27 +267,27 @@ namespace SALShell.TypeChecker
         public override SALType Visit(StatementAstNode node)
         {
             throw new NotImplementedException();
-        }
+        } //TODO: redundant?
 
         public override SALType Visit(SwitchBodyAstNode node)
         {
             throw new NotImplementedException();
-        }
+        } //TODO: redundant?
 
         public override SALType Visit(SwitchItemAstNode node)
         {
             throw new NotImplementedException();
-        }
+        } //TODO: redundant?
 
         public override SALType Visit(SwitchStructureAstNode node)
         {
             throw new NotImplementedException();
-        }
+        } //TODO: redundant?
 
         public override SALType Visit(TypeAstNode node)
         {
             throw new NotImplementedException();
-        }
+        } //TODO: redundant?
 
         public override SALType Visit(ValueAstNode node)
         {
