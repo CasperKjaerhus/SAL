@@ -49,7 +49,7 @@ namespace SALShell.SymbolTable
                 case FunctioncallAstNode funcCallRef: 
                     TypeInfo typeInfFuncCall = symVisitor.Visit(funcCallRef);
                     IdAstNode Idinfo = (IdAstNode)funcCallRef.FunctionId;
-                    SymbolTable.EnterSymbol(Idinfo.Token.Text, typeInfFuncCall);
+                    funcCallRef.Sym = SymbolTable.EnterSymbol(Idinfo.Token.Text, typeInfFuncCall);
                     break;
                 case WhileAstNode whileAstNode:
                     SymbolTable.OpenScope($"While{WhileCount++}");

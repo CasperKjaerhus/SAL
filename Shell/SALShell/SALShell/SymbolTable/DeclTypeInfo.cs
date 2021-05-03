@@ -18,7 +18,7 @@ namespace SALShell.SymbolTable
 
         public override string ToString()
         {
-            return $"Declaration is of {Type.Text}";
+            return $"Declaration is of {Type}";
         }
     }
 }

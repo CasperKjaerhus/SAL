@@ -21,7 +21,7 @@ namespace SALShell.SymbolTable
             if (isReference)
                 return $"Variable reference";
             else
-                return $"Initialisation is of type {Type.Text}";
+                return $"Initialisation is of type {Type}";
         }
 
 

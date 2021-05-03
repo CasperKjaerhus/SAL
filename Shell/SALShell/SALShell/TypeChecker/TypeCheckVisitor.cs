@@ -22,12 +22,12 @@ namespace SALShell.TypeChecker
         public override SALType Visit(ArgumentsAstNode node)
         {
             throw new NotImplementedException();
-        }   //TODO: redundant?
+        }   //TODO: cool
 
         public override SALType Visit(ArrayAccessAstNode node)
         {
             throw new NotImplementedException();
-        } //TODO: redundant?
+        } //TODO: cool
 
         public override SALType Visit(AssignAstNode node)
         {
@@ -45,25 +45,25 @@ namespace SALShell.TypeChecker
             return idType;
         }
 
-        public override SALType Visit(CondAstNode node)
+        public override SALType Visit(CondAstNode node) //TODO: Actually not implemented.
         {
             throw new NotImplementedException();
         }
 
         public override SALType Visit(DeclareAstNode node)
         {
-            return node.Symbol.Type;
+            return node.Sym.Type.Type;
         }
 
         public override SALType Visit(ExprAstNode node)
         {
             throw new NotImplementedException();
-        } //TODO: redundant?
+        } //TODO: not cool
 
         public override SALType Visit(ExprListAstNode node)
         {
             throw new NotImplementedException();
-        } //TODO: redundant?
+        } //TODO: cool
 
         public override SALType Visit(ForAstNode node)
         {
@@ -77,18 +77,20 @@ namespace SALShell.TypeChecker
 
         public override SALType Visit(FunctioncallAstNode node)
         {
-            SALType returnType = node.Symbol.Type;
+            SALType returnType = node.Sym.Type.Type;
 
             foreach (var argument in node.Arguments.Children)
             {
                 SALType actualArgumentType = Visit(argument);
                 if (actualArgumentType == SALType.error) { return SALType.error; }
 
-                SALType declaredArgumentType = SymbolTable.RetrieveSymbols(argument.Token.Text);
+                SALType declaredArgumentType;
+                //What to do about the declared type?
+                //We need to retrieve definition from symboltable of each param, and compare the actual argument type (line 84) with the declared type from the symbol table.
 
                 if (actualArgumentType != declaredArgumentType)
                 {
-                    TypeErrors.Add(new TypeError(node.Token.Line, $"{argument.Token.Text} is not of type {argument.Symbol.Type}."));
+                    TypeErrors.Add(new TypeError(node.Token.Line, $"{argument.Token.Text} is not of type {argument.Sym.Type.Type}."));
                     returnType = SALType.error;
                 }
             }
@@ -98,12 +100,12 @@ namespace SALShell.TypeChecker
 
         public override SALType Visit(FunctionDeclarationAstNode node)
         {
-            throw new NotImplementedException();
+            return node.Sym.Type.Type;
         }
 
         public override SALType Visit(IdAstNode node)
         {
-            return node.Symbol.Type;
+            return node.Sym.Type.Type;
         }
 
         public override SALType Visit(IfStructureAstNode node)
@@ -123,7 +125,7 @@ namespace SALShell.TypeChecker
         public override SALType Visit(ImportStatementAstNode node)
         {
             throw new NotImplementedException();
-        }//TODO: redundant?
+        }//TODO: cool
 
         public override SALType Visit(LogicAndAstNode node)
         {
@@ -232,12 +234,12 @@ namespace SALShell.TypeChecker
         public override SALType Visit(PostfixExprAstNode node)
         {
             throw new NotImplementedException();
-        }//TODO: redundant?
+        }//TODO: cool
 
         public override SALType Visit(PrefixExprAstNode node)
         {
             throw new NotImplementedException();
-        }//TODO: redundant?
+        }//TODO: cool
 
         public override SALType Visit(RelationalExprAstNode node)
         {
@@ -267,27 +269,27 @@ namespace SALShell.TypeChecker
         public override SALType Visit(StatementAstNode node)
         {
             throw new NotImplementedException();
-        } //TODO: redundant?
+        } //TODO: cool
 
         public override SALType Visit(SwitchBodyAstNode node)
         {
             throw new NotImplementedException();
-        } //TODO: redundant?
+        } //TODO: cool
 
         public override SALType Visit(SwitchItemAstNode node)
         {
             throw new NotImplementedException();
-        } //TODO: redundant?
+        } //TODO: cool
 
         public override SALType Visit(SwitchStructureAstNode node)
         {
             throw new NotImplementedException();
-        } //TODO: redundant?
+        } //TODO: cool
 
         public override SALType Visit(TypeAstNode node)
         {
             throw new NotImplementedException();
-        } //TODO: redundant?
+        } //TODO: not cool
 
         public override SALType Visit(ValueAstNode node)
         {
