@@ -1,5 +1,6 @@
 ﻿using Antlr4.Runtime;
 using SALShell.CodeGen;
+using SALShell.SymbolTable;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,6 +12,7 @@ namespace SALShell.Parser
         public ASTNode Id { get; }
         public ASTNode Parameters { get; }
         public ASTNode Body { get; }
+        public Symbol Sym { get; set; }
 
         public FunctionDeclarationAstNode(ASTNode id, ASTNode parameters, ASTNode body, IToken token) : base(token)
         {
