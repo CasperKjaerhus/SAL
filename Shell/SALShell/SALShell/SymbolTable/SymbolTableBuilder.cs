@@ -89,6 +89,5 @@ namespace SALShell.SymbolTable
             if (node is FunctionDeclarationAstNode || node is WhileAstNode || node is SwitchStructureAstNode || node is ForAstNode || node is IfStructureAstNode)
                 SymbolTable.CloseScope();
         }
-
     }
 }

@@ -44,9 +44,9 @@ namespace SALShell.SymbolTable
             scopeindex = ScopeDisplay.FindIndex(x => x.scopeName == scopeParent);
         }
 
-        // Creates a new symbol with a given name, and the relevant typeinfo
-        // If no previous instance of a symbol with the same name exists, add the symbol to the table.
-        // Else if a symbol is declared in the same scope call error, or else set the "Var" of the symbol to previous symbol.
+        // Creates a new symbol with a given name, and the relevant typeinfo (only declarations)
+        // Checks for references if there is a declaration, if not, do something about it.
+        // Else if a symbol is declared in the same scope call error.
         public Symbol EnterSymbol(string name, TypeInfo typeinf)
         {
             Symbol newSym = null;
