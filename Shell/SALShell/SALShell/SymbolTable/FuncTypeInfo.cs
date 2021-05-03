@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SALShell.SymbolTable
 {
-    class FuncTypeInfo : TypeInfo
+    public class FuncTypeInfo : TypeInfo
     {
         List<IToken> parameters = new List<IToken>();
 

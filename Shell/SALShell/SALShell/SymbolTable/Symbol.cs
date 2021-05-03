@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SALShell.SymbolTable
 {
-    class Symbol
+    public class Symbol
     {
         public Symbol(string symbolName, TypeInfo type, List<Symbol> level, int depth, string scopename)
         {

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SALShell.SymbolTable
 {
-    class IdTypeInfo : TypeInfo
+    public class IdTypeInfo : TypeInfo
     {
         public bool isArray { get; }
         public bool isReference { get; }

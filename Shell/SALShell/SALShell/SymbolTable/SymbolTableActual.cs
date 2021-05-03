@@ -47,8 +47,9 @@ namespace SALShell.SymbolTable
         // Creates a new symbol with a given name, and the relevant typeinfo
         // If no previous instance of a symbol with the same name exists, add the symbol to the table.
         // Else if a symbol is declared in the same scope call error, or else set the "Var" of the symbol to previous symbol.
-        public void EnterSymbol(string name, TypeInfo typeinf)
+        public Symbol EnterSymbol(string name, TypeInfo typeinf)
         {
+            Symbol newSym = null;
 
             switch (typeinf)
             {
@@ -59,10 +60,12 @@ namespace SALShell.SymbolTable
                     ReferenceExists(name, asmnRef);
                     break;
                 default:
-                    Symbol newSym = new Symbol(name, typeinf, ScopeDisplay[scopeindex].symbols, Depth, ScopeDisplay[scopeindex].scopeName);
+                    newSym = new Symbol(name, typeinf, ScopeDisplay[scopeindex].symbols, Depth, ScopeDisplay[scopeindex].scopeName);
                     ScopeDisplay[scopeindex].symbols.Add(newSym);
                     break;
             }
+
+            return newSym;
         }
 
         //Checks if reference for variable exists
