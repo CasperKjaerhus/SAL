@@ -64,6 +64,7 @@ namespace SALShell.SymbolTable
                     {
                         newSym = new Symbol(name, typeinf, Depth, ScopeDisplay[scopeindex].scopeName);
                         ScopeDisplay[scopeindex].symbols.Add(newSym);
+                        return newSym;
                     }
                     break;
             }
@@ -79,7 +80,7 @@ namespace SALShell.SymbolTable
         //Checks if reference for variable exists
         private Symbol ReferenceExists(string name, IdTypeInfo idRef)
         {
-            if (!idRef.isReference)
+            if (!idRef.IsReference)
                 return new Symbol(name, idRef, Depth, ScopeDisplay[scopeindex].scopeName);
 
             Scope scope = ScopeDisplay[scopeindex];

@@ -7,12 +7,11 @@ namespace SALShell.SymbolTable
 {
     public class TypeInfo
     {
+        public IToken Type { get; }
         public TypeInfo(IToken type)
         {
             Type = type;
         }
-
-        public IToken Type { get; }
 
     }
 }

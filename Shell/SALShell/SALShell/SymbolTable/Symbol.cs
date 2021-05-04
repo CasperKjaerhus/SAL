@@ -6,6 +6,11 @@ namespace SALShell.SymbolTable
 {
     public class Symbol
     {
+        public string scopeName { get; }
+        public string SymbolName { get; }
+        public TypeInfo Type { get; }
+        public int Depth { get; }
+
         public Symbol(string symbolName, TypeInfo type, int depth, string scopename)
         {
             SymbolName = symbolName;
@@ -17,11 +22,6 @@ namespace SALShell.SymbolTable
         public Symbol()
         {
         }
-
-        public string scopeName { get; } 
-        public string SymbolName { get; }
-        public TypeInfo Type { get; }
-        public int Depth { get; }
 
         public override string ToString()
         {

@@ -16,7 +16,7 @@ namespace SALShell.SymbolTable
 
         public override string ToString()
         {
-            string funcString = "Function declaration taking the paremeters: ";
+            string funcString = "Function declaration taking the parameters: ";
             foreach (IToken parameter in parameters)
             {
                 funcString += parameter.Text + " ";
