@@ -10,6 +10,7 @@ namespace SALShell.SymbolTable
         public bool IsArray { get; }
         public bool IsReference { get; }
         public IToken IdName { get; }
+        public bool IsAssignment { get; set; }
         public int ArraySize { get; }
 
         public IdTypeInfo(IToken arraySize, IToken type):base(type)

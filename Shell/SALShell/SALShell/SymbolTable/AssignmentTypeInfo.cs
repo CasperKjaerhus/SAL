@@ -7,18 +7,18 @@ namespace SALShell.SymbolTable
 {
     class AssignmentTypeInfo : TypeInfo
     {
-        public bool isReference { get; }
+        public bool IsReference { get; }
         public AssignmentTypeInfo(IToken type):base(type)
         {
             if (type == null)
-                isReference = true;
+                IsReference = true;
             else
-                isReference = false;
+                IsReference = false;
         }
 
         public override string ToString()
         {
-            if (isReference)
+            if (IsReference)
                 return $"Variable reference";
             else
                 return $"Initialisation is of type {Type.Text}";

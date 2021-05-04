@@ -102,7 +102,7 @@ namespace SALShell.SymbolTable
         //Checks if reference for variable assignment exists
         private Symbol ReferenceExists(string name, AssignmentTypeInfo asmnRef)
         {
-            if (!asmnRef.isReference)
+            if (!asmnRef.IsReference)
                 return new Symbol(name, asmnRef, Depth, ScopeDisplay[scopeindex].scopeName);
 
             Scope scope = ScopeDisplay[scopeindex];
