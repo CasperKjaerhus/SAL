@@ -1,4 +1,4 @@
-﻿unction main(number strLength) returns void begin
+﻿function main(number strLength) returns void begin
     string stringVar = "This is a string";
     
     cum = 100;
