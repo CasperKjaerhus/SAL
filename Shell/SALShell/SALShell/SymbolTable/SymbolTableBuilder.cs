@@ -8,7 +8,7 @@ namespace SALShell.SymbolTable
 {
     class SymbolTableBuilder
     {
-        SymbolTableActual SymbolTable = new SymbolTableActual();
+        SymTable SymbolTable = new SymTable();
         SymbolTableVisitor symVisitor = new SymbolTableVisitor();
         int forloopCount = 0;
         int WhileCount = 0;
@@ -23,7 +23,7 @@ namespace SALShell.SymbolTable
         }
 
 
-        public SymbolTableActual BuildSymbolTable()
+        public SymTable BuildSymbolTable()
         {
             ProcessNode(ASTroot);
             SymbolTable.CheckFunctionReferences();

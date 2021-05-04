@@ -1,6 +1,6 @@
 function main(number strLength) returns void begin
 
 number aaa;
-string poo;
+string bbb;
 
 end

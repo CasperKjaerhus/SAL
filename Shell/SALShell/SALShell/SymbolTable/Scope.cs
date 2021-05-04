@@ -11,12 +11,12 @@ namespace SALShell.SymbolTable
         public string scopeName { get; }
         public List<Symbol> symbols { get; set; }
 
-        public Scope(Scope parent, string scopeName, int Depth)
+        public Scope(Scope parent, string scopeName, int depth)
         {
             this.Parent = parent;
             this.scopeName = scopeName;
             this.symbols = new List<Symbol>();
-            this.Depth = Depth; 
+            this.Depth = depth; 
         }
     }
 }

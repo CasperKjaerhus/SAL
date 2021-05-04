@@ -10,7 +10,7 @@ namespace SALShell.TypeChecker
     class TypeCheckVisitor : ASTVisitor<SALType>
     {
         public List<TypeError> TypeErrors = new List<TypeError>();
-        private SymbolTableActual SymbolTable;
+        private SymTable SymbolTable;
         public TypeCheckVisitor(ASTNode tree)
         {
             Root = tree;

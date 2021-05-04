@@ -38,7 +38,7 @@ namespace SALShell
             concreteP4Visitor?.PrintTrees(0);
 
             Console.WriteLine("----- \n \n");
-            SymbolTableActual symbolTable = new SymbolTableBuilder(concreteP4Visitor).BuildSymbolTable();
+            SymTable symbolTable = new SymbolTableBuilder(concreteP4Visitor).BuildSymbolTable();
             symbolTable.PrintSymbols();
             Console.WriteLine("----- \n \n");
 

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace SALShell.SymbolTable
 {
-    class SymbolTableActual : ISymbolTable<Symbol, TypeInfo>
+    class SymTable : ISymbolTable<Symbol, TypeInfo>
     {
 
         //THIS SYMBOL TABLE PROBABLY HAVE A VERY BAD SPACE AND TIME COMPLEXITY BUT ¯\_(ツ)_/¯
@@ -14,7 +14,7 @@ namespace SALShell.SymbolTable
         private Scope ParentScope = new Scope(null, "global", 0);
         public List<Scope> ScopeDisplay { private set; get; }
 
-        public SymbolTableActual()
+        public SymTable()
         {
             ScopeDisplay = new List<Scope>();
             ScopeDisplay.Add(ParentScope);
@@ -125,6 +125,8 @@ namespace SALShell.SymbolTable
         public void CheckFunctionReferences()
         {
             List<Symbol> functions = new List<Symbol>();
+            List<Symbol> failedReferences = new List<Symbol>();
+
             functions.AddRange(ScopeDisplay[0].symbols.Where(x => x.Type is FuncTypeInfo).ToList());
 
             foreach (Scope scope in ScopeDisplay)
@@ -132,9 +134,14 @@ namespace SALShell.SymbolTable
                 foreach(Symbol sym in scope.symbols.Where(x => x.Type is FuncCallTypeInfo).ToList())
                 {
                     if (!(functions.Any(x => x.SymbolName == sym.SymbolName)))
+                    {
                         Console.WriteLine($"No such function {sym.SymbolName}");
+                        failedReferences.Add(sym);
+                    }
                 }
+                scope.symbols.RemoveAll(x => x.Type is FuncCallTypeInfo);
             }
+
         }
 
         //Returns true if their exists a symbol with the name in the scope, in the given scope, else false.

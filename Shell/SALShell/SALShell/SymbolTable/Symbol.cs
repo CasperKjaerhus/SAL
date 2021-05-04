@@ -19,10 +19,6 @@ namespace SALShell.SymbolTable
             scopeName = scopename;
         }
 
-        public Symbol()
-        {
-        }
-
         public override string ToString()
         {
             return $"{SymbolName} declared in: {scopeName}, at depth: {Depth}";
