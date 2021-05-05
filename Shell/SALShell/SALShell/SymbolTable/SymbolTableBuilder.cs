@@ -8,14 +8,13 @@ namespace SALShell.SymbolTable
 {
     class SymbolTableBuilder
     {
-        SymTable SymbolTable = new SymTable();
-        SymbolTableVisitor symVisitor = new SymbolTableVisitor();
-        int forloopCount = 0;
-        int WhileCount = 0;
-        int ifCount = 0;
-        int switchCount = 0;
-
-        private ASTNode ASTroot { get; }
+        private SymTable SymbolTable = new SymTable();
+        private SymbolTableVisitor symVisitor = new SymbolTableVisitor();
+        private int forloopCount = 0;
+        private int WhileCount = 0;
+        private int ifCount = 0;
+        private int switchCount = 0;
+        public ASTNode ASTroot { get; }
 
         public SymbolTableBuilder(ASTNode root)
         {

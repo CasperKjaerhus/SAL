@@ -7,17 +7,17 @@ namespace SALShell.SymbolTable
 {
     public class FuncTypeInfo : TypeInfo
     {
-        List<IToken> parameters = new List<IToken>();
+        public List<IToken> Parameters { get; }
 
         public FuncTypeInfo(IToken type, List<IToken> tokens) : base(type)
         {
-            parameters = tokens;
+            Parameters = tokens;
         }
 
         public override string ToString()
         {
             string funcString = "Function declaration taking the parameters: ";
-            foreach (IToken parameter in parameters)
+            foreach (IToken parameter in Parameters)
             {
                 funcString += parameter.Text + " ";
             }

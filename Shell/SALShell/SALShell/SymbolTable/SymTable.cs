@@ -8,31 +8,31 @@ namespace SALShell.SymbolTable
     class SymTable : ISymbolTable<Symbol, TypeInfo>
     {
 
-        //THIS SYMBOL TABLE PROBABLY HAVE A VERY BAD SPACE AND TIME COMPLEXITY BUT ¯\_(ツ)_/¯
         private int Depth = 0;
-        private int scopeindex = 0;
-        private Scope ParentScope = new Scope(null, "global", 0);
+        private int scopeindex = 0; //THE SCOPE INDEX KEEPS TRACK OF THE CURRENT SCOPE, IS USED FOR ACCESSING THE INDEX IN SCOPEDISPLAY LIST                 
+        private Scope ParentScope = new Scope(null, "Global", 0);
         public List<Scope> ScopeDisplay { private set; get; }
 
         public SymTable()
         {
             ScopeDisplay = new List<Scope>();
-            ScopeDisplay.Add(ParentScope);
+            ScopeDisplay.Add(ParentScope);      //Whenever the symbol table is constructed, set the first scope in the list to be "global"
         }
 
-        // Counts up depth, and creates a new scope, and changes the scope index to the current scope. 
+        // Counts up depth, and creates a new scope, and changes the scope index to the current scope.
+        // The higher the depth, the inner the scope!
         public void OpenScope(string scopeName)
         {
             if (Depth == 0)
             {
-                ParentScope = ScopeDisplay[0];
+                ParentScope = ScopeDisplay[0]; //If the current depth is 0, it means we're in the global scope and therefore the parentscope shall be global
             }
             else
-                ParentScope = ScopeDisplay.FindLast(x => x.Depth == Depth - 1);
+                ParentScope = ScopeDisplay.FindLast(x => x.Depth == Depth - 1); //As the list is unordered, it finds the last indexed scope with one lesser depth than the current depth.
 
             Scope NewScope = new Scope(ParentScope, scopeName, Depth);
             ScopeDisplay.Add(NewScope);
-            scopeindex = ScopeDisplay.FindIndex(x => x.scopeName == scopeName);
+            scopeindex = ScopeDisplay.Count - 1;                                //Sets the current scopeindex to the newly added scope (The last added in the list)
             Depth++;
         }
 
@@ -41,7 +41,7 @@ namespace SALShell.SymbolTable
         {
             Depth--;
             string scopeParent = ScopeDisplay[scopeindex].Parent.scopeName;
-            scopeindex = ScopeDisplay.FindIndex(x => x.scopeName == scopeParent);
+            scopeindex = ScopeDisplay.FindIndex(x => x.scopeName == scopeParent); //Sets the current scope index to the currents scope's parent
         }
 
         // Creates a new symbol with a given name, and the relevant typeinfo (only declarations)
@@ -121,7 +121,8 @@ namespace SALShell.SymbolTable
             return null;
         }
 
-        //Checks if all function calls can be made, if all functions are declared in global
+        //Checks if all function calls can be made and that all functions are declared in global
+        //Adds all the failed function references to a list, which should be used for error-handling
         public void CheckFunctionReferences()
         {
             List<Symbol> functions = new List<Symbol>();
@@ -147,7 +148,7 @@ namespace SALShell.SymbolTable
         //Returns true if their exists a symbol with the name in the scope, in the given scope, else false.
         public bool DeclaredInScope(string symbolName, string ScopeName)
         {
-            return ScopeDisplay[ScopeDisplay.FindIndex(x => x.scopeName == ScopeName)].symbols.Any(x => x.SymbolName == symbolName);
+            return ScopeDisplay.Find(x => x.scopeName == ScopeName).symbols.Any(x => x.SymbolName == symbolName);
         }
         
         public void PrintSymbols()

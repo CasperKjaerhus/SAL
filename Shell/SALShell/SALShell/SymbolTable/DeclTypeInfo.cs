@@ -7,7 +7,7 @@ namespace SALShell.SymbolTable
 {
     public class DeclTypeInfo : TypeInfo
     {
-        IToken arraySize { get; }
+        public IToken arraySize { get; }
         public DeclTypeInfo(IToken type) : base(type)
         {
         }
