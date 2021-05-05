@@ -177,5 +177,10 @@ namespace SALShell.SymbolTable
             return symbols;
         }
 
+        public Symbol RetrieveFunction(string FuncName)
+        {
+            return ScopeDisplay[0].Symbols.Find(x => x.SymbolName == FuncName && x.Type is FuncTypeInfo);
+        }
+
     }
 }

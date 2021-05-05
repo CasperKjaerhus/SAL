@@ -42,6 +42,8 @@ namespace SALShell
             symbolTable.PrintSymbols();
             Console.WriteLine("----- \n \n");
 
+            Console.WriteLine(symbolTable.RetrieveFunction("main"));
+
         }
     }
 }
