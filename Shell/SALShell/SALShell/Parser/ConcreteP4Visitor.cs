@@ -426,7 +426,7 @@ namespace SALShell.Parser
         {
             if(context.EqualityOp() != null)
             {
-                return new LogicEqualityAstNode(Visit(context.andExpr()), Visit(context.relExpr()), context.EqualityOp().Symbol);
+                return new EqualityAstNode(Visit(context.andExpr()), Visit(context.relExpr()), context.EqualityOp().Symbol);
             }
 
             return Visit(context.relExpr());

@@ -1,4 +1,5 @@
 ﻿using Antlr4.Runtime;
+using SALShell.SymbolTable;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,6 +10,7 @@ namespace SALShell.Parser
     {
         public ASTNode FunctionId { get; }
         public ASTNode Arguments { get; }
+        public Symbol Symbol { get; set; }
         public FunctioncallAstNode(ASTNode functionId, ASTNode arguments, IToken token) : base(token)
         {
             FunctionId = functionId;

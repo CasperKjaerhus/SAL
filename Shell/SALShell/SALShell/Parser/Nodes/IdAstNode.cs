@@ -1,4 +1,5 @@
 ﻿using Antlr4.Runtime;
+using SALShell.SymbolTable;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,6 +10,8 @@ namespace SALShell.Parser
     {
         public IToken Type { get; set; }
         public IToken ArraySize { get; }
+        public Symbol Sym { get; set; }
+
         public IdAstNode(IToken idName, ASTNode type) : base(idName)
         {
             Type = type?.Token;
@@ -18,6 +21,7 @@ namespace SALShell.Parser
             Type = type?.Token;
             ArraySize = modifier;
         }
+
         public override void PrintTrees(int depth)
         {
             if (Negation)
