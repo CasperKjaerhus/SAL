@@ -82,7 +82,6 @@ namespace SALShell.SymbolTable
 
         public override TypeInfo Visit(IdAstNode node)
         {
-
             return new IdTypeInfo(node.ArraySize, node.Type);
         }
 

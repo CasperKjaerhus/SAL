@@ -11,7 +11,6 @@ namespace SALShell.SymbolTable
             SymbolName = symbolName;
             Type = type;
             Depth = depth;
-
             ScopeName = scopeName;
         }
 

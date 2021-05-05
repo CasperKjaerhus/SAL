@@ -7,30 +7,30 @@ namespace SALShell.Parser
 {
     class ValueAstNode : ExprAstNode
     {
-        public SALType Type { get; set; }
+        public SALTypeEnum Type { get; set; }
         public ValueAstNode(IToken value) : base(value)
         {
             string EBNFType = p4Lexer.DefaultVocabulary.GetSymbolicName(value.Type);
             switch (EBNFType.ToLower())
             {
                 case "string":
-                    Type = SALType.@string;
+                    Type = SALTypeEnum.@string;
                     break;
                 case "number":
-                    Type = SALType.number;
+                    Type = SALTypeEnum.number;
                     break;
                 case "true":
                 case "false":
-                    Type = SALType.@bool;
+                    Type = SALTypeEnum.@bool;
                     break;
                 case "char":
-                    Type = SALType.@char;
+                    Type = SALTypeEnum.@char;
                     break;
                 case "void":
-                    Type = SALType.@void;
+                    Type = SALTypeEnum.@void;
                     break;
                 default:
-                    Type = SALType.error;
+                    Type = SALTypeEnum.error;
                     break;
             }
             

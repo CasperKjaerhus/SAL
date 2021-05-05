@@ -8,42 +8,42 @@ namespace SALShell.SymbolTable
 {
     public abstract class TypeInfo
     {
-        public IToken Type { get; }
+        public SALTypeEnum Type { get; }
+
         public TypeInfo(IToken type)
         {
             Type = ResolveType(type);
         }
 
 
-        private SALType ResolveType(IToken type)
+        private SALTypeEnum ResolveType(IToken type)
         {
-            SALType returnType;
+            SALTypeEnum returnType;
             switch (type?.Text.ToLower())
             {
                 case "string":
-                    returnType = SALType.@string;
+                    returnType = SALTypeEnum.@string;
                     break;
                 case "number":
-                    returnType = SALType.number;
+                    returnType = SALTypeEnum.number;
                     break;
                 case "true":
                 case "false":
-                    returnType = SALType.@bool;
+                    returnType = SALTypeEnum.@bool;
                     break;
                 case "char":
-                    returnType = SALType.@char;
+                    returnType = SALTypeEnum.@char;
                     break;
                 case "void":
-                    returnType = SALType.@void;
+                    returnType = SALTypeEnum.@void;
                     break;
                 default:
-                    returnType = SALType.error;
+                    returnType = SALTypeEnum.error;
                     break;
             }
 
             return returnType;
         }
 
-        public SALType Type { get; }
     }
 }

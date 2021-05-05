@@ -1,12 +1,17 @@
-﻿namespace SALShell.Parser
+﻿using System.Collections.Generic;
+
+namespace SALShell.Parser
 {
-    public enum SALType
+    static class SALType
     {
-        @bool,
-        @number,
-        @char,
-        @string,
-        @void,
-        error
+        public static readonly Dictionary<SALTypeEnum, string> Types = new Dictionary<SALTypeEnum, string>()
+        {
+            {SALTypeEnum.@bool, "bool"},
+            {SALTypeEnum.number, "number"},
+            {SALTypeEnum.@char, "char"},
+            {SALTypeEnum.@string, "string"},
+            {SALTypeEnum.@void, "void"},
+            {SALTypeEnum.error, "error"},
+        };
     }
 }

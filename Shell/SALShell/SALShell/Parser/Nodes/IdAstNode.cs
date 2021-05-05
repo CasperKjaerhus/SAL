@@ -8,7 +8,7 @@ namespace SALShell.Parser
 {
     public class IdAstNode : ExprAstNode
     {
-        public SALType Type { get; set; }
+        public SALTypeEnum Type { get; set; }
         public IToken ArraySize { get; }
         public Symbol Sym { get; set; }
 
@@ -39,29 +39,29 @@ namespace SALShell.Parser
             }
         }
 
-        private SALType ResolveType(ASTNode type)
+        private SALTypeEnum ResolveType(ASTNode type)
         {
-            SALType returnType;
+            SALTypeEnum returnType;
             switch (type?.Token.Text.ToLower())
             {
                 case "string":
-                    returnType = SALType.@string;
+                    returnType = SALTypeEnum.@string;
                     break;
                 case "number":
-                    returnType = SALType.number;
+                    returnType = SALTypeEnum.number;
                     break;
                 case "true":
                 case "false":
-                    returnType = SALType.@bool;
+                    returnType = SALTypeEnum.@bool;
                     break;
                 case "char":
-                    returnType = SALType.@char;
+                    returnType = SALTypeEnum.@char;
                     break;
                 case "void":
-                    returnType = SALType.@void;
+                    returnType = SALTypeEnum.@void;
                     break;
                 default:
-                    returnType = SALType.error;
+                    returnType = SALTypeEnum.error;
                     break;
             }
 

@@ -8,7 +8,7 @@ namespace SALShell.SymbolTable
     class AssignmentTypeInfo : TypeInfo
     {
         public bool IsReference { get; }
-        public AssignmentTypeInfo(IToken type):base(type)
+        public AssignmentTypeInfo(IToken type) : base(type)
         {
             if (type == null)
                 IsReference = true;
