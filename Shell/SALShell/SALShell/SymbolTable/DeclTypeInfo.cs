@@ -7,13 +7,13 @@ namespace SALShell.SymbolTable
 {
     public class DeclTypeInfo : TypeInfo
     {
-        public IToken arraySize { get; }
+        public IToken ArraySize { get; }
         public DeclTypeInfo(IToken type) : base(type)
         {
         }
         public DeclTypeInfo(IToken type, IToken arraysize) : base(type)
         {
-            this.arraySize = arraysize;
+            this.ArraySize = arraysize;
         }
 
         public override string ToString()

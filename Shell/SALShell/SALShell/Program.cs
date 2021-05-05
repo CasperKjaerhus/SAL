@@ -4,6 +4,7 @@ using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 using SALShell.Controller;
 using SALShell.Core;
+using SALShell.Core.CodeGeneration;
 using SALShell.Parser;
 using SALShell.SymbolTable;
 using SALShell.UI;
@@ -19,7 +20,7 @@ namespace SALShell
             //ShellController sheeController = new ShellController(ui, core);
             //sheeController.Ui.Start();
 
-            string text = System.IO.File.ReadAllText(@"D:\P4\SAL\Antlr\Test_Parser_src\Test_Parser\Tests\BoolsAndStrings.txt");
+            string text = System.IO.File.ReadAllText(@"D:\P4\SAL\Antlr\Test_Parser_src\Test_Parser\Tests\CodeGenTester.txt");
             p4Lexer lexer = new p4Lexer(new AntlrInputStream(text));
             CommonTokenStream stream = new CommonTokenStream(lexer);
 
@@ -42,7 +43,8 @@ namespace SALShell
             symbolTable.PrintSymbols();
             Console.WriteLine("----- \n \n");
 
-            Console.WriteLine(symbolTable.RetrieveFunction("main"));
+            CodeEmitter CodeEmitter = new CodeEmitter();
+            CodeEmitter.SynthesizeCode(@"D:\P4\SAL\Antlr\Test_Parser_src\Test_Parser\Tests", "Test", concreteP4Visitor);
 
         }
     }

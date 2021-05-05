@@ -1,0 +1,8 @@
+function main(number strLength) returns void begin
+
+number aaa;
+string bbb;
+
+number a = 2+2;
+
+end

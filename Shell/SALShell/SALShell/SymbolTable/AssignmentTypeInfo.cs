@@ -23,9 +23,6 @@ namespace SALShell.SymbolTable
             else
                 return $"Initialisation is of type {Type.Text}";
         }
-
-
-
     }
 
 }

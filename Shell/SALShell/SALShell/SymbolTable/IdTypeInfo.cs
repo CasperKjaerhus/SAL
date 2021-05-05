@@ -9,7 +9,6 @@ namespace SALShell.SymbolTable
     {
         public bool IsArray { get; }
         public bool IsReference { get; }
-        public IToken IdName { get; }
         public bool IsAssignment { get; set; }
         public int ArraySize { get; }
 
@@ -27,6 +26,7 @@ namespace SALShell.SymbolTable
             else
                 IsReference = false;
         }
+
         public override string ToString()
         {
             if (IsReference)

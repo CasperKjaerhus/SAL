@@ -87,12 +87,12 @@ namespace SALShell.SymbolTable
 
             while(!(scope.Symbols.Any(x => x.SymbolName == name)))
             {
+                scope = scope.Parent;
                 if (scope == null)
                 {
                     Console.WriteLine($"Symbol reference not found {name}");
                     return null;
                 }
-                scope = scope.Parent;
             }
 
             Console.WriteLine($"Symbol reference found {name}");
