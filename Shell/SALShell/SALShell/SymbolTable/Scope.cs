@@ -8,14 +8,14 @@ namespace SALShell.SymbolTable
     {
         public int Depth { get; }
         public Scope Parent { get; set; }
-        public string scopeName { get; }
-        public List<Symbol> symbols { get; set; }
+        public string ScopeName { get; }
+        public List<Symbol> Symbols { get; set; }
 
         public Scope(Scope parent, string scopeName, int depth)
         {
             this.Parent = parent;
-            this.scopeName = scopeName;
-            this.symbols = new List<Symbol>();
+            this.ScopeName = scopeName;
+            this.Symbols = new List<Symbol>();
             this.Depth = depth; 
         }
     }

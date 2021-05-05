@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SALShell.SymbolTable
 {
-    interface ISymbolTable<T, K>
+    interface ISymbolTable<T, K> //T should be some Symbol class and K should be some Type Information class
     {
         public void OpenScope(string scopename);
         public void CloseScope();

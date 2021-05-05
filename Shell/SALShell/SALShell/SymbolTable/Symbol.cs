@@ -6,7 +6,7 @@ namespace SALShell.SymbolTable
 {
     public class Symbol
     {
-        public string scopeName { get; }
+        public string ScopeName { get; }
         public string SymbolName { get; }
         public TypeInfo Type { get; }
         public int Depth { get; }
@@ -16,12 +16,12 @@ namespace SALShell.SymbolTable
             SymbolName = symbolName;
             Type = type;
             Depth = depth;
-            scopeName = scopename;
+            ScopeName = scopename;
         }
 
         public override string ToString()
         {
-            return $"{SymbolName} declared in: {scopeName}, at depth: {Depth}";
+            return $"{SymbolName} declared in: {ScopeName}, at depth: {Depth}";
         }
     }
 }
