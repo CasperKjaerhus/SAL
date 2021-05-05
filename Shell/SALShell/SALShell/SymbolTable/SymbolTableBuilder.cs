@@ -8,14 +8,13 @@ namespace SALShell.SymbolTable
 {
     class SymbolTableBuilder
     {
-        SymbolTableActual SymbolTable = new SymbolTableActual();
-        SymbolTableVisitor symVisitor = new SymbolTableVisitor();
-        int forloopCount = 0;
-        int WhileCount = 0;
-        int ifCount = 0;
-        int switchCount = 0;
-
-        private ASTNode ASTroot { get; }
+        private SymTable SymbolTable = new SymTable();
+        private SymbolTableVisitor symVisitor = new SymbolTableVisitor();
+        private int forloopCount = 0;
+        private int WhileCount = 0;
+        private int ifCount = 0;
+        private int switchCount = 0;
+        public ASTNode ASTroot { get; }
 
         public SymbolTableBuilder(ASTNode root)
         {
@@ -23,7 +22,7 @@ namespace SALShell.SymbolTable
         }
 
 
-        public SymbolTableActual BuildSymbolTable()
+        public SymTable BuildSymbolTable()
         {
             ProcessNode(ASTroot);
             SymbolTable.CheckFunctionReferences();
@@ -71,11 +70,9 @@ namespace SALShell.SymbolTable
                 case IfStructureAstNode ifStructureAstNode:
                     SymbolTable.OpenScope($"ifStatement{ifCount++}");
                     break;
-                //case ValueAstNode valNode:
-                //    SymbolTable.EnterSymbol(valNode.Token.Text, symVisitor.Visit(valNode));
-                //    break;
                 default:
                     break;
+
             }
 
             if(node != null)
@@ -89,6 +86,5 @@ namespace SALShell.SymbolTable
             if (node is FunctionDeclarationAstNode || node is WhileAstNode || node is SwitchStructureAstNode || node is ForAstNode || node is IfStructureAstNode)
                 SymbolTable.CloseScope();
         }
-
     }
 }

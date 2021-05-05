@@ -19,7 +19,7 @@ namespace SALShell
             //ShellController sheeController = new ShellController(ui, core);
             //sheeController.Ui.Start();
 
-            string text = System.IO.File.ReadAllText(@"D:\P4\SAL\Antlr\Test_Parser_src\Test_Parser\Tests\Array_Usage.txt");
+            string text = System.IO.File.ReadAllText(@"D:\P4\SAL\Antlr\Test_Parser_src\Test_Parser\Tests\BoolsAndStrings.txt");
             p4Lexer lexer = new p4Lexer(new AntlrInputStream(text));
             CommonTokenStream stream = new CommonTokenStream(lexer);
 
@@ -38,7 +38,7 @@ namespace SALShell
             concreteP4Visitor?.PrintTrees(0);
 
             Console.WriteLine("----- \n \n");
-            SymbolTableActual symbolTable = new SymbolTableBuilder(concreteP4Visitor).BuildSymbolTable();
+            SymTable symbolTable = new SymbolTableBuilder(concreteP4Visitor).BuildSymbolTable();
             symbolTable.PrintSymbols();
             Console.WriteLine("----- \n \n");
 

@@ -8,10 +8,12 @@ namespace SALShell.SymbolTable
 {
     public abstract class TypeInfo
     {
+        public IToken Type { get; }
         public TypeInfo(IToken type)
         {
             Type = ResolveType(type);
         }
+
 
         private SALType ResolveType(IToken type)
         {
@@ -43,6 +45,5 @@ namespace SALShell.SymbolTable
         }
 
         public SALType Type { get; }
-
     }
 }

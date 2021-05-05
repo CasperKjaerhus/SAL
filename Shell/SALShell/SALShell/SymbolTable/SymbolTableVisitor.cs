@@ -20,9 +20,9 @@ namespace SALShell.SymbolTable
 
         public override TypeInfo Visit(AssignAstNode node)
         {
-            IdAstNode idNode = (IdAstNode)node.Children[0];
+            TypeInfo info = Visit(node.Id);
 
-            return new AssignmentTypeInfo(idNode.Type);
+            return new AssignmentTypeInfo(info.Type);
         }
 
         public override TypeInfo Visit(CondAstNode node)
@@ -32,8 +32,9 @@ namespace SALShell.SymbolTable
 
         public override TypeInfo Visit(DeclareAstNode node)
         {
-            IdAstNode id = (IdAstNode)node.Id;
-            return Visit(id);
+            TypeInfo info = Visit(node.Id);
+
+            return new DeclTypeInfo(info.Type);
         }
 
         public override TypeInfo Visit(ExprAstNode node)
@@ -58,29 +59,30 @@ namespace SALShell.SymbolTable
 
         public override TypeInfo Visit(FunctioncallAstNode node)
         {
-            IdAstNode IDinfo = (IdAstNode)node.FunctionId;
+            TypeInfo info = Visit(node.FunctionId);
 
-            return new FuncCallTypeInfo(IDinfo.Type);
-
+            return new FuncCallTypeInfo(info.Type);
         }
 
         //should return the type, and it's parameters return type
         public override TypeInfo Visit(FunctionDeclarationAstNode node)
         {
-            IdAstNode IDinfo = (IdAstNode)node.Id;
-            ParameterListAstNode Paraminfo = (ParameterListAstNode)node.Parameters;
+            TypeInfo info = Visit(node.Id);
+            ASTNode Paraminfo = node.Parameters;
             List<IToken> tokens = new List<IToken>();
+
             foreach (IdAstNode param in Paraminfo.Children)
             {
                 tokens.Add(param.Type);
             }
 
-            FuncTypeInfo funcTypeInfo = new FuncTypeInfo(IDinfo.Type, tokens);
+            FuncTypeInfo funcTypeInfo = new FuncTypeInfo(info.Type, tokens);
             return funcTypeInfo;
         }
 
         public override TypeInfo Visit(IdAstNode node)
         {
+
             return new IdTypeInfo(node.ArraySize, node.Type);
         }
 

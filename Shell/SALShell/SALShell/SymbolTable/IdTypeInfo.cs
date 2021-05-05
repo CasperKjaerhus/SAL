@@ -7,28 +7,29 @@ namespace SALShell.SymbolTable
 {
     public class IdTypeInfo : TypeInfo
     {
-        public bool isArray { get; }
-        public bool isReference { get; }
+        public bool IsArray { get; }
+        public bool IsReference { get; }
+        public IToken IdName { get; }
+        public bool IsAssignment { get; set; }
+        public int ArraySize { get; }
+
         public IdTypeInfo(IToken arraySize, IToken type):base(type)
         {
-            this.arraySize = arraySize;
             if (arraySize == null)
-                isArray = false;
+                IsArray = false;
             else
-                isArray = true;
+            {
+                this.ArraySize = Convert.ToInt32(arraySize.Text);
+            }
 
             if (type == null)
-                isReference = true;
+                IsReference = true;
             else
-                isReference = false;
+                IsReference = false;
         }
-
-        IToken idName { get; }
-        IToken arraySize { get; }
-
         public override string ToString()
         {
-            if (isReference)
+            if (IsReference)
                 return $"Id is reference";
             else
                 return $"Id type {Type}";

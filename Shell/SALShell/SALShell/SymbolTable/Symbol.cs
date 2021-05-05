@@ -11,6 +11,7 @@ namespace SALShell.SymbolTable
             SymbolName = symbolName;
             Type = type;
             Depth = depth;
+
             ScopeName = scopeName;
         }
 
@@ -18,6 +19,7 @@ namespace SALShell.SymbolTable
         public string SymbolName { get; }
         public TypeInfo Type { get; }
         public int Depth { get; }
+
 
         public override string ToString()
         {
