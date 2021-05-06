@@ -258,10 +258,20 @@ namespace SALShell.CodeGen
             string[] IdArr = TypeAndId.Split(" ");
             if (IdArr[0] != "number")
                 return TypeAndId;
-
             string[] ExprArr = Expression.Split(" ");
-             //NOT DONE
-            return "int";
+
+            if(ExprArr.Length > 1)
+            {
+                
+            }else if (int.TryParse(Expression, out _))
+            {
+                return "int";
+            }else if(float.TryParse(Expression, out _))
+            {
+                return "float";
+            }
+
+            return TypeAndId;
         }
     }
 }
