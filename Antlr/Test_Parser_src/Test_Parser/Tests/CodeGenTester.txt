@@ -3,8 +3,6 @@ function main() returns void begin
 	number aaa;
 	string bbb;
 
-	number a = 2+2;
-
 end
 
 function bob() returns number begin

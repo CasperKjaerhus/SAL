@@ -11,7 +11,7 @@ namespace SALShell.CodeGen
     {
         public bool IsGlobal { get; set; } = false;
         public bool IsLoop { get; set; } = false;
-        private bool isFunctionBody = false;
+        private int IndentationDepth = 0;
 
         public override string Visit(ArgumentsAstNode node)
         {
@@ -43,6 +43,11 @@ namespace SALShell.CodeGen
 
         public override string Visit(DeclareAstNode node)
         {
+            if(node.Sym.ScopeName == "Global" && IsLoop)
+            {
+                return "";
+            }
+
             return Visit(node.Id) + ";";
         }
 
@@ -78,9 +83,9 @@ namespace SALShell.CodeGen
 
             if (IsLoop && idArr[1].ToLower() == "main")
             {
-                isFunctionBody = true;
+                IndentationDepth++;
                 string body = Visit(node.Body);
-                isFunctionBody = false;
+                IndentationDepth--;
                 return body;
             }
 
@@ -88,9 +93,9 @@ namespace SALShell.CodeGen
             {
                 string parameters = $"({Visit(node.Parameters)})";
 
-                isFunctionBody = true;
+                IndentationDepth++;
                 string body = Visit(node.Body);
-                isFunctionBody = false;
+                IndentationDepth--;
 
                 return id + parameters + "{\n" + body + "\n}";
             }
@@ -190,9 +195,16 @@ namespace SALShell.CodeGen
         public override string Visit(StatementAstNode node)
         {
             string Code = "";
+
+            for (int i = 0; i < IndentationDepth; i++)
+            {
+                Code += "    ";
+            }
+
             foreach (ASTNode child in node.Children)
             {
-                Code += Visit(child) + "\n";
+                if (Visit(child) != "")
+                    Code += Visit(child) + "\n";
             }
 
             return Code;
