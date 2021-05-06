@@ -11,12 +11,12 @@ namespace SALShell.SymbolTable
         private int Depth = 0;
         private int scopeindex = 0; //THE SCOPE INDEX KEEPS TRACK OF THE CURRENT SCOPE, IS USED FOR ACCESSING THE INDEX IN SCOPEDISPLAY LIST                 
         private Scope ParentScope = new Scope(null, "Global", 0);
-        public List<Scope> ScopeDisplay { private set; get; }
+        public List<Scope> ScopeList { private set; get; }
 
         public SymTable()
         {
-            ScopeDisplay = new List<Scope>();
-            ScopeDisplay.Add(ParentScope);      //Whenever the symbol table is constructed, set the first scope in the list to be "global"
+            ScopeList = new List<Scope>();
+            ScopeList.Add(ParentScope);      //Whenever the symbol table is constructed, set the first scope in the list to be "global"
         }
 
         // Counts up depth, and creates a new scope, and changes the scope index to the current scope.
@@ -25,14 +25,14 @@ namespace SALShell.SymbolTable
         {
             if (Depth == 0)
             {
-                ParentScope = ScopeDisplay[0]; //If the current depth is 0, it means we're in the global scope and therefore the parentscope shall be global
+                ParentScope = ScopeList[0]; //If the current depth is 0, it means we're in the global scope and therefore the parentscope shall be global
             }
             else
-                ParentScope = ScopeDisplay.FindLast(x => x.Depth == Depth - 1); //As the list is unordered, it finds the last indexed scope with one lesser depth than the current depth.
+                ParentScope = ScopeList.FindLast(x => x.Depth == Depth - 1); //As the list is unordered, it finds the last indexed scope with one lesser depth than the current depth.
 
             Scope NewScope = new Scope(ParentScope, scopeName, Depth);
-            ScopeDisplay.Add(NewScope);
-            scopeindex = ScopeDisplay.Count - 1;                                //Sets the current scopeindex to the newly added scope (The last added in the list)
+            ScopeList.Add(NewScope);
+            scopeindex = ScopeList.Count - 1;                                //Sets the current scopeindex to the newly added scope (The last added in the list)
             Depth++;
         }
 
@@ -40,8 +40,8 @@ namespace SALShell.SymbolTable
         public void CloseScope()
         {
             Depth--;
-            string scopeParent = ScopeDisplay[scopeindex].Parent.ScopeName;
-            scopeindex = ScopeDisplay.FindIndex(x => x.ScopeName == scopeParent); //Sets the current scope index to the currents scope's parent
+            string scopeParent = ScopeList[scopeindex].Parent.ScopeName;
+            scopeindex = ScopeList.FindIndex(x => x.ScopeName == scopeParent); //Sets the current scope index to the currents scope's parent
         }
 
         // Creates a new symbol with a given name, and the relevant typeinfo (only declarations)
@@ -60,10 +60,10 @@ namespace SALShell.SymbolTable
                     newSym = ReferenceExists(name, asmnRef);
                     break;
                 default:
-                    if(!DeclaredInScope(name, ScopeDisplay[scopeindex].ScopeName))
+                    if(!DeclaredInScope(name, ScopeList[scopeindex].ScopeName))
                     {
-                        newSym = new Symbol(name, typeinf, Depth, ScopeDisplay[scopeindex].ScopeName);
-                        ScopeDisplay[scopeindex].Symbols.Add(newSym);
+                        newSym = new Symbol(name, typeinf, Depth, ScopeList[scopeindex].ScopeName);
+                        ScopeList[scopeindex].Symbols.Add(newSym);
                         return newSym;
                     }
                     break;
@@ -71,7 +71,7 @@ namespace SALShell.SymbolTable
 
             if (newSym != null)
             {
-                ScopeDisplay[scopeindex].Symbols.Add(newSym);
+                ScopeList[scopeindex].Symbols.Add(newSym);
             }
 
             return newSym;
@@ -81,9 +81,9 @@ namespace SALShell.SymbolTable
         private Symbol ReferenceExists(string name, IdTypeInfo idRef)
         {
             if (!idRef.IsReference)
-                return new Symbol(name, idRef, Depth, ScopeDisplay[scopeindex].ScopeName);
+                return new Symbol(name, idRef, Depth, ScopeList[scopeindex].ScopeName);
 
-            Scope scope = ScopeDisplay[scopeindex];
+            Scope scope = ScopeList[scopeindex];
 
             while(!(scope.Symbols.Any(x => x.SymbolName == name)))
             {
@@ -103,9 +103,9 @@ namespace SALShell.SymbolTable
         private Symbol ReferenceExists(string name, AssignmentTypeInfo asmnRef)
         {
             if (!asmnRef.IsReference)
-                return new Symbol(name, asmnRef, Depth, ScopeDisplay[scopeindex].ScopeName);
+                return new Symbol(name, asmnRef, Depth, ScopeList[scopeindex].ScopeName);
 
-            Scope scope = ScopeDisplay[scopeindex];
+            Scope scope = ScopeList[scopeindex];
 
             while (!(scope.Symbols.Any(x => x.SymbolName == name)))
             {
@@ -128,9 +128,9 @@ namespace SALShell.SymbolTable
             List<Symbol> functions = new List<Symbol>();
             List<Symbol> failedReferences = new List<Symbol>();
 
-            functions.AddRange(ScopeDisplay[0].Symbols.Where(x => x.Type is FuncTypeInfo).ToList());
+            functions.AddRange(ScopeList[0].Symbols.Where(x => x.Type is FuncTypeInfo).ToList());
 
-            foreach (Scope scope in ScopeDisplay)
+            foreach (Scope scope in ScopeList)
             {
                 foreach(Symbol sym in scope.Symbols.Where(x => x.Type is FuncCallTypeInfo).ToList())
                 {
@@ -148,12 +148,12 @@ namespace SALShell.SymbolTable
         //Returns true if their exists a symbol with the name in the scope, in the given scope, else false.
         public bool DeclaredInScope(string symbolName, string ScopeName)
         {
-            return ScopeDisplay.Find(x => x.ScopeName == ScopeName).Symbols.Any(x => x.SymbolName == symbolName);
+            return ScopeList.Find(x => x.ScopeName == ScopeName).Symbols.Any(x => x.SymbolName == symbolName);
         }
         
         public void PrintSymbols()
         {
-            foreach (Scope scope in ScopeDisplay)
+            foreach (Scope scope in ScopeList)
             {
                 if(scope.Parent != null)
                     Console.WriteLine($"In scope: {scope.ScopeName}, parent: {scope.Parent.ScopeName}");
@@ -170,7 +170,7 @@ namespace SALShell.SymbolTable
         public List<Symbol> RetrieveSymbols(string Name)
         {
             List<Symbol> symbols = new List<Symbol>();
-            foreach (Scope scope in ScopeDisplay)
+            foreach (Scope scope in ScopeList)
             {
                 symbols.AddRange(scope.Symbols.FindAll(x => x.SymbolName == Name));
             }
@@ -179,7 +179,7 @@ namespace SALShell.SymbolTable
 
         public Symbol RetrieveFunction(string FuncName)
         {
-            return ScopeDisplay[0].Symbols.Find(x => x.SymbolName == FuncName && x.Type is FuncTypeInfo);
+            return ScopeList[0].Symbols.Find(x => x.SymbolName == FuncName && x.Type is FuncTypeInfo);
         }
 
     }

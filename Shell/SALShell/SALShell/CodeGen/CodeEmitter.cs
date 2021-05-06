@@ -18,30 +18,29 @@ namespace SALShell.Core.CodeGeneration
 
             using (StreamWriter StreamW = File.CreateText(fileCreationPath))
             {
+                WriteToGlobal(StreamW, root);
                 StreamW.WriteLine("void setup() {");
-                WriteToSetup(StreamW, root);
                 StreamW.WriteLine("}");
 
                 StreamW.WriteLine("void loop() {");
-                //WriteToLoop(StreamW, root);
+                WriteToLoop(StreamW, root);
                 StreamW.WriteLine("}");
             }
 
         }
 
-        private void WriteToSetup(StreamWriter streamW, ASTNode node)
+        private void WriteToGlobal(StreamWriter streamW, ASTNode node)
         {
+            CodeGenerationVisitor.IsGlobal = true;
             streamW.Write(CodeGenerationVisitor.Visit(node) + "\n");
-
-            foreach (ASTNode child in node.Children)
-            {
-                WriteToSetup(streamW, child);
-            }
+            CodeGenerationVisitor.IsGlobal = false;
         }
 
-        private void WriteToLoop(StreamWriter streamW, ASTNode root)
+        private void WriteToLoop(StreamWriter streamW, ASTNode node)
         {
-            throw new NotImplementedException();
+            CodeGenerationVisitor.IsLoop = true;
+            streamW.Write(CodeGenerationVisitor.Visit(node) + "\n");
+            CodeGenerationVisitor.IsLoop = false;
         }
 
         public void SynthesizeCode(string path, string name, ASTNode ASTroot)

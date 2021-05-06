@@ -1,8 +1,18 @@
-function main(number strLength) returns void begin
+function main() returns void begin
 
-number aaa;
-string bbb;
+	number aaa;
+	string bbb;
 
-number a = 2+2;
+	number a = 2+2;
 
 end
+
+function bob() returns number begin
+
+	number aaa;
+	string bbb;
+
+	number a = 2+2;
+
+end
+number aaa;
