@@ -32,7 +32,7 @@ namespace SALShell.SymbolTable
             if (IsReference)
                 return $"Id is reference";
             else
-                return $"Id type {Type}";
+                return $"Id type {Type.Text}";
         }
     }
 }

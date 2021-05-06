@@ -4,14 +4,14 @@ namespace SALShell.Parser
 {
     static class SALType
     {
-        public static readonly Dictionary<SALTypeEnum, string> Types = new Dictionary<SALTypeEnum, string>()
+        public static readonly Dictionary<string, SALTypeEnum> Types = new Dictionary<string, SALTypeEnum>()
         {
-            {SALTypeEnum.@bool, "bool"},
-            {SALTypeEnum.number, "number"},
-            {SALTypeEnum.@char, "char"},
-            {SALTypeEnum.@string, "string"},
-            {SALTypeEnum.@void, "void"},
-            {SALTypeEnum.error, "error"},
+            {"bool", SALTypeEnum.@bool},
+            {"number", SALTypeEnum.number},
+            {"char", SALTypeEnum.@char},
+            {"string", SALTypeEnum.@string},
+            {"void", SALTypeEnum.@void},
+            {"error", SALTypeEnum.error}
         };
     }
 }

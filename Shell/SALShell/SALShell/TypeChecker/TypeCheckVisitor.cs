@@ -62,7 +62,7 @@ namespace SALShell.TypeChecker
 
         public override SALTypeEnum Visit(DeclareAstNode node)
         {
-            return node.Sym.Type.Type;
+            return SALType.Types[node.Sym.Type.Type.Text];
         }
 
         public override SALTypeEnum Visit(ExprAstNode node)
@@ -88,7 +88,7 @@ namespace SALShell.TypeChecker
 
         public override SALTypeEnum Visit(FunctioncallAstNode node)
         {
-            SALTypeEnum returnTypeEnum = node.Sym.Type.Type;
+            SALTypeEnum returnTypeEnum = SALType.Types[node.Sym.Type.Type.Text];
 
             foreach (ASTNode argument in node.Arguments.Children)
             {
@@ -112,12 +112,12 @@ namespace SALShell.TypeChecker
 
         public override SALTypeEnum Visit(FunctionDeclarationAstNode node)
         {
-            return node.Sym.Type.Type;
+            return SALType.Types[node.Sym.Type.Type.Text];
         }
 
         public override SALTypeEnum Visit(IdAstNode node)
         {
-            return node.Sym.Type.Type;
+            return SALType.Types[node.Sym.Type.Type.Text];
         }
 
         public override SALTypeEnum Visit(IfStructureAstNode node)
