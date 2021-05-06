@@ -16,7 +16,6 @@ namespace SALShell.Parser
         public abstract T Visit(AssignAstNode node);
         public abstract T Visit(CondAstNode node);
         public abstract T Visit(DeclareAstNode node);
-        public abstract T Visit(ExprAstNode node);
         public abstract T Visit(ExprListAstNode node);
         public abstract T Visit(ForAstNode node);
         public abstract T Visit(ForeachAstNode node);

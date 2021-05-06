@@ -8,12 +8,10 @@ namespace SALShell.TypeChecker
 {
     class TypeCheckVisitor : ASTVisitor<SALTypeEnum>
     {
-        public List<string> Errors = new List<string>();
-        private SymTable SymbolTable { get; set; }
-        private ASTNode Root { get; set; }
-        public TypeCheckVisitor(ASTNode tree, SymTable symbolTable)
+        public List<Error> Errors = new List<Error>();
+        private ISymbolTable<Symbol, TypeInfo> SymbolTable { get; set; }
+        public TypeCheckVisitor(ISymbolTable<Symbol, TypeInfo> symbolTable)
         {
-            Root = tree;
             SymbolTable = symbolTable;
         }
 
@@ -30,7 +28,7 @@ namespace SALShell.TypeChecker
 
             if (exprTypeEnum != SALTypeEnum.number)
             {
-                Errors.Add(Error.Errors[ErrorEnum.TypeMismatch] + $" {node.Token.Line}\n");
+                Errors.Add(new Error(ErrorEnum.TypeMismatch, node.Token.Line));
                 return SALTypeEnum.error;
             }
             else
@@ -48,7 +46,7 @@ namespace SALShell.TypeChecker
 
             if (idTypeEnum != exprTypeEnum)
             {
-                Errors.Add(Error.Errors[ErrorEnum.TypeMismatch] + $" {node.Token.Line}\n");
+                Errors.Add(new Error(ErrorEnum.TypeMismatch, node.Token.Line));
                 return SALTypeEnum.error;
             }
 
@@ -64,11 +62,6 @@ namespace SALShell.TypeChecker
         {
             return SALType.Types[node.Sym.Type.Type.Text];
         }
-
-        public override SALTypeEnum Visit(ExprAstNode node)
-        {
-            throw new NotImplementedException();
-        } //TODO: not cool
 
         public override SALTypeEnum Visit(ExprListAstNode node)
         {
@@ -88,23 +81,22 @@ namespace SALShell.TypeChecker
 
         public override SALTypeEnum Visit(FunctioncallAstNode node)
         {
-            SALTypeEnum returnTypeEnum = SALType.Types[node.Sym.Type.Type.Text];
+            Symbol FunctionSym = SymbolTable.RetrieveFunction(node.FunctionId.Token.Text);
 
-            foreach (ASTNode argument in node.Arguments.Children)
+            SALTypeEnum returnTypeEnum = SALType.Types[FunctionSym.Type.Type.Text];
+
+            FuncTypeInfo f = (FuncTypeInfo) FunctionSym.Type;
+            for (int i = 0; i < node.Arguments.Children.Count; i++)
             {
-                SALTypeEnum actualArgumentTypeEnum = Visit(argument);
+                SALTypeEnum actualArgumentTypeEnum = Visit(node.Arguments.Children[i]);
                 if (actualArgumentTypeEnum == SALTypeEnum.error) { return SALTypeEnum.error; }
 
-                SALTypeEnum declaredParameterTypeEnum;
-                Symbol functionSymbol = SymbolTable.RetrieveFunction(node.FunctionId);
-                //What to do about the declared type?
-                //We need to retrieve definition from symboltable of each param, and compare the actual argument type (line 84) with the declared type from the symbol table.
-
-                if (actualArgumentTypeEnum != declaredParameterTypeEnum)
-                {
-                    Errors.Add(Error.Errors[ErrorEnum.TypeMismatch] + $" {node.Token.Line}\n");
+                if(Visit(node.Arguments.Children[i]) != SALType.Types[f.Parameters[i].Text])
+                { 
+                    Errors.Add(new Error(ErrorEnum.TypeMismatch, node.FunctionId.Token.Line));
                     returnTypeEnum = SALTypeEnum.error;
                 }
+
             }
 
             return returnTypeEnum;
@@ -112,6 +104,9 @@ namespace SALShell.TypeChecker
 
         public override SALTypeEnum Visit(FunctionDeclarationAstNode node)
         {
+            if(node.Body != null)
+                Visit(node.Body);
+            
             return SALType.Types[node.Sym.Type.Type.Text];
         }
 
@@ -127,7 +122,7 @@ namespace SALShell.TypeChecker
 
             if (exprTypeEnum != SALTypeEnum.@bool)
             {
-                Errors.Add(Error.Errors[ErrorEnum.TypeMismatch] + $" {node.Token.Line}\n");
+                Errors.Add(new Error(ErrorEnum.TypeMismatch, node.Token.Line));
                 return SALTypeEnum.error;
             }
 
@@ -149,7 +144,7 @@ namespace SALShell.TypeChecker
             SALTypeEnum expectedTypeEnum = SALTypeEnum.@bool;
             if (expectedTypeEnum != TypeCheck(expectedTypeEnum, expr1TypeEnum, expr2TypeEnum))
             {
-                Errors.Add(Error.Errors[ErrorEnum.TypeMismatch] + $" {node.Token.Line}\n");
+                Errors.Add(new Error(ErrorEnum.TypeMismatch, node.Token.Line));
                 return SALTypeEnum.error;
             }
             else
@@ -167,7 +162,7 @@ namespace SALShell.TypeChecker
 
             if (expr1TypeEnum != expr2TypeEnum)
             {
-                Errors.Add(Error.Errors[ErrorEnum.TypeMismatch] + $" {node.Token.Line}\n");
+                Errors.Add(new Error(ErrorEnum.TypeMismatch, node.Token.Line));
                 return SALTypeEnum.error;
             }
             else
@@ -186,7 +181,7 @@ namespace SALShell.TypeChecker
             SALTypeEnum expectedTypeEnum = SALTypeEnum.@bool;
             if (expectedTypeEnum != TypeCheck(expectedTypeEnum, expr1TypeEnum, expr2TypeEnum))
             {
-                Errors.Add(Error.Errors[ErrorEnum.TypeMismatch] + $" {node.Token.Line}\n");
+                Errors.Add(new Error(ErrorEnum.TypeMismatch, node.Token.Line));
                 return SALTypeEnum.error;
             }
             else
@@ -205,7 +200,7 @@ namespace SALShell.TypeChecker
             SALTypeEnum expectedTypeEnum = SALTypeEnum.number;
             if (expectedTypeEnum != TypeCheck(expectedTypeEnum, expr1TypeEnum, expr2TypeEnum))
             {
-                Errors.Add(Error.Errors[ErrorEnum.TypeMismatch] + $" {node.Token.Line}\n");
+                Errors.Add(new Error(ErrorEnum.TypeMismatch, node.Token.Line));
                 return SALTypeEnum.error;
             }
             else
@@ -229,7 +224,7 @@ namespace SALShell.TypeChecker
             SALTypeEnum expectedTypeEnum = SALTypeEnum.number;
             if (expectedTypeEnum != TypeCheck(expectedTypeEnum, expr1TypeEnum, expr2TypeEnum))
             {
-                Errors.Add(Error.Errors[ErrorEnum.TypeMismatch] + $" {node.Token.Line}\n");
+                Errors.Add(new Error(ErrorEnum.TypeMismatch, node.Token.Line));
                 return SALTypeEnum.error;
             }
             else
@@ -258,7 +253,7 @@ namespace SALShell.TypeChecker
             SALTypeEnum expectedTypeEnum = SALTypeEnum.@bool;
             if (expectedTypeEnum != TypeCheck(expectedTypeEnum, expr1TypeEnum, expr2TypeEnum))
             {
-                Errors.Add(Error.Errors[ErrorEnum.TypeMismatch] + $" {node.Token.Line}\n");
+                Errors.Add(new Error(ErrorEnum.TypeMismatch, node.Token.Line));
                 return SALTypeEnum.error;
             }
             else
@@ -274,7 +269,12 @@ namespace SALShell.TypeChecker
 
         public override SALTypeEnum Visit(StatementAstNode node)
         {
-            throw new NotImplementedException();
+            Visit(node.Action);
+
+            if(node.NextNode != null)
+                Visit(node.NextNode);
+
+            return SALTypeEnum.@void;
         } //TODO: cool
 
         public override SALTypeEnum Visit(SwitchBodyAstNode node)
@@ -309,7 +309,7 @@ namespace SALShell.TypeChecker
 
             if (exprTypeEnum != SALTypeEnum.@bool)
             {
-                Errors.Add(Error.Errors[ErrorEnum.TypeMismatch] + $" {node.Token.Line}\n");
+                Errors.Add(new Error(ErrorEnum.TypeMismatch, node.Token.Line));
                 return SALTypeEnum.error;
             }
 

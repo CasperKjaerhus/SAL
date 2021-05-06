@@ -36,11 +36,6 @@ namespace SALShell.CodeGen
             throw new NotImplementedException();
         }
 
-        public override string Visit(ExprAstNode node)
-        {
-            throw new NotImplementedException();
-        }
-
         public override string Visit(ExprListAstNode node)
         {
             throw new NotImplementedException();

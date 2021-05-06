@@ -4,14 +4,26 @@ using System.Text;
 
 namespace SALShell.SemanticAnalysis
 {
-    static class Error
+    public class Error
     {
-        public static readonly Dictionary<ErrorEnum, string> Errors = new Dictionary<ErrorEnum, string>()
+        /*TODO: Implement an offending symbol to the message */
+        public string Message { get => ErrorMessages[ErrorType] + Line; }
+        public int Line { get; }
+        public ErrorEnum ErrorType { get; }
+        private readonly Dictionary<ErrorEnum, string> ErrorMessages = new Dictionary<ErrorEnum, string>()
         {
-            {ErrorEnum.TypeMismatch, $"Type Mismatch on "},
-            {ErrorEnum.ArgumentError, "Argument Error on "},
-            {ErrorEnum.UndeclaredVariable, "Undeclared variable used on "},
-            {ErrorEnum.VariableRedeclaration, "Attempt to redeclare already declared variable on "}
+            {ErrorEnum.TypeMismatch, $"Type Mismatch on line "},
+            {ErrorEnum.ArgumentError, "Argument Error on line "},
+            {ErrorEnum.UndeclaredVariable, "Undeclared variable used on line "},
+            {ErrorEnum.VariableRedeclaration, "Attempt to redeclare already declared variable on line "}
         };
+
+        public Error(ErrorEnum errortype, int line)
+        {
+            Line = line;
+            ErrorType = errortype;
+        }
+
+        
     }
 }

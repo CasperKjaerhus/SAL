@@ -1,4 +1,6 @@
-﻿namespace SALShell.Parser
+﻿using System.Collections.Generic;
+
+namespace SALShell.Parser
 {
     public enum SALTypeEnum
     {

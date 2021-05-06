@@ -6,6 +6,7 @@ using SALShell.Controller;
 using SALShell.Core;
 using SALShell.Parser;
 using SALShell.SymbolTable;
+using SALShell.TypeChecker;
 using SALShell.UI;
 
 namespace SALShell
@@ -19,7 +20,8 @@ namespace SALShell
             //ShellController sheeController = new ShellController(ui, core);
             //sheeController.Ui.Start();
 
-            string text = System.IO.File.ReadAllText(@"D:\P4\SAL\Antlr\Test_Parser_src\Test_Parser\Tests\BoolsAndStrings.txt");
+            //string text = System.IO.File.ReadAllText(@"D:\P4\SAL\Antlr\Test_Parser_src\Test_Parser\Tests\Array_Usage.txt");
+            string text = "function boof(char five) returns number begin\n end\n function main(number six) returns void begin\n number f = boof(2+2);\n end";
             p4Lexer lexer = new p4Lexer(new AntlrInputStream(text));
             CommonTokenStream stream = new CommonTokenStream(lexer);
 
@@ -37,10 +39,16 @@ namespace SALShell
             ASTNode concreteP4Visitor = new ConcreteP4Visitor().Visit(tree);
             concreteP4Visitor?.PrintTrees(0);
 
-            Console.WriteLine("----- \n \n");
+            Console.WriteLine("-----");
             SymTable symbolTable = new SymbolTableBuilder(concreteP4Visitor).BuildSymbolTable();
             symbolTable.PrintSymbols();
-            Console.WriteLine("----- \n \n");
+
+            Console.WriteLine("-----");
+            TypeCheckVisitor TypeChecker = new TypeCheckVisitor(symbolTable);
+            TypeChecker.Visit(concreteP4Visitor);
+
+            ErrorPrinter.Print(TypeChecker.Errors);
+            
 
         }
     }

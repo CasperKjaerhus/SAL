@@ -11,5 +11,6 @@ namespace SALShell.SymbolTable
         public T EnterSymbol(string name, K typeinfo);
         public bool DeclaredInScope(string symname, string scopename);
         public List<T> RetrieveSymbols(string name);
+        public Symbol RetrieveFunction(string FuncName);
     }
 }

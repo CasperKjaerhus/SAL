@@ -37,11 +37,6 @@ namespace SALShell.SymbolTable
             return new DeclTypeInfo(info.Type);
         }
 
-        public override TypeInfo Visit(ExprAstNode node)
-        {
-            throw new NotImplementedException();
-        }
-
         public override TypeInfo Visit(ExprListAstNode node)
         {
             throw new NotImplementedException();
