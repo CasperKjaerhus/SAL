@@ -1,16 +1,20 @@
 function main() returns void begin
 
-	number aaa;
+	number aaa = 1;
 	string bbb;
+	
+	bob(aaa);
 
 end
 
-function bob() returns number begin
+function bob(number num) returns number begin
 
+	num = num + 1;
 	number aaa;
 	string bbb;
 
 	number a = 2+2;
-
+	
+	return num;
 end
 number aaa;

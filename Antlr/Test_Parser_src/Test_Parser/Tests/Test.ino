@@ -1,7 +1,11 @@
-number bob(){
+number bob(number num){
+    num = num + 1;
     number aaa;
     string bbb;
-    number a = 2 + 2;
+    int = 2 + 2;
+    return num;
+
+
 
 
 
@@ -13,8 +17,10 @@ void setup() {
 }
 
 void loop() {
-    number aaa;
+    int = 1;
     string bbb;
+    bob(aaa);
+
 
 
 }

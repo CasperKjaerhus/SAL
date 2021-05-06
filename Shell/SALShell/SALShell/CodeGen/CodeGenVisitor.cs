@@ -16,9 +16,16 @@ namespace SALShell.CodeGen
         public override string Visit(ArgumentsAstNode node)
         {
             string arguments = "";
-            foreach (ASTNode child in node.Children)
+            if (node.Children.Count == 1)
             {
-                arguments += Visit(child) + ", ";
+                arguments += Visit(node.Children[0]);
+            }
+            else
+            {
+                foreach (ASTNode child in node.Children)
+                {
+                    arguments += Visit(child) + ", ";
+                }
             }
 
             return arguments;
@@ -31,7 +38,13 @@ namespace SALShell.CodeGen
 
         public override string Visit(AssignAstNode node)
         {
-            string AssignmentCode = Visit(node.Id) +  " = " + Visit(node.Expr);
+            string expression = Visit(node.Expr);
+            string id = Visit(node.Id);
+
+            if (id.Split(" ").Length > 1)
+                id = EvaluateInoType(id, expression);
+
+            string AssignmentCode = id +  " = " + expression + ";";
 
             return AssignmentCode;
         }
@@ -73,7 +86,7 @@ namespace SALShell.CodeGen
 
         public override string Visit(FunctioncallAstNode node)
         {
-            return Visit(node.FunctionId) + $"({Visit(node.Arguments)})";
+            return Visit(node.FunctionId) + $"({Visit(node.Arguments)});";
         }
 
         public override string Visit(FunctionDeclarationAstNode node)
@@ -169,7 +182,7 @@ namespace SALShell.CodeGen
 
         public override string Visit(PlusAstNode node)
         {
-            return $"{node.Left.Token.Text} + {node.Right.Token.Text};";
+            return $"{node.Left.Token.Text} + {node.Right.Token.Text}";
         }
 
         public override string Visit(PostfixExprAstNode node)
@@ -189,7 +202,7 @@ namespace SALShell.CodeGen
 
         public override string Visit(ReturnAstNode node)
         {
-            throw new NotImplementedException();
+            return $"return {Visit(node.ReturnExpression)};";
         }
 
         public override string Visit(StatementAstNode node)
@@ -238,6 +251,17 @@ namespace SALShell.CodeGen
         public override string Visit(WhileAstNode node)
         {
             throw new NotImplementedException();
+        }
+
+        private string EvaluateInoType(string TypeAndId, string Expression)
+        {
+            string[] IdArr = TypeAndId.Split(" ");
+            if (IdArr[0] != "number")
+                return TypeAndId;
+
+            string[] ExprArr = Expression.Split(" ");
+             //NOT DONE
+            return "int";
         }
     }
 }

@@ -40,7 +40,7 @@ namespace SALShell.SymbolTable
                     break;
                 case AssignAstNode asmntNode:
                     TypeInfo typeInfAsmnt = symVisitor.Visit(asmntNode);
-                    asmntNode.Sym = SymbolTable.EnterSymbol(asmntNode.Children[0].Token.Text, typeInfAsmnt);
+                    asmntNode.Sym = SetIdSymbol((IdAstNode)asmntNode.Id, SymbolTable.EnterSymbol(asmntNode.Children[0].Token.Text, typeInfAsmnt));
                     break;
                 case SwitchStructureAstNode switchS:
                     SymbolTable.OpenScope($"{switchCount++}");
@@ -59,7 +59,7 @@ namespace SALShell.SymbolTable
                 case DeclareAstNode dclNode:
                     TypeInfo typeInfoDcl = symVisitor.Visit(dclNode);
                     IdAstNode dclId = (IdAstNode)dclNode.Id;
-                    dclNode.Sym = SymbolTable.EnterSymbol(dclId.Token.Text, typeInfoDcl);
+                    dclNode.Sym = SetIdSymbol((IdAstNode)dclNode.Id,SymbolTable.EnterSymbol(dclId.Token.Text, typeInfoDcl));
                     break;
                 case ParameterListAstNode paramListNode:
                     foreach (IdAstNode astnode in paramListNode.Children)
@@ -85,6 +85,11 @@ namespace SALShell.SymbolTable
             }
             if (node is FunctionDeclarationAstNode || node is WhileAstNode || node is SwitchStructureAstNode || node is ForAstNode || node is IfStructureAstNode)
                 SymbolTable.CloseScope();
+        }
+        private Symbol SetIdSymbol(IdAstNode node, Symbol sym)
+        {
+            node.Sym = sym;
+            return sym;
         }
     }
 }
