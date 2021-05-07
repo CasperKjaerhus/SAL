@@ -175,17 +175,17 @@ namespace SALShell.CodeGen
 
         public override string Visit(LogicAndAstNode node)
         {
-            throw new NotImplementedException();
+            return $"{Visit(node.Left)} && {Visit(node.Right)}";
         }
 
         public override string Visit(EqualityAstNode node)
         {
-            throw new NotImplementedException();
+            return $"{Visit(node.Left)} == {Visit(node.Right)}";
         }
 
         public override string Visit(LogicOrAstNode node)
         {
-            throw new NotImplementedException();
+            return $"{Visit(node.Left)} || {Visit(node.Right)}";
         }
 
         public override string Visit(MultAstNode node)
@@ -286,7 +286,7 @@ namespace SALShell.CodeGen
 
         public override string Visit(WhileAstNode node)
         {
-            throw new NotImplementedException();
+            return $"while({Visit(node.Condition)}){{\n{Spaces}{Visit(node.Body)}}}";
         }
 
         private string EvaluateInoType(string TypeAndId, string Expression)

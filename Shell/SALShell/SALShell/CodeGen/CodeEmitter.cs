@@ -47,8 +47,5 @@ namespace SALShell.Core.CodeGeneration
         {
             CreateFile(path, name, ASTroot);
         }
-
-
-
     }
 }
