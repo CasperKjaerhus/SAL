@@ -3,12 +3,15 @@ using SALShell.SymbolTable;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace SALShell.CodeGen
 {
     class CodeGenVisitor : ASTVisitor<string>
     {
+        private const string Spaces = "    ";
         public bool IsGlobal { get; set; } = false;
         public bool IsLoop { get; set; } = false;
         private int IndentationDepth = 0;
@@ -133,7 +136,24 @@ namespace SALShell.CodeGen
 
         public override string Visit(IfStructureAstNode node)
         {
-            throw new NotImplementedException();
+            string Expr = Visit(node.Expr);
+            IndentationDepth++;
+            string ElseStatement = "";
+            string body = Visit(node.Body);
+            IndentationDepth--;
+            if (node.ElseStmt == null)
+                return $"if({Expr}){{\n{body}{Spaces}}}";
+            else if (node.ElseStmt is IfStructureAstNode)
+            {
+                return $"if({Expr}){{\n{body}{Spaces}}} else {Visit(node.ElseStmt)}";
+            }
+            else
+            {
+                IndentationDepth++;
+                ElseStatement = Visit(node.ElseStmt);
+                IndentationDepth--;
+                return $"if({Expr}){{\n{body}{Spaces}}} else{{\n{ElseStatement}\n{Spaces}}}";
+            }
         }
 
         public override string Visit(ImportStatementAstNode node)
@@ -173,8 +193,12 @@ namespace SALShell.CodeGen
             {
                 foreach (ASTNode child in node.Children)
                 {
-                    parameters += Visit(child);
-                    parameters += ", ";
+                    if (child != node.Children[0])
+                        parameters += ", " + Visit(child);
+                    else
+                    {
+                        parameters += Visit(child);
+                    }
                 }
             }
             return parameters;
@@ -197,7 +221,7 @@ namespace SALShell.CodeGen
 
         public override string Visit(RelationalExprAstNode node)
         {
-            throw new NotImplementedException();
+            return $"{Visit(node.Left)} {node.Token.Text} {Visit(node.Right)}";
         }
 
         public override string Visit(ReturnAstNode node)
@@ -211,7 +235,7 @@ namespace SALShell.CodeGen
 
             for (int i = 0; i < IndentationDepth; i++)
             {
-                Code += "    ";
+                Code += Spaces;
             }
 
             foreach (ASTNode child in node.Children)
@@ -255,23 +279,32 @@ namespace SALShell.CodeGen
 
         private string EvaluateInoType(string TypeAndId, string Expression)
         {
-            string[] IdArr = TypeAndId.Split(" ");
+            string[] IdArr = TypeAndId.Split();
             if (IdArr[0] != "number")
                 return TypeAndId;
+
             string[] ExprArr = Expression.Split(" ");
 
             if(ExprArr.Length > 1)
             {
-                
+                if(ExprArr.Any(x => x == "%"))
+                {
+                    return "int " + IdArr[1];
+                }
+
             }else if (int.TryParse(Expression, out _))
             {
-                return "int";
+                return "int " + IdArr[1];
             }else if(float.TryParse(Expression, out _))
             {
-                return "float";
+                return "float " + IdArr[1];
             }
 
             return TypeAndId;
+        }
+        private string FindReferenceType(string reference)
+        {
+            return reference;
         }
     }
 }

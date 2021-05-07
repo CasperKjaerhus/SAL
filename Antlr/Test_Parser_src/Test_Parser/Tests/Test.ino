@@ -10,17 +10,35 @@ number bob(number num){
 
 
 }
-number aaa;
+string hat(string john, number bobjones){
+    string words = "obama";
+    if(2 > 3){
+        john = "help";
+    } else if(true){
+        bob(3);
+    } else{
+        words = "jodel";
+        words = "another one";
+
+
+    }
+    return john;
+
+
+
+}
 
 
 void setup() {
 }
 
 void loop() {
-    int = 1;
-    float = 1.5;
+    int aaa = 1;
+    float aaa = 1.5;
     string bbb;
+    hat(bbb);
     bob(aaa);
+
 
 
 

@@ -4,6 +4,7 @@ function main() returns void begin
 	number aaa = 1.5;
 	string bbb;
 	
+	hat(bbb);
 	bob(aaa);
 
 end
@@ -13,10 +14,25 @@ function bob(number num) returns number begin
 	num = num + 1;
 	number aaa;
 	string bbb;
-
 	number a = 2+2;
 	
 	return num;
 end
 
-number aaa;
+function hat(string john, number bobjones) returns string begin
+	
+	string words = "obama";
+
+	if(2>3) then begin
+		john = "help";
+	end
+	else if(true) then begin
+		bob(3);
+	end
+	else begin
+		words = "jodel";
+		words = "another one";
+	end
+
+	return john;
+end
