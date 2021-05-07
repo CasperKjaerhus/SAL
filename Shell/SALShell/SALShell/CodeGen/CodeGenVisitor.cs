@@ -36,18 +36,22 @@ namespace SALShell.CodeGen
 
         public override string Visit(ArrayAccessAstNode node)
         {
-            throw new NotImplementedException();
+            return $"{Visit(node.Id)}[{Visit(node.IndexExpression)}]";
         }
 
         public override string Visit(AssignAstNode node)
         {
+            string AssignmentCode = "";
             string expression = Visit(node.Expr);
             string id = Visit(node.Id);
 
             if (id.Split(" ").Length > 1)
                 id = EvaluateInoType(id, expression);
 
-            string AssignmentCode = id +  " = " + expression + ";";
+            if (expression.Last() == ';')
+                AssignmentCode = id + " = " + expression;
+            else
+                AssignmentCode = id + " = " + expression + ";";
 
             return AssignmentCode;
         }
@@ -79,7 +83,16 @@ namespace SALShell.CodeGen
 
         public override string Visit(ForAstNode node)
         {
-            throw new NotImplementedException();
+            string iterator = Visit(node.Iterator);
+            string startVal = Visit(node.StartValue);
+            int endVal = int.Parse(Visit(node.EndValue));
+            int step = 1;
+
+            if (node.Step != null) 
+                step = int.Parse(Visit(node.Step));
+            
+
+            return $"for ({iterator} = {startVal}; {iterator} <= {endVal}; {iterator} = {iterator} + {step}){{\n {Visit(node.Body)}\n{Spaces}}}";
         }
 
         public override string Visit(ForeachAstNode node)
@@ -95,9 +108,8 @@ namespace SALShell.CodeGen
         public override string Visit(FunctionDeclarationAstNode node)
         {
             string id = Visit(node.Id);
-            string[] idArr = id.Split(" ");
 
-            if (IsLoop && idArr[1].ToLower() == "main")
+            if (IsLoop && node.Sym.SymbolName.ToLower() == "main")
             {
                 IndentationDepth++;
                 string body = Visit(node.Body);
@@ -105,7 +117,7 @@ namespace SALShell.CodeGen
                 return body;
             }
 
-            if (IsGlobal && idArr[1].ToLower() != "main")
+            if (IsGlobal && node.Sym.SymbolName.ToLower() != "main")
             {
                 string parameters = $"({Visit(node.Parameters)})";
 
@@ -211,17 +223,17 @@ namespace SALShell.CodeGen
 
         public override string Visit(PostfixExprAstNode node)
         {
-            throw new NotImplementedException();
+            return $"{Visit(node.Children[0])}{node.Token.Text};";
         }
 
         public override string Visit(PrefixExprAstNode node)
         {
-            throw new NotImplementedException();
+            return $"{node.Token.Text}{Visit(node.Children[0])};";
         }
 
         public override string Visit(RelationalExprAstNode node)
         {
-            return $"{Visit(node.Left)} {node.Token.Text} {Visit(node.Right)}";
+            return $"{Visit(node.Left)} {node.Token.Text} {Visit(node.Right)};";
         }
 
         public override string Visit(ReturnAstNode node)

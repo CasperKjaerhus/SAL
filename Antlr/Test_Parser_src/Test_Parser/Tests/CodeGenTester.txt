@@ -15,7 +15,10 @@ function bob(number num) returns number begin
 	number aaa;
 	string bbb;
 	number a = 2+2;
-	
+	a++;
+	--a;
+	aaa = a++;
+
 	return num;
 end
 
@@ -36,3 +39,15 @@ function hat(string john, number bobjones) returns string begin
 
 	return john;
 end
+
+function ForLoopTester(number iterator) returns void begin
+	number one = 1;
+
+	for(iterator:0...100)
+	begin
+		one++;
+	end
+end
+
+
+

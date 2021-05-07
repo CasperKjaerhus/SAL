@@ -9,7 +9,6 @@ namespace SALShell.Parser
     {
         public CondAstNode(IToken token) : base(token)
         {
-
         }
     }
 }

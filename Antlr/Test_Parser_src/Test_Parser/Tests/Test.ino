@@ -3,7 +3,13 @@ number bob(number num){
     number aaa;
     string bbb;
     number a = 2 + 2;
+    a++;
+    --a;
+    aaa = a++;
     return num;
+
+
+
 
 
 
@@ -12,7 +18,7 @@ number bob(number num){
 }
 string hat(string john, number bobjones){
     string words = "obama";
-    if(2 > 3){
+    if(2 > 3;){
         john = "help";
     } else if(true){
         bob(3);
@@ -27,6 +33,16 @@ string hat(string john, number bobjones){
 
 
 }
+void ForLoopTester(number iterator){
+    int one = 1;
+    for (iterator = 0; iterator =< 100; iterator = iterator + 1){
+     one++;
+
+    }
+
+
+}
+
 
 
 void setup() {
