@@ -21,17 +21,9 @@ namespace SALShell
             //sheeController.Ui.Start();
 
             string text = System.IO.File.ReadAllText(@"D:\Github Repos\SAL\Antlr\Test_Parser_src\Test_Parser\Tests\SymbolTableTest.txt");
-            //string text = "function main(number two) returns void begin\n foreach(f in h) begin number g;\n char s;\n end\n end function test() returns void begin end";
+           
             p4Lexer lexer = new p4Lexer(new AntlrInputStream(text));
             CommonTokenStream stream = new CommonTokenStream(lexer);
-
-            //IList<IToken> asfd = lexer.GetAllTokens();
-            //Console.WriteLine("AMOUNT: " + asfd.Count);
-
-            //foreach(IToken token in asfd)
-            //{
-            //    Console.WriteLine($"{token.Text} : {lexer.Vocabulary.GetSymbolicName(token.Type)}");
-            //}
 
             p4Parser parser = new p4Parser(stream);
             IParseTree tree = parser.s();
@@ -40,11 +32,6 @@ namespace SALShell
             concreteP4Visitor?.PrintTrees(0);
 
             SymTable symbolTable = new SymTable(concreteP4Visitor);
-
-            if (symbolTable.HasErrors)
-                symbolTable.PrintErrors();
-
-            symbolTable.GlobalScope.Print();
         }
     }
 }
