@@ -22,5 +22,6 @@ namespace SALShell.Parser
         public ASTNode Expr { get; set; }
 
         public Symbol Symbol { get; set; }
+        public string InoType { get; set; }
     }
 }

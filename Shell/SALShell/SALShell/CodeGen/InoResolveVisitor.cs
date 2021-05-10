@@ -29,7 +29,7 @@ namespace SALShell.CodeGen
 
         public override object Visit(AssignAstNode node)
         {
-            if (node.Sym.Type == SALTypeEnum.number)
+            if (node.Symbol.Type == SALTypeEnum.number)
             {
                 node.InoType = EvaluateInoAssignment(node);
             }
@@ -42,7 +42,7 @@ namespace SALShell.CodeGen
             string value = "";
 
             value += Visit(node.Expr);
-            IdValues.Add(node.Sym, value);
+            IdValues.Add(node.Symbol, value);
 
             return value;
         }
