@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SALShell.Parser
 {
-    class StatementAstNode : ASTNode
+    public class StatementAstNode : ASTNode
     {
         public StatementAstNode NextNode { get; private set; }
         public ASTNode Action { get; }

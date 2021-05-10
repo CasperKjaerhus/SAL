@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SALShell.Parser
 {
-    class ReturnAstNode : ASTNode
+    public class ReturnAstNode : ASTNode
     {
         public ASTNode ReturnExpression { get; }
 

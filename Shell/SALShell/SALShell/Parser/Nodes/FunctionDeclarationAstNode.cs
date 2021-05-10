@@ -6,12 +6,12 @@ using System.Text;
 
 namespace SALShell.Parser
 {
-    class FunctionDeclarationAstNode : ASTNode
+    public class FunctionDeclarationAstNode : ASTNode
     {
         public ASTNode Id { get; }
         public ASTNode Parameters { get; }
         public ASTNode Body { get; }
-        public Symbol Sym { get; set; }
+        public FunctionSymbol Symbol { get; set; }
 
         public FunctionDeclarationAstNode(ASTNode id, ASTNode parameters, ASTNode body, IToken token) : base(token)
         {
@@ -22,6 +22,16 @@ namespace SALShell.Parser
             Children.Add(id);
             Children.Add(parameters);
             Children.Add(body);
+        }
+
+        public override string ToString()
+        {
+            string parameters = "";
+            foreach (var par in parameters)
+            {
+                parameters += parameters.ToString();
+            }
+            return $"{base.ToString()} params: {parameters}";
         }
     }
 }

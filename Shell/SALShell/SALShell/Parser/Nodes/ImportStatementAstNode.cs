@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SALShell.Parser
 {
-    class ImportStatementAstNode : ASTNode
+    public class ImportStatementAstNode : ASTNode
     {
         public ImportStatementAstNode(IToken token) : base(token)
         {

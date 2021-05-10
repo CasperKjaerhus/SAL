@@ -6,11 +6,11 @@ using System.Text;
 
 namespace SALShell.Parser
 {
-    class FunctioncallAstNode : ExprAstNode
+    public class FunctioncallAstNode : ExprAstNode
     {
         public ASTNode FunctionId { get; }
         public ASTNode Arguments { get; }
-        public Symbol Symbol { get; set; }
+        public FunctionSymbol Symbol { get; set; }
         public FunctioncallAstNode(ASTNode functionId, ASTNode arguments, IToken token) : base(token)
         {
             FunctionId = functionId;

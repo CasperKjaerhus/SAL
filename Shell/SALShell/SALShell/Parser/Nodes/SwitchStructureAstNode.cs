@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SALShell.Parser
 {
-    class SwitchStructureAstNode : ASTNode
+    public class SwitchStructureAstNode : ASTNode
     {
         public ASTNode ConditionalValue { get; }
         public SwitchStructureAstNode(ASTNode conditionalvalue, ASTNode switchBody, IToken token) : base(token)
