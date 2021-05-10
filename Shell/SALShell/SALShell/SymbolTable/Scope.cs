@@ -1,22 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SALShell.SymbolTable
 {
-    class Scope
+    public class Scope
     {
         public int Depth { get; }
         public Scope Parent { get; set; }
         public string ScopeName { get; }
         public List<Symbol> Symbols { get; set; }
 
-        public Scope(Scope parent, string scopeName, int depth)
+        public Scope(Scope parent, int depth)
         {
             this.Parent = parent;
-            this.ScopeName = scopeName;
             this.Symbols = new List<Symbol>();
-            this.Depth = depth; 
+            this.Depth = depth;
+        }
+
+        public bool IsSymbolWithinScope(Symbol symbol)
+        {
+            foreach(Symbol s in Symbols)
+            {
+                if (s.Equals(symbol))
+                    return true;
+            }
+
+            if (Parent != null)
+                return Parent.IsSymbolWithinScope(symbol);
+
+            return false;
+        }
+        public Symbol RetrieveSymbol(string IdName)
+        {
+            foreach(Symbol s in Symbols)
+            {
+                if(s.Name == IdName)
+                {
+                    return s;
+                }
+            }
+            if (Parent != null)
+                return Parent.RetrieveSymbol(IdName);
+
+            return null;
+        }
+
+        public Symbol this[string idName] => RetrieveSymbol(idName);
+
+        public void Print()
+        {
+            Console.WriteLine($"Scope @ depth {Depth} containing symbols: ");
+            foreach(Symbol symbol in Symbols)
+            {
+                Console.WriteLine(symbol);
+            }
         }
     }
 }

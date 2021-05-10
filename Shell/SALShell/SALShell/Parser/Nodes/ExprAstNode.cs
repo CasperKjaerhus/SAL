@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SALShell.Parser
 {
-    public class ExprAstNode : ASTNode
+    public abstract class ExprAstNode : ASTNode
     {
         public bool Negation { get; set; }
 

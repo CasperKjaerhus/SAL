@@ -1,308 +1,333 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Text;
 using SALShell.Parser;
+using SALShell.SemanticAnalysis;
 using SALShell.SymbolTable;
 
 namespace SALShell.TypeChecker
 {
-    class TypeCheckVisitor : ASTVisitor<SALType>
+    class TypeCheckVisitor : ASTVisitor<SALTypeEnum>
     {
-        public List<TypeError> TypeErrors = new List<TypeError>();
-        private SymTable SymbolTable;
-        public TypeCheckVisitor(ASTNode tree)
+        /*
+        public List<Error> Errors = new List<Error>();
+        private ISymbolTable<Symbol, TypeInfo> SymbolTable { get; set; }
+        public TypeCheckVisitor(ISymbolTable<Symbol, TypeInfo> symbolTable)
         {
-            Root = tree;
-            SymbolTable = new SymbolTableBuilder(Root).BuildSymbolTable();
+            SymbolTable = symbolTable;
         }
 
-        public ASTNode Root { get; set; }
-
-        public override SALType Visit(ArgumentsAstNode node)
+        
+        public override SALTypeEnum Visit(ArgumentsAstNode node)
         {
             throw new NotImplementedException();
-        }
+        }   //TODO: cool
 
-        public override SALType Visit(ArrayAccessAstNode node)
+        public override SALTypeEnum Visit(ArrayAccessAstNode node)
         {
-            throw new NotImplementedException();
-        }
+            SALTypeEnum exprTypeEnum = Visit(node.IndexExpression);
+            if (exprTypeEnum == SALTypeEnum.error) { return SALTypeEnum.error; }
 
-        public override SALType Visit(AssignAstNode node)
-        {
-            SALType idType = Visit(node.Id);
-            if (idType == SALType.error) { return SALType.error; }
-            SALType exprType = Visit(node.Expr);
-            if (exprType == SALType.error) { return SALType.error; }
-
-            if (idType != exprType)
+            if (exprTypeEnum != SALTypeEnum.number)
             {
-                TypeErrors.Add(new TypeError(node.Token.Line, $"{node.Id.Token.Text} is not same type as {node.Expr.Token.Text}"));
-                return SALType.error;
-            }
-
-            return idType;
-        }
-
-        public override SALType Visit(CondAstNode node)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override SALType Visit(DeclareAstNode node)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override SALType Visit(ExprAstNode node)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override SALType Visit(ExprListAstNode node)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override SALType Visit(ForAstNode node)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override SALType Visit(ForeachAstNode node)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override SALType Visit(FunctioncallAstNode node)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override SALType Visit(FunctionDeclarationAstNode node)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override SALType Visit(IdAstNode node)
-        {
-            //return SymbolTable.RetrieveSymbols(node.Token.Text).Type;
-            throw new NotImplementedException();
-        }
-
-        public override SALType Visit(IfStructureAstNode node)
-        {
-            SALType exprType = Visit(node.Expr);
-            if (exprType == SALType.error) { return SALType.error; }
-
-            if (exprType != SALType.@bool)
-            {
-                TypeErrors.Add(new TypeError(node.Token.Line, $"{node.Expr} is not of type bool"));
-                return SALType.error;
-            }
-
-            return exprType;
-        }
-
-        public override SALType Visit(ImportStatementAstNode node)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override SALType Visit(LogicAndAstNode node)
-        {
-            SALType expr1Type = Visit(node.Left);
-            if (expr1Type == SALType.error) { return SALType.error; }
-            SALType expr2Type = Visit(node.Right);
-            if (expr2Type == SALType.error) { return SALType.error; }
-
-            SALType expectedType = SALType.@bool;
-            if (expectedType != TypeCheck(expectedType, expr1Type, expr2Type))
-            {
-                TypeErrors.Add(new TypeError(node.Token.Line,
-                    $"{node.Left.Token.Text} is not same type as {node.Right.Token.Text}"));
-                return SALType.error;
+                Errors.Add(new Error(ErrorEnum.TypeMismatch, node.Token.Line));
+                return SALTypeEnum.error;
             }
             else
             {
-                return expectedType;
+                return exprTypeEnum;
             }
         }
 
-        public override SALType Visit(EqualityAstNode node)//TODO: What about string type
+        public override SALTypeEnum Visit(AssignAstNode node)
         {
-            SALType expr1Type = Visit(node.Left);
-            if (expr1Type == SALType.error) { return SALType.error; }
-            SALType expr2Type = Visit(node.Right);
-            if (expr2Type == SALType.error) { return SALType.error; }
+            SALTypeEnum idTypeEnum = Visit(node.Id);
+            if (idTypeEnum == SALTypeEnum.error) { return SALTypeEnum.error; }
+            SALTypeEnum exprTypeEnum = Visit(node.Expr);
+            if (exprTypeEnum == SALTypeEnum.error) { return SALTypeEnum.error; }
 
-            if (expr1Type != expr2Type)
+            if (idTypeEnum != exprTypeEnum)
             {
-                TypeErrors.Add(new TypeError(node.Token.Line,
-                    $"{node.Left.Token.Text} is not same type as {node.Right.Token.Text}"));
-                return SALType.error;
+                Errors.Add(new Error(ErrorEnum.TypeMismatch, node.Token.Line));
+                return SALTypeEnum.error;
             }
-            else
-            {
-                return expr1Type;
-            }
+
+            return idTypeEnum;
         }
 
-        public override SALType Visit(LogicOrAstNode node)
-        {
-            SALType expr1Type = Visit(node.Left);
-            if (expr1Type == SALType.error) { return SALType.error; }
-            SALType expr2Type = Visit(node.Right);
-            if (expr2Type == SALType.error) { return SALType.error; }
-
-            SALType expectedType = SALType.@bool;
-            if (expectedType != TypeCheck(expectedType, expr1Type, expr2Type))
-            {
-                TypeErrors.Add(new TypeError(node.Token.Line,
-                    $"{node.Left.Token.Text} is not same type as {node.Right.Token.Text}"));
-                return SALType.error;
-            }
-            else
-            {
-                return expectedType;
-            }
-        }
-
-        public override SALType Visit(MultAstNode node)
-        {
-            SALType expr1Type = Visit(node.Left);
-            if (expr1Type == SALType.error) { return SALType.error; }
-            SALType expr2Type = Visit(node.Right);
-            if (expr2Type == SALType.error) { return SALType.error; }
-
-            SALType expectedType = SALType.number;
-            if (expectedType != TypeCheck(expectedType, expr1Type, expr2Type))
-            {
-                TypeErrors.Add(new TypeError(node.Token.Line,
-                    $"{node.Left.Token.Text} is not same type as {node.Right.Token.Text}"));
-                return SALType.error;
-            }
-            else
-            {
-                return expectedType;
-            }
-        }
-
-        public override SALType Visit(ParameterListAstNode node)
+        public override SALTypeEnum Visit(CondAstNode node) //TODO: Actually not implemented.
         {
             throw new NotImplementedException();
         }
 
-        public override SALType Visit(PlusAstNode node)
+        public override SALTypeEnum Visit(DeclareAstNode node)
         {
-            SALType expr1Type = Visit(node.Left);
-            if (expr1Type == SALType.error) { return SALType.error; }
-            SALType expr2Type = Visit(node.Right);
-            if (expr2Type == SALType.error) { return SALType.error; }
+            return SALType.Types[node.Sym.Type.Type.Text];
+        }
+
+        public override SALTypeEnum Visit(ExprListAstNode node)
+        {
+            throw new NotImplementedException();
+        } //TODO: cool
+
+        public override SALTypeEnum Visit(ForAstNode node)
+        {
+            throw new NotImplementedException();
+
+        } 
+
+        public override SALTypeEnum Visit(ForeachAstNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override SALTypeEnum Visit(FunctioncallAstNode node)
+        {
+            Symbol FunctionSym = SymbolTable.RetrieveFunction(node.FunctionId.Token.Text);
+
+            SALTypeEnum returnTypeEnum = SALType.Types[FunctionSym.Type.Type.Text];
+
+            FuncTypeInfo f = (FuncTypeInfo) FunctionSym.Type;
+            for (int i = 0; i < node.Arguments.Children.Count; i++)
+            {
+                SALTypeEnum actualArgumentTypeEnum = Visit(node.Arguments.Children[i]);
+                if (actualArgumentTypeEnum == SALTypeEnum.error) { return SALTypeEnum.error; }
+
+                if(Visit(node.Arguments.Children[i]) != SALType.Types[f.Parameters[i].Text])
+                { 
+                    Errors.Add(new Error(ErrorEnum.TypeMismatch, node.FunctionId.Token.Line));
+                    returnTypeEnum = SALTypeEnum.error;
+                }
+
+            }
+
+            return returnTypeEnum;
+        }
+
+        public override SALTypeEnum Visit(FunctionDeclarationAstNode node)
+        {
+            if(node.Body != null)
+                Visit(node.Body);
             
-            SALType expectedType = SALType.number;
-            if (expectedType != TypeCheck(expectedType, expr1Type, expr2Type))
+            return SALType.Types[node.Sym.Type.Type.Text];
+        }
+
+        public override SALTypeEnum Visit(IdAstNode node)
+        {
+            return SALType.Types[node.Sym.Type.Type.Text];
+        }
+
+        public override SALTypeEnum Visit(IfStructureAstNode node)
+        {
+            SALTypeEnum exprTypeEnum = Visit(node.Expr);
+            if (exprTypeEnum == SALTypeEnum.error) { return SALTypeEnum.error; }
+
+            if (exprTypeEnum != SALTypeEnum.@bool)
             {
-                TypeErrors.Add(new TypeError(node.Token.Line,
-                    $"{node.Left.Token.Text} is not same type as {node.Right.Token.Text}"));
-                return SALType.error;
+                Errors.Add(new Error(ErrorEnum.TypeMismatch, node.Token.Line));
+                return SALTypeEnum.error;
+            }
+
+            return exprTypeEnum;
+        }
+
+        public override SALTypeEnum Visit(ImportStatementAstNode node)
+        {
+            throw new NotImplementedException();
+        }//TODO: cool
+
+        public override SALTypeEnum Visit(LogicAndAstNode node)
+        {
+            SALTypeEnum expr1TypeEnum = Visit(node.Left);
+            if (expr1TypeEnum == SALTypeEnum.error) { return SALTypeEnum.error; }
+            SALTypeEnum expr2TypeEnum = Visit(node.Right);
+            if (expr2TypeEnum == SALTypeEnum.error) { return SALTypeEnum.error; }
+
+            SALTypeEnum expectedTypeEnum = SALTypeEnum.@bool;
+            if (expectedTypeEnum != TypeCheck(expectedTypeEnum, expr1TypeEnum, expr2TypeEnum))
+            {
+                Errors.Add(new Error(ErrorEnum.TypeMismatch, node.Token.Line));
+                return SALTypeEnum.error;
             }
             else
             {
-                return expectedType;
+                return expectedTypeEnum;
             }
         }
 
-        public override SALType Visit(PostfixExprAstNode node)
+        public override SALTypeEnum Visit(EqualityAstNode node)//TODO: What about string type
         {
-            throw new NotImplementedException();
-        }
+            SALTypeEnum expr1TypeEnum = Visit(node.Left);
+            if (expr1TypeEnum == SALTypeEnum.error) { return SALTypeEnum.error; }
+            SALTypeEnum expr2TypeEnum = Visit(node.Right);
+            if (expr2TypeEnum == SALTypeEnum.error) { return SALTypeEnum.error; }
 
-        public override SALType Visit(PrefixExprAstNode node)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override SALType Visit(RelationalExprAstNode node)
-        {
-            SALType expr1Type = Visit(node.Left);
-            if (expr1Type == SALType.error) { return SALType.error; }
-            SALType expr2Type = Visit(node.Right);
-            if (expr2Type == SALType.error) { return SALType.error; }
-
-            SALType expectedType = SALType.@bool;
-            if (expectedType != TypeCheck(expectedType, expr1Type, expr2Type))
+            if (expr1TypeEnum != expr2TypeEnum)
             {
-                TypeErrors.Add(new TypeError(node.Token.Line,
-                    $"{node.Left.Token.Text} is not same type as {node.Right.Token.Text}"));
-                return SALType.error;
+                Errors.Add(new Error(ErrorEnum.TypeMismatch, node.Token.Line));
+                return SALTypeEnum.error;
             }
             else
             {
-                return expectedType;
+                return expr1TypeEnum;
             }
         }
 
-        public override SALType Visit(ReturnAstNode node) //TODO: lookup function declaration and ensure return type is same as returnvalue type
+        public override SALTypeEnum Visit(LogicOrAstNode node)
+        {
+            SALTypeEnum expr1TypeEnum = Visit(node.Left);
+            if (expr1TypeEnum == SALTypeEnum.error) { return SALTypeEnum.error; }
+            SALTypeEnum expr2TypeEnum = Visit(node.Right);
+            if (expr2TypeEnum == SALTypeEnum.error) { return SALTypeEnum.error; }
+
+            SALTypeEnum expectedTypeEnum = SALTypeEnum.@bool;
+            if (expectedTypeEnum != TypeCheck(expectedTypeEnum, expr1TypeEnum, expr2TypeEnum))
+            {
+                Errors.Add(new Error(ErrorEnum.TypeMismatch, node.Token.Line));
+                return SALTypeEnum.error;
+            }
+            else
+            {
+                return expectedTypeEnum;
+            }
+        }
+
+        public override SALTypeEnum Visit(MultAstNode node)
+        {
+            SALTypeEnum expr1TypeEnum = Visit(node.Left);
+            if (expr1TypeEnum == SALTypeEnum.error) { return SALTypeEnum.error; }
+            SALTypeEnum expr2TypeEnum = Visit(node.Right);
+            if (expr2TypeEnum == SALTypeEnum.error) { return SALTypeEnum.error; }
+
+            SALTypeEnum expectedTypeEnum = SALTypeEnum.number;
+            if (expectedTypeEnum != TypeCheck(expectedTypeEnum, expr1TypeEnum, expr2TypeEnum))
+            {
+                Errors.Add(new Error(ErrorEnum.TypeMismatch, node.Token.Line));
+                return SALTypeEnum.error;
+            }
+            else
+            {
+                return expectedTypeEnum;
+            }
+        }
+
+        public override SALTypeEnum Visit(ParameterListAstNode node)
         {
             throw new NotImplementedException();
         }
 
-        public override SALType Visit(StatementAstNode node)
+        public override SALTypeEnum Visit(PlusAstNode node)
+        {
+            SALTypeEnum expr1TypeEnum = Visit(node.Left);
+            if (expr1TypeEnum == SALTypeEnum.error) { return SALTypeEnum.error; }
+            SALTypeEnum expr2TypeEnum = Visit(node.Right);
+            if (expr2TypeEnum == SALTypeEnum.error) { return SALTypeEnum.error; }
+
+            SALTypeEnum expectedTypeEnum = SALTypeEnum.number;
+            if (expectedTypeEnum != TypeCheck(expectedTypeEnum, expr1TypeEnum, expr2TypeEnum))
+            {
+                Errors.Add(new Error(ErrorEnum.TypeMismatch, node.Token.Line));
+                return SALTypeEnum.error;
+            }
+            else
+            {
+                return expectedTypeEnum;
+            }
+        }
+
+        public override SALTypeEnum Visit(PostfixExprAstNode node)
+        {
+            throw new NotImplementedException();
+        }//TODO: cool
+
+        public override SALTypeEnum Visit(PrefixExprAstNode node)
+        {
+            throw new NotImplementedException();
+        }//TODO: cool
+
+        public override SALTypeEnum Visit(RelationalExprAstNode node)
+        {
+            SALTypeEnum expr1TypeEnum = Visit(node.Left);
+            if (expr1TypeEnum == SALTypeEnum.error) { return SALTypeEnum.error; }
+            SALTypeEnum expr2TypeEnum = Visit(node.Right);
+            if (expr2TypeEnum == SALTypeEnum.error) { return SALTypeEnum.error; }
+
+            SALTypeEnum expectedTypeEnum = SALTypeEnum.@bool;
+            if (expectedTypeEnum != TypeCheck(expectedTypeEnum, expr1TypeEnum, expr2TypeEnum))
+            {
+                Errors.Add(new Error(ErrorEnum.TypeMismatch, node.Token.Line));
+                return SALTypeEnum.error;
+            }
+            else
+            {
+                return expectedTypeEnum;
+            }
+        }
+
+        public override SALTypeEnum Visit(ReturnAstNode node) //TODO: lookup function declaration and ensure return type is same as returnvalue type
         {
             throw new NotImplementedException();
         }
 
-        public override SALType Visit(SwitchBodyAstNode node)
+        public override SALTypeEnum Visit(StatementAstNode node)
+        {
+            Visit(node.Action);
+
+            if(node.NextNode != null)
+                Visit(node.NextNode);
+
+            return SALTypeEnum.@void;
+        } //TODO: cool
+
+        public override SALTypeEnum Visit(SwitchBodyAstNode node)
         {
             throw new NotImplementedException();
-        }
+        } //TODO: cool
 
-        public override SALType Visit(SwitchItemAstNode node)
+        public override SALTypeEnum Visit(SwitchItemAstNode node)
         {
             throw new NotImplementedException();
-        }
+        } //TODO: cool
 
-        public override SALType Visit(SwitchStructureAstNode node)
+        public override SALTypeEnum Visit(SwitchStructureAstNode node)
         {
             throw new NotImplementedException();
-        }
+        } //TODO: cool
 
-        public override SALType Visit(TypeAstNode node)
+        public override SALTypeEnum Visit(TypeAstNode node)
         {
             throw new NotImplementedException();
-        }
+        } //TODO: not cool
 
-        public override SALType Visit(ValueAstNode node)
+        public override SALTypeEnum Visit(ValueAstNode node)
         {
             return node.Type;
         }
 
-        public override SALType Visit(WhileAstNode node)
+        public override SALTypeEnum Visit(WhileAstNode node)
         {
-            SALType exprType = Visit(node.Condition);
-            if (exprType == SALType.error) { return SALType.error; }
+            SALTypeEnum exprTypeEnum = Visit(node.Condition);
+            if (exprTypeEnum == SALTypeEnum.error) { return SALTypeEnum.error; }
 
-            if (exprType != SALType.@bool)
+            if (exprTypeEnum != SALTypeEnum.@bool)
             {
-                TypeErrors.Add(new TypeError(node.Token.Line, $"{node.Condition} is not of type bool"));
-                return SALType.error;
+                Errors.Add(new Error(ErrorEnum.TypeMismatch, node.Token.Line));
+                return SALTypeEnum.error;
             }
 
-            return exprType;
+            return exprTypeEnum;
         }
 
-        private SALType TypeCheck(SALType expected, SALType type1, SALType type2)
+        private SALTypeEnum TypeCheck(SALTypeEnum expected, SALTypeEnum type1, SALTypeEnum type2)
         {
             if (type1 != expected && type2 != expected)
             {
-                return SALType.error;
+                return SALTypeEnum.error;
             }
             else
             {
                 return expected;
             }
         }
+        */
     }
 }

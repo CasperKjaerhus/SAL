@@ -4,43 +4,141 @@ using System.Text;
 
 namespace SALShell.Parser
 {
-    abstract class ASTVisitor<T>
+    public abstract class ASTVisitor<T>
     {
         public virtual T Visit(ASTNode node)
         {
             return Visit((dynamic) node); // Using c#'s double dispatch feature
         }
 
-        public abstract T Visit(ArgumentsAstNode node);
-        public abstract T Visit(ArrayAccessAstNode node);
-        public abstract T Visit(AssignAstNode node);
-        public abstract T Visit(CondAstNode node);
-        public abstract T Visit(DeclareAstNode node);
-        public abstract T Visit(ExprAstNode node);
-        public abstract T Visit(ExprListAstNode node);
-        public abstract T Visit(ForAstNode node);
-        public abstract T Visit(ForeachAstNode node);
-        public abstract T Visit(FunctioncallAstNode node);
-        public abstract T Visit(FunctionDeclarationAstNode node);
-        public abstract T Visit(IdAstNode node);
-        public abstract T Visit(IfStructureAstNode node);
-        public abstract T Visit(ImportStatementAstNode node);
-        public abstract T Visit(LogicAndAstNode node);
-        public abstract T Visit(EqualityAstNode node);
-        public abstract T Visit(LogicOrAstNode node);
-        public abstract T Visit(MultAstNode node);
-        public abstract T Visit(ParameterListAstNode node);
-        public abstract T Visit(PlusAstNode node);
-        public abstract T Visit(PostfixExprAstNode node);
-        public abstract T Visit(PrefixExprAstNode node);
-        public abstract T Visit(RelationalExprAstNode node);
-        public abstract T Visit(ReturnAstNode node);
-        public abstract T Visit(StatementAstNode node);
-        public abstract T Visit(SwitchBodyAstNode node);
-        public abstract T Visit(SwitchItemAstNode node);
-        public abstract T Visit(SwitchStructureAstNode node);
-        public abstract T Visit(TypeAstNode node);
-        public abstract T Visit(ValueAstNode node);
-        public abstract T Visit(WhileAstNode node);
+        public virtual T Visit(ArgumentsAstNode node)
+        {
+            return DefaultCase(node);
+        }
+        public virtual T Visit(ArrayAccessAstNode node)
+        {
+            return DefaultCase(node);
+        }
+        public virtual T Visit(AssignAstNode node)
+        {
+            return DefaultCase(node);
+        }
+        public virtual T Visit(CondAstNode node)
+        {
+            return DefaultCase(node);
+        }
+        public virtual T Visit(DeclareAstNode node)
+        {
+            return DefaultCase(node);
+        }
+        public virtual T Visit(ExprListAstNode node)
+        {
+            return DefaultCase(node);
+        }
+        public virtual T Visit(ForAstNode node)
+        {
+            return DefaultCase(node);
+        }
+        public virtual T Visit(ForeachAstNode node)
+        {
+            return DefaultCase(node);
+        }
+        public virtual T Visit(FunctioncallAstNode node)
+        {
+            return DefaultCase(node);
+        }
+        public virtual T Visit(FunctionDeclarationAstNode node)
+        {
+            return DefaultCase(node);
+        }
+        public virtual T Visit(IdAstNode node)
+        {
+            return DefaultCase(node);
+        }
+        public virtual T Visit(IfStructureAstNode node)
+        {
+            return DefaultCase(node);
+        }
+        public virtual T Visit(ImportStatementAstNode node)
+        {
+            return DefaultCase(node);
+        }
+        public virtual T Visit(LogicAndAstNode node)
+        {
+            return DefaultCase(node);
+        }
+        public virtual T Visit(EqualityAstNode node)
+        {
+            return DefaultCase(node);
+        }
+        public virtual T Visit(LogicOrAstNode node)
+        {
+            return DefaultCase(node);
+        }
+        public virtual T Visit(MultAstNode node)
+        {
+            return DefaultCase(node);
+        }
+        public virtual T Visit(ParameterListAstNode node)
+        {
+            return DefaultCase(node);
+        }
+        public virtual T Visit(PlusAstNode node)
+        {
+            return DefaultCase(node);
+        }
+        public virtual T Visit(PostfixExprAstNode node)
+        {
+            return DefaultCase(node);
+        }
+        public virtual T Visit(PrefixExprAstNode node)
+        {
+            return DefaultCase(node);
+        }
+        public virtual T Visit(RelationalExprAstNode node)
+        {
+            return DefaultCase(node);
+        }
+        public virtual T Visit(ReturnAstNode node)
+        {
+            return DefaultCase(node);
+        }
+        public virtual T Visit(StatementAstNode node)
+        {
+            return DefaultCase(node);
+        }
+        public virtual T Visit(SwitchBodyAstNode node)
+        {
+            return DefaultCase(node);
+        }
+        public virtual T Visit(SwitchItemAstNode node)
+        {
+            return DefaultCase(node);
+        }
+        public virtual T Visit(SwitchStructureAstNode node)
+        {
+            return DefaultCase(node);
+        }
+        public virtual T Visit(TypeAstNode node)
+        {
+            return DefaultCase(node);
+        }
+        public virtual T Visit(ValueAstNode node)
+        {
+            return DefaultCase(node);
+        }
+        public virtual T Visit(WhileAstNode node)
+        {
+            return DefaultCase(node);
+        }
+        private T DefaultCase(ASTNode node)
+        {
+            foreach(ASTNode child in node.Children)
+            {
+                if(child != null)
+                    Visit(child);
+            }
+            return default;
+        }
     }
 }

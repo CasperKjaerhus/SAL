@@ -6,6 +6,7 @@ using SALShell.Controller;
 using SALShell.Core;
 using SALShell.Parser;
 using SALShell.SymbolTable;
+using SALShell.TypeChecker;
 using SALShell.UI;
 
 namespace SALShell
@@ -19,17 +20,10 @@ namespace SALShell
             //ShellController sheeController = new ShellController(ui, core);
             //sheeController.Ui.Start();
 
-            string text = System.IO.File.ReadAllText(@"D:\P4\SAL\Antlr\Test_Parser_src\Test_Parser\Tests\BoolsAndStrings.txt");
+            string text = System.IO.File.ReadAllText(@"D:\Github Repos\SAL\Antlr\Test_Parser_src\Test_Parser\Tests\SymbolTableTest.txt");
+           
             p4Lexer lexer = new p4Lexer(new AntlrInputStream(text));
             CommonTokenStream stream = new CommonTokenStream(lexer);
-
-            //IList<IToken> asfd = lexer.GetAllTokens();
-            //Console.WriteLine("AMOUNT: " + asfd.Count);
-
-            //foreach(IToken token in asfd)
-            //{
-            //    Console.WriteLine($"{token.Text} : {lexer.Vocabulary.GetSymbolicName(token.Type)}");
-            //}
 
             p4Parser parser = new p4Parser(stream);
             IParseTree tree = parser.s();
@@ -37,11 +31,7 @@ namespace SALShell
             ASTNode concreteP4Visitor = new ConcreteP4Visitor().Visit(tree);
             concreteP4Visitor?.PrintTrees(0);
 
-            Console.WriteLine("----- \n \n");
-            SymTable symbolTable = new SymbolTableBuilder(concreteP4Visitor).BuildSymbolTable();
-            symbolTable.PrintSymbols();
-            Console.WriteLine("----- \n \n");
-
+            SymTable symbolTable = new SymTable(concreteP4Visitor);
         }
     }
 }

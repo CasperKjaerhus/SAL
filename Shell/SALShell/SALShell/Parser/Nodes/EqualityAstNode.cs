@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SALShell.Parser
 {
-    class EqualityAstNode : ExprAstNode
+    public class EqualityAstNode : ExprAstNode
     {
         public EqualityAstNode(ASTNode expr1, ASTNode expr2, IToken @operator) : base(@operator)
         {

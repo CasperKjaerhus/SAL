@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SALShell.Parser
 {
-    class DeclareAstNode : ASTNode
+    public class DeclareAstNode : ASTNode
     {
         public ASTNode Id { get; }
         public Symbol Sym { get; set; }

@@ -36,11 +36,6 @@ namespace SALShell.CodeGen
             throw new NotImplementedException();
         }
 
-        public override string Visit(ExprAstNode node)
-        {
-            throw new NotImplementedException();
-        }
-
         public override string Visit(ExprListAstNode node)
         {
             throw new NotImplementedException();
@@ -76,11 +71,11 @@ namespace SALShell.CodeGen
             string IdentifierInfo;
             if (node.ArraySize != null)
             {
-                IdentifierInfo = node.Type.Text + " " + node.Token.Text + $"[{node.ArraySize}]";
+                IdentifierInfo = node.Type + " " + node.Token.Text + $"[{node.ArraySize}]";
             }
             else
             {
-                IdentifierInfo = node.Type.Text + " " + node.Token.Text;
+                IdentifierInfo = node.Type + " " + node.Token.Text;
             }
 
             return IdentifierInfo;

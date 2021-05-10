@@ -1,17 +1,23 @@
 ﻿using Antlr4.Runtime;
+using SALShell.SymbolTable;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace SALShell.Parser
 {
-    class IfStructureAstNode : ASTNode
+    public class IfStructureAstNode : ASTNode
     {
-        public IfStructureAstNode(ASTNode expr, ASTNode body, ASTNode elseStmt, IToken token) : base(token)
+        public Scope Scope { get; set; }        
+        public ASTNode Condition { get; set; }
+        public ASTNode Body { get; set; }
+        public ASTNode ElseStmt { get; set; }
+
+        public IfStructureAstNode(ASTNode condition, ASTNode body, ASTNode elseStmt, IToken token) : base(token)
         {
-            Expr = expr;
+            Condition = condition;
             Body = body;
-            Children.Add(expr);
+            Children.Add(condition);
             Children.Add(body);
             if(elseStmt != null)
             {
@@ -20,10 +26,6 @@ namespace SALShell.Parser
             }
         }
 
-        public ASTNode Expr { get; set; }
 
-        public ASTNode Body { get; set; }
-
-        public ASTNode ElseStmt { get; set; }
     }
 }

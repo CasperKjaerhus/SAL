@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SALShell.Parser
 {
-    class PrefixExprAstNode : ExprAstNode
+    public class PrefixExprAstNode : ExprAstNode
     {
         public PrefixExprAstNode(ASTNode idnode, IToken @operator) : base(@operator)
         {
