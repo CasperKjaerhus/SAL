@@ -2,18 +2,18 @@ include testLib;
 
 function main(number strLength) returns void begin
 
-	for(i: num...10) begin
+	for(i: num..."seven") begin
 		num = num + i;
 	end
 	
 	foreach(numb in numArray) begin
-		if(numb == 5) then begin
-			string str = "This is a string";
+		if(numb == 'c') then begin
+			string str = true;
 		end
 	end
 	
-	while(num > 10) begin
-		for(i: num...100, step numArray) begin
+	while(num != false) begin
+		for(i: strLength...100, step numArray) begin
 			number testNumber = i;
 			funcTest();
 		end

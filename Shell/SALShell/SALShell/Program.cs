@@ -28,10 +28,14 @@ namespace SALShell
             p4Parser parser = new p4Parser(stream);
             IParseTree tree = parser.s();
 
-            ASTNode concreteP4Visitor = new ConcreteP4Visitor().Visit(tree);
-            concreteP4Visitor?.PrintTrees(0);
+            ASTNode AST = new ConcreteP4Visitor().Visit(tree);
+            AST?.PrintTrees(0);
 
-            SymTable symbolTable = new SymTable(concreteP4Visitor);
+            SymTable s = new SymTable(AST);
+
+            s.PrintErrors();
+            new TypeCheckVisitor(AST);
+            
         }
     }
 }

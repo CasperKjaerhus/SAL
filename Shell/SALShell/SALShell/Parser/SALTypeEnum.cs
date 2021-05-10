@@ -9,6 +9,7 @@ namespace SALShell.Parser
         @char,
         @string,
         @void,
-        undefined
+        undefined,
+        error
     }
 }
