@@ -20,8 +20,7 @@ namespace SALShell.Parser
         public ASTNode Id { get; set; }
 
         public ASTNode Expr { get; set; }
-        public int ArraySize { get; set; }
-        public string InoType { get; set; }
-        public Symbol Sym { get; set; }
+
+        public Symbol Symbol { get; set; }
     }
 }
