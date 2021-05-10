@@ -77,12 +77,17 @@ namespace SALShell.CodeGen
 
         public override string Visit(ExprListAstNode node)
         {
-            string exprListCode = "";
+            string exprListCode = "{ ";
 
             foreach (ASTNode child in node.Children)
             {
-                exprListCode += Visit(child);
+                if(child == node.Children[0])
+                    exprListCode += Visit(child);
+                else
+                    exprListCode += ", " + Visit(child);
             }
+
+            exprListCode += " }";
 
             return exprListCode;
         }
@@ -94,21 +99,28 @@ namespace SALShell.CodeGen
             int endVal = int.Parse(Visit(node.EndValue));
             int step = 1;
 
-            if (node.Step != null) 
+            if (node.Step != null && int.TryParse(Visit(node.Step), out _)) 
                 step = int.Parse(Visit(node.Step));
             
+            string forCode = $"for ({iterator} = {startVal}; {iterator} <= {endVal}; {iterator} = {iterator} + {step})";
+            IndentationDepth++;
+            forCode += $"{{\n{Visit(node.Body)}}}";
+            IndentationDepth--;
 
-            return $"for ({iterator} = {startVal}; {iterator} <= {endVal}; {iterator} = {iterator} + {step}){{\n {Visit(node.Body)}\n{Spaces}}}";
+            return forCode;
         }
 
         public override string Visit(ForeachAstNode node)
         {
-            return $"for({Visit(node.ItemId)} : {Visit(node.CollectionId)}){{\n}}";
+            return $"for({Visit(node.ItemId)} : {Visit(node.CollectionId)}){{\n{Spaces}}}";
         }
 
         public override string Visit(FunctioncallAstNode node)
         {
-            return Visit(node.FunctionId) + $"({Visit(node.Arguments)});";
+            if(node.Arguments != null)
+                return Visit(node.FunctionId) + $"({Visit(node.Arguments)});";
+            else
+                return Visit(node.FunctionId) + "();";
         }
 
         public override string Visit(FunctionDeclarationAstNode node)
@@ -150,7 +162,7 @@ namespace SALShell.CodeGen
             IdCode += node.Token.Text;
 
             if (node.ArraySize != null)
-                IdCode += $"[{node.ArraySize}]";
+                IdCode += $"{node.ArraySize.Text}";
 
             return IdCode;
         }
@@ -179,7 +191,10 @@ namespace SALShell.CodeGen
 
         public override string Visit(ImportStatementAstNode node)
         {
-            throw new NotImplementedException();
+            if (IsGlobal)
+                return $"#include {node.Token.Text}";
+            else
+                return "";
         }
 
         public override string Visit(LogicAndAstNode node)

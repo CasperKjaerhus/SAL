@@ -1,36 +1,58 @@
-char getFirstChar(string stringInp){
-    char firstChar;
-    bool isEmpty = true;
-     strLength = getStringLength(stringInp);
-    if(strLength > 0;){
-        isEmpty = false;
+#include testLib
+void main(strLength){
+    for (i = num; i <= 10; i = i + 1){
+        num = num + i;
+}
+    for(numb : numArray){
     }
-    if(isEmpty){
-        firstChar = stringInp[0];
-    }
-    return firstChar;
+    while(num > 10;){
+        for (i = num; i <= 100; i = i + 1){
+        testNumber = i;
+        funcTest();
 
-
-
+}
+}
 
 
 
 }
-getStringLength(string stringInp){
+string funcTest(char c, num1, string str){
+    int newNum = num1 + num;
+    char newC = c;
+    if(newC == 'c'){
+        string newStr = str;
+    }
+
+
 
 }
+int num = 2;
+ numArray[5] = { 1, 2, 3, 4, 5 };
+
+
 
 
 void setup() {
 }
 
 void loop() {
-    string stringVar = "This is a string";
-    int john = 1;
-    float ronaldo = 1.5;
-     jones = john + ronaldo;
-    Serial.Print(getFirstChar(stringVar););
+    for (i = num; i <= 10; i = i + 1){
+        num = num + i;
+}
+    for(numb : numArray){
+    }
+    while(num > 10;){
+        for (i = num; i <= 100; i = i + 1){
+        testNumber = i;
+        funcTest();
 
+}
+}
+
+
+
+int num = 2;
+ numArray[5] = { 1, 2, 3, 4, 5 };
 
 
 
