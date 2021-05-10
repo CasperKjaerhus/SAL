@@ -188,6 +188,7 @@ namespace SALShell.SymbolTable
                 Symbol oldSym = CurrentScope.RetrieveSymbol(node.Token.Text);
                 if(oldSym != null)
                 {
+                    node.Symbol = oldSym;
                     return oldSym; // Symbol was in scope everything is great
                 }
                 else
