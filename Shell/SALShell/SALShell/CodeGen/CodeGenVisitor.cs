@@ -19,17 +19,19 @@ namespace SALShell.CodeGen
         public override string Visit(ArgumentsAstNode node)
         {
             string arguments = "";
+
             if (node.Children.Count == 1)
             {
                 arguments += Visit(node.Children[0]);
             }
-            else
+            else if(node.Children.Count > 1)
             {
                 foreach (ASTNode child in node.Children)
                 {
                     arguments += Visit(child) + ", ";
                 }
-            }
+            } else
+                return arguments;
 
             return arguments;
         }
@@ -78,7 +80,14 @@ namespace SALShell.CodeGen
 
         public override string Visit(ExprListAstNode node)
         {
-            throw new NotImplementedException();
+            string exprListCode = "";
+
+            foreach (ASTNode child in node.Children)
+            {
+                exprListCode += Visit(child);
+            }
+
+            return exprListCode;
         }
 
         public override string Visit(ForAstNode node)
@@ -97,7 +106,7 @@ namespace SALShell.CodeGen
 
         public override string Visit(ForeachAstNode node)
         {
-            throw new NotImplementedException();
+            return $"for({Visit(node.ItemId)} : {Visit(node.CollectionId)}){{\n}}";
         }
 
         public override string Visit(FunctioncallAstNode node)
@@ -108,11 +117,13 @@ namespace SALShell.CodeGen
         public override string Visit(FunctionDeclarationAstNode node)
         {
             string id = Visit(node.Id);
+            string body = "";
 
             if (IsLoop && node.Sym.SymbolName.ToLower() == "main")
             {
                 IndentationDepth++;
-                string body = Visit(node.Body);
+                if(node.Body != null)
+                    body = Visit(node.Body);
                 IndentationDepth--;
                 return body;
             }
@@ -122,7 +133,8 @@ namespace SALShell.CodeGen
                 string parameters = $"({Visit(node.Parameters)})";
 
                 IndentationDepth++;
-                string body = Visit(node.Body);
+                if(node.Body != null)
+                    body = Visit(node.Body);
                 IndentationDepth--;
 
                 return id + parameters + "{\n" + body + "\n}";

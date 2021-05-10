@@ -28,7 +28,6 @@ namespace SALShell.Core.CodeGeneration
             }
 
         }
-
         private void WriteToGlobal(StreamWriter streamW, ASTNode node)
         {
             CodeGenerationVisitor.IsGlobal = true;

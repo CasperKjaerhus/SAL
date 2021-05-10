@@ -10,7 +10,7 @@ namespace SALShell.SymbolTable
         public bool IsArray { get; }
         public bool IsReference { get; }
         public bool IsAssignment { get; set; }
-        public int ArraySize { get; }
+        public string ArraySize { get; }
 
         public IdTypeInfo(IToken arraySize, IToken type):base(type)
         {
@@ -18,7 +18,7 @@ namespace SALShell.SymbolTable
                 IsArray = false;
             else
             {
-                this.ArraySize = Convert.ToInt32(arraySize.Text);
+                this.ArraySize = arraySize.Text;
             }
 
             if (type == null)
