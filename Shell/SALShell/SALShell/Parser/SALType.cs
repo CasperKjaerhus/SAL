@@ -2,7 +2,7 @@
 
 namespace SALShell.Parser
 {
-    static class SALType
+    public static class SALType
     {
         public static readonly Dictionary<string, SALTypeEnum> Types = new Dictionary<string, SALTypeEnum>()
         {
@@ -11,7 +11,7 @@ namespace SALShell.Parser
             {"char", SALTypeEnum.@char},
             {"string", SALTypeEnum.@string},
             {"void", SALTypeEnum.@void},
-            {"error", SALTypeEnum.error}
+            {"error", SALTypeEnum.undefined}
         };
     }
 }

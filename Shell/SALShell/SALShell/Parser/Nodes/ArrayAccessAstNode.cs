@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SALShell.Parser
 {
-    class ArrayAccessAstNode : ExprAstNode
+    public class ArrayAccessAstNode : ExprAstNode
     {
         public ASTNode Id { get; }
         public ASTNode IndexExpression { get; }

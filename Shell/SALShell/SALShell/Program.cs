@@ -20,8 +20,8 @@ namespace SALShell
             //ShellController sheeController = new ShellController(ui, core);
             //sheeController.Ui.Start();
 
-            //string text = System.IO.File.ReadAllText(@"D:\P4\SAL\Antlr\Test_Parser_src\Test_Parser\Tests\Array_Usage.txt");
-            string text = "function boof(char five) returns number begin\n end\n function main(number six) returns void begin\n number f = boof(2+2);\n end";
+            string text = System.IO.File.ReadAllText(@"D:\Github Repos\SAL\Antlr\Test_Parser_src\Test_Parser\Tests\SymbolTableTest.txt");
+            //string text = "function main(number two) returns void begin\n foreach(f in h) begin number g;\n char s;\n end\n end function test() returns void begin end";
             p4Lexer lexer = new p4Lexer(new AntlrInputStream(text));
             CommonTokenStream stream = new CommonTokenStream(lexer);
 
@@ -39,17 +39,12 @@ namespace SALShell
             ASTNode concreteP4Visitor = new ConcreteP4Visitor().Visit(tree);
             concreteP4Visitor?.PrintTrees(0);
 
-            Console.WriteLine("-----");
-            SymTable symbolTable = new SymbolTableBuilder(concreteP4Visitor).BuildSymbolTable();
-            symbolTable.PrintSymbols();
+            SymTable symbolTable = new SymTable(concreteP4Visitor);
 
-            Console.WriteLine("-----");
-            TypeCheckVisitor TypeChecker = new TypeCheckVisitor(symbolTable);
-            TypeChecker.Visit(concreteP4Visitor);
+            if (symbolTable.HasErrors)
+                symbolTable.PrintErrors();
 
-            ErrorPrinter.Print(TypeChecker.Errors);
-            
-
+            symbolTable.GlobalScope.Print();
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SALShell.Parser
 {
-    class ValueAstNode : ExprAstNode
+    public class ValueAstNode : ExprAstNode
     {
         public SALTypeEnum Type { get; set; }
         public ValueAstNode(IToken value) : base(value)
@@ -30,7 +30,7 @@ namespace SALShell.Parser
                     Type = SALTypeEnum.@void;
                     break;
                 default:
-                    Type = SALTypeEnum.error;
+                    Type = SALTypeEnum.undefined;
                     break;
             }
             

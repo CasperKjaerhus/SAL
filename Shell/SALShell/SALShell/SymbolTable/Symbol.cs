@@ -1,28 +1,40 @@
-﻿using System;
+﻿using SALShell.Parser;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace SALShell.SymbolTable
 {
+
     public class Symbol
     {
-        public Symbol(string symbolName, TypeInfo type, int depth, string scopeName)
-        {
-            SymbolName = symbolName;
-            Type = type;
-            Depth = depth;
-            ScopeName = scopeName;
-        }
-
-        public string ScopeName { get; } 
-        public string SymbolName { get; }
-        public TypeInfo Type { get; }
         public int Depth { get; }
+        public string Name { get; }
+        public SALTypeEnum Type { get; }
+        public Scope Scope { get; }
 
+        public Symbol(Scope scope, string name, SALTypeEnum type)
+        {
+            Depth = scope.Depth;
+            Name = name;
+            Type = type;
+            Scope = scope;
+        }
 
         public override string ToString()
         {
-            return $"{SymbolName} declared in: {ScopeName}, at depth: {Depth}";
+            return $"Symbol {Name}: Depth {Depth} Type {Type}";
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Symbol item)
+            {
+                return item.Depth == this.Depth && item.Name == this.Name && item.Type == this.Type;
+            }
+
+            return false;
+        }
+
     }
 }

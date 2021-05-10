@@ -8,17 +8,17 @@ namespace SALShell.Parser
 {
     public class IdAstNode : ExprAstNode
     {
-        public IToken Type { get; set; }
+        public SALTypeEnum Type { get; set; }
         public IToken ArraySize { get; }
-        public Symbol Sym { get; set; }
+        public Symbol Symbol { get; set; }
 
-        public IdAstNode(IToken idName, ASTNode type) : base(idName)
+        public IdAstNode(IToken idName, SALTypeEnum type) : base(idName)
         {
-            Type = type?.Token;
+            Type = type;
         }
-        public IdAstNode(IToken idName, ASTNode type, IToken modifier) : base(idName)
+        public IdAstNode(IToken idName, SALTypeEnum type, IToken modifier) : base(idName)
         {
-            Type = type?.Token;
+            Type = type;
             ArraySize = modifier;
         }
 
@@ -31,7 +31,7 @@ namespace SALShell.Parser
                 Console.Write("\t");
             }
 
-            Console.WriteLine($"{Type?.Text} {Token.Text}{ArraySize?.Text}: {this.GetType()}");
+            Console.WriteLine($"{Type} {Token.Text}{ArraySize?.Text}: {this.GetType()}");
 
             foreach (ASTNode child in Children)
             {

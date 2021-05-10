@@ -8,6 +8,7 @@ namespace SALShell.TypeChecker
 {
     class TypeCheckVisitor : ASTVisitor<SALTypeEnum>
     {
+        /*
         public List<Error> Errors = new List<Error>();
         private ISymbolTable<Symbol, TypeInfo> SymbolTable { get; set; }
         public TypeCheckVisitor(ISymbolTable<Symbol, TypeInfo> symbolTable)
@@ -327,5 +328,6 @@ namespace SALShell.TypeChecker
                 return expected;
             }
         }
+        */
     }
 }
