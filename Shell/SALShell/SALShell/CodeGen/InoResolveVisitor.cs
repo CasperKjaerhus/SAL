@@ -10,6 +10,13 @@ namespace SALShell.CodeGen
     {
         Dictionary<Symbol, string> IdValues = new Dictionary<Symbol, string>(); 
 
+        public override object Visit(ASTNode node)
+        {
+            if (node == null)
+                return null;
+            return Visit((dynamic)node); // Using c#'s double dispatch feature
+        }
+
         public override object Visit(ArgumentsAstNode node)
         {
             return null;
@@ -22,11 +29,11 @@ namespace SALShell.CodeGen
 
         public override object Visit(AssignAstNode node)
         {
-
             if (node.Sym.Type.Type.Text == "number")
             {
-                EvaluateInoAssignment(node);
+                node.InoType = EvaluateInoAssignment(node);
             }
+
             return null;
         }
 
@@ -34,17 +41,8 @@ namespace SALShell.CodeGen
         {
             string value = "";
 
-            if (node.Expr is ValueAstNode)
-            {
-                value += Visit(node.Expr);
-                node.InoType = value;
-                IdValues.Add(node.Sym, value);
-            }else if(node.Expr is IdAstNode)
-            {
-                value += Visit(node.Expr);
-                node.InoType = value;
-                IdValues.Add(node.Sym, value);
-            }
+            value += Visit(node.Expr);
+            IdValues.Add(node.Sym, value);
 
             return value;
         }
@@ -56,6 +54,9 @@ namespace SALShell.CodeGen
 
         public override object Visit(DeclareAstNode node)
         {
+            if (node.Sym.Type.Type.Text == "number")
+                IdValues.Add(node.Sym, "null");
+
             return null;
         }
 
@@ -86,6 +87,7 @@ namespace SALShell.CodeGen
 
         public override object Visit(FunctionDeclarationAstNode node)
         {
+            Visit(node.Body);
             return null;
         }
 
@@ -124,20 +126,16 @@ namespace SALShell.CodeGen
         {
             string leftval = "";
             string rightval = "";
-            if(node.Left is IdAstNode)
-            {
-                leftval += Visit(node.Left);
-            }
-
-            if(node.Right is IdAstNode)
-            {
-                rightval += Visit(node.Right);
-            }
+            
+            leftval += Visit(node.Left);
+            rightval += Visit(node.Right);
 
             if(rightval == "float" || leftval == "float")
             {
                 return "float";
             }
+
+            return "int";
         }
 
         public override object Visit(ParameterListAstNode node)
@@ -147,7 +145,18 @@ namespace SALShell.CodeGen
 
         public override object Visit(PlusAstNode node)
         {
-            return null;
+            string leftval = "";
+            string rightval = "";
+
+            leftval += Visit(node.Left);
+            rightval += Visit(node.Right);
+
+            if (rightval == "float" || leftval == "float")
+            {
+                return "float";
+            }
+
+            return "int";
         }
 
         public override object Visit(PostfixExprAstNode node)
@@ -174,10 +183,7 @@ namespace SALShell.CodeGen
         {
             foreach (ASTNode child in node.Children)
             {
-                if(child is AssignAstNode || child is DeclareAstNode)
-                {
-                    Visit(child);
-                }
+                Visit(child);
             }
 
             return null;

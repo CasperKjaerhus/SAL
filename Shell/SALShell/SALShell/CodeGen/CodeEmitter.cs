@@ -10,6 +10,7 @@ namespace SALShell.Core.CodeGeneration
 {
     class CodeEmitter
     {
+        private InoResolveVisitor Resolver = new InoResolveVisitor();
         private CodeGenVisitor CodeGenerationVisitor = new CodeGenVisitor();
 
         private void CreateFile(string filePath, string fileName, ASTNode root)
@@ -44,6 +45,7 @@ namespace SALShell.Core.CodeGeneration
 
         public void SynthesizeCode(string path, string name, ASTNode ASTroot)
         {
+            Resolver.Visit(ASTroot);
             CreateFile(path, name, ASTroot);
         }
     }

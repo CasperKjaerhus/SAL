@@ -47,8 +47,10 @@ namespace SALShell.CodeGen
             string expression = Visit(node.Expr);
             string id = Visit(node.Id);
 
-            if (id.Split(" ").Length > 1)
-                id = EvaluateInoType(id, expression);
+            if(node.InoType != null)
+            {
+                id = node.InoType + " " + id;
+            }
 
             if (expression.Last() == ';')
                 AssignmentCode = id + " = " + expression;
@@ -147,7 +149,7 @@ namespace SALShell.CodeGen
         {
             string IdCode = "";
 
-            if (node.Type != null)
+            if (node.Type != null && node.Type.Text != "number")
                 IdCode += node.Type.Text + " ";
 
             IdCode += node.Token.Text;
@@ -301,34 +303,30 @@ namespace SALShell.CodeGen
             return $"while({Visit(node.Condition)}){{\n{Spaces}{Visit(node.Body)}}}";
         }
 
-        private string EvaluateInoType(string TypeAndId, string Expression)
-        {
-            string[] IdArr = TypeAndId.Split();
-            if (IdArr[0] != "number")
-                return TypeAndId;
+        //private string EvaluateInoType(string TypeAndId, string Expression)
+        //{
+        //    string[] IdArr = TypeAndId.Split();
+        //    if (IdArr[0] != "number")
+        //        return TypeAndId;
 
-            string[] ExprArr = Expression.Split(" ");
+        //    string[] ExprArr = Expression.Split(" ");
 
-            if(ExprArr.Length > 1)
-            {
-                if(ExprArr.Any(x => x == "%"))
-                {
-                    return "int " + IdArr[1];
-                }
+        //    if(ExprArr.Length > 1)
+        //    {
+        //        if(ExprArr.Any(x => x == "%"))
+        //        {
+        //            return "int " + IdArr[1];
+        //        }
 
-            }else if (int.TryParse(Expression, out _))
-            {
-                return "int " + IdArr[1];
-            }else if(float.TryParse(Expression, out _))
-            {
-                return "float " + IdArr[1];
-            }
+        //    }else if (int.TryParse(Expression, out _))
+        //    {
+        //        return "int " + IdArr[1];
+        //    }else if(float.TryParse(Expression, out _))
+        //    {
+        //        return "float " + IdArr[1];
+        //    }
 
-            return TypeAndId;
-        }
-        private string FindReferenceType(string reference)
-        {
-            return reference;
-        }
+        //    return TypeAndId;
+        //}
     }
 }
