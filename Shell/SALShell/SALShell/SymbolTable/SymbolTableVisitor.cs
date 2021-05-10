@@ -112,6 +112,7 @@ namespace SALShell.SymbolTable
             Symbol idSymbol = Visit(node.Id);
             if (idSymbol != null && !CurrentScope.IsSymbolWithinScope(idSymbol))
             {
+                node.Symbol = idSymbol;
                 CurrentScope.Symbols.Add(idSymbol);
             }
             return idSymbol;
@@ -204,8 +205,21 @@ namespace SALShell.SymbolTable
                 return default;
             }
 
+
+
         }
+        public override Symbol Visit(ArrayAccessAstNode node)
+        {
+            Symbol idSymbol = Visit(node.Id);
+            
+            if (idSymbol != null)
+            {
+                node.Symbol = idSymbol;
+            }
 
+            Visit(node.IndexExpression);
 
+            return base.Visit(node);
+        }
     }
 }
