@@ -67,17 +67,12 @@ namespace SALShell.CodeGen
 
         public override string Visit(DeclareAstNode node)
         {
-            if(node.Sym.ScopeName == "Global" && IsLoop)
+            if(node.Sym.Scope.ScopeName == "Global" && IsLoop)
             {
                 return "";
             }
 
             return Visit(node.Id) + ";";
-        }
-
-        public override string Visit(ExprAstNode node)
-        {
-            throw new NotImplementedException();
         }
 
         public override string Visit(ExprListAstNode node)
@@ -121,7 +116,7 @@ namespace SALShell.CodeGen
             string id = Visit(node.Id);
             string body = "";
 
-            if (IsLoop && node.Sym.SymbolName.ToLower() == "main")
+            if (IsLoop && node.Symbol.Name == "main")
             {
                 IndentationDepth++;
                 if(node.Body != null)
@@ -130,7 +125,7 @@ namespace SALShell.CodeGen
                 return body;
             }
 
-            if (IsGlobal && node.Sym.SymbolName.ToLower() != "main")
+            if (IsGlobal && node.Symbol.Scope.ScopeName != "main")
             {
                 string parameters = $"({Visit(node.Parameters)})";
 
@@ -149,8 +144,8 @@ namespace SALShell.CodeGen
         {
             string IdCode = "";
 
-            if (node.Type != null && node.Type.Text != "number")
-                IdCode += node.Type.Text + " ";
+            if (node.Type != SALTypeEnum.undefined && node.Type != SALTypeEnum.number)
+                IdCode += node.Type + " ";
 
             IdCode += node.Token.Text;
 
@@ -162,23 +157,23 @@ namespace SALShell.CodeGen
 
         public override string Visit(IfStructureAstNode node)
         {
-            string Expr = Visit(node.Expr);
+            string Condition = Visit(node.Condition);
             IndentationDepth++;
             string ElseStatement = "";
             string body = Visit(node.Body);
             IndentationDepth--;
             if (node.ElseStmt == null)
-                return $"if({Expr}){{\n{body}{Spaces}}}";
+                return $"if({Condition}){{\n{body}{Spaces}}}";
             else if (node.ElseStmt is IfStructureAstNode)
             {
-                return $"if({Expr}){{\n{body}{Spaces}}} else {Visit(node.ElseStmt)}";
+                return $"if({Condition}){{\n{body}{Spaces}}} else {Visit(node.ElseStmt)}";
             }
             else
             {
                 IndentationDepth++;
                 ElseStatement = Visit(node.ElseStmt);
                 IndentationDepth--;
-                return $"if({Expr}){{\n{body}{Spaces}}} else{{\n{ElseStatement}\n{Spaces}}}";
+                return $"if({Condition}){{\n{body}{Spaces}}} else{{\n{ElseStatement}\n{Spaces}}}";
             }
         }
 

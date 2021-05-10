@@ -29,7 +29,7 @@ namespace SALShell.CodeGen
 
         public override object Visit(AssignAstNode node)
         {
-            if (node.Sym.Type.Type.Text == "number")
+            if (node.Sym.Type == SALTypeEnum.number)
             {
                 node.InoType = EvaluateInoAssignment(node);
             }
@@ -54,14 +54,9 @@ namespace SALShell.CodeGen
 
         public override object Visit(DeclareAstNode node)
         {
-            if (node.Sym.Type.Type.Text == "number")
+            if (node.Sym.Type == SALTypeEnum.number)
                 IdValues.Add(node.Sym, "null");
 
-            return null;
-        }
-
-        public override object Visit(ExprAstNode node)
-        {
             return null;
         }
 
@@ -93,7 +88,7 @@ namespace SALShell.CodeGen
 
         public override object Visit(IdAstNode node)
         {
-            IdValues.TryGetValue(node.Sym, out string val);
+            IdValues.TryGetValue(node.Symbol, out string val);
             return val;
         }
 
@@ -136,6 +131,7 @@ namespace SALShell.CodeGen
             }
 
             return "int";
+
         }
 
         public override object Visit(ParameterListAstNode node)
