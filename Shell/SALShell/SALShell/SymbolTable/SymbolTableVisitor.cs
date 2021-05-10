@@ -66,7 +66,7 @@ namespace SALShell.SymbolTable
         public override Symbol Visit(AssignAstNode node)
         {
             Symbol idSymbol = Visit(node.Id);
-            
+
             if(idSymbol != null)
             {
                 node.Symbol = idSymbol;
@@ -74,6 +74,8 @@ namespace SALShell.SymbolTable
                 if(!CurrentScope.IsSymbolWithinScope(idSymbol))
                     CurrentScope.Symbols.Add(idSymbol);
             }
+
+            Visit(node.Expr);
 
             return idSymbol;
         }
