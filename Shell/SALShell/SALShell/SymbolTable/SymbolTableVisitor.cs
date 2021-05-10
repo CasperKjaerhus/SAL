@@ -90,7 +90,9 @@ namespace SALShell.SymbolTable
             List<Symbol> parameters = new List<Symbol>();
             foreach(ASTNode argument in node.Parameters.Children)
             {
-                parameters.Add(Visit(argument));
+                Symbol arg = Visit(argument);
+                parameters.Add(arg);
+                CurrentScope.Symbols.Add(arg);
             }
 
             FunctionSymbol functionSymbol = new FunctionSymbol(IdSymbol.Scope, IdSymbol.Name, IdSymbol.Type, parameters);
