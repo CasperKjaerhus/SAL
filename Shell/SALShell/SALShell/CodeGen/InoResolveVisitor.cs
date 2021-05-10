@@ -8,14 +8,7 @@ namespace SALShell.CodeGen
 {
     class InoResolveVisitor : ASTVisitor<object>
     {
-        Dictionary<Symbol, string> IdValues = new Dictionary<Symbol, string>(); 
-
-        public override object Visit(ASTNode node)
-        {
-            if (node == null)
-                return null;
-            return Visit((dynamic)node); // Using c#'s double dispatch feature
-        }
+        Dictionary<Symbol, string> IdValues = new Dictionary<Symbol, string>();
 
         public override object Visit(ArgumentsAstNode node)
         {

@@ -67,7 +67,7 @@ namespace SALShell.CodeGen
 
         public override string Visit(DeclareAstNode node)
         {
-            if(node.Sym.Scope.ScopeName == "Global" && IsLoop)
+            if(node.Sym.Name == "Global" && IsLoop)
             {
                 return "";
             }

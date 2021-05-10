@@ -1,5 +1,5 @@
 #include testLib
-void main(strLength){
+void main(){
     for (i = num; i <= 10; i = i + 1){
         num = num + i;
 }

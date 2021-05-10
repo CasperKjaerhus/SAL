@@ -1,6 +1,6 @@
 include testLib;
 
-function main(number strLength) returns void begin
+function main() returns void begin
 
 	for(i: num...10) begin
 		num = num + i;
