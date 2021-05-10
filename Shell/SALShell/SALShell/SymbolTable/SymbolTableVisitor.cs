@@ -67,10 +67,12 @@ namespace SALShell.SymbolTable
         {
             Symbol idSymbol = Visit(node.Id);
             
-            if(idSymbol != null && !CurrentScope.IsSymbolWithinScope(idSymbol))
+            if(idSymbol != null)
             {
                 node.Symbol = idSymbol;
-                CurrentScope.Symbols.Add(idSymbol);
+
+                if(!CurrentScope.IsSymbolWithinScope(idSymbol))
+                    CurrentScope.Symbols.Add(idSymbol);
             }
 
             return idSymbol;
