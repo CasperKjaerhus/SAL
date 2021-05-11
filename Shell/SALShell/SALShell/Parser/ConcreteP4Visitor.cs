@@ -97,7 +97,7 @@ namespace SALShell.Parser
             }
             else
             {
-                return new FunctioncallAstNode(functionId, null, null);
+                return new FunctioncallAstNode(functionId, new ArgumentsAstNode(new ASTNode[]{}, null), null);
             }
             
         }
