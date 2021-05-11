@@ -34,8 +34,9 @@ namespace SALShell
             SymTable s = new SymTable(AST);
 
             s.PrintErrors();
-            new TypeCheckVisitor(AST);
-            
+            TypeCheckVisitor t = new TypeCheckVisitor(AST);
+
+            t.Errors.ForEach(s => Console.WriteLine(s.Message));
         }
     }
 }
