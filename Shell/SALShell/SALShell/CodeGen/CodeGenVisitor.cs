@@ -167,6 +167,10 @@ namespace SALShell.CodeGen
 
             if (node.Type != SALTypeEnum.undefined && node.Type != SALTypeEnum.number)
                 IdCode += node.Type + " ";
+            else if(node.Type == SALTypeEnum.number && node.InoType != null)
+            {
+                IdCode += node.InoType + " ";
+            }
 
             IdCode += node.Token.Text;
 
@@ -322,30 +326,5 @@ namespace SALShell.CodeGen
             return $"while({Visit(node.Condition)}){{\n{Spaces}{Visit(node.Body)}}}";
         }
 
-        //private string EvaluateInoType(string TypeAndId, string Expression)
-        //{
-        //    string[] IdArr = TypeAndId.Split();
-        //    if (IdArr[0] != "number")
-        //        return TypeAndId;
-
-        //    string[] ExprArr = Expression.Split(" ");
-
-        //    if(ExprArr.Length > 1)
-        //    {
-        //        if(ExprArr.Any(x => x == "%"))
-        //        {
-        //            return "int " + IdArr[1];
-        //        }
-
-        //    }else if (int.TryParse(Expression, out _))
-        //    {
-        //        return "int " + IdArr[1];
-        //    }else if(float.TryParse(Expression, out _))
-        //    {
-        //        return "float " + IdArr[1];
-        //    }
-
-        //    return TypeAndId;
-        //}
     }
 }

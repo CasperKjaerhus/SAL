@@ -9,8 +9,10 @@ namespace SALShell.CodeGen
 {
     class InoResolveVisitor : ASTVisitor<object>
     {
-        Dictionary<Symbol, string> IdTypes = new Dictionary<Symbol, string>();
-        List<DeclareAstNode> NumberDeclarations = new List<DeclareAstNode>();
+        private Dictionary<Symbol, string> IdTypes = new Dictionary<Symbol, string>();
+        private List<IdAstNode> FormalParameters = new List<IdAstNode>();
+        private string CurrentReturnType;
+        private bool IsParam = false;
 
         public override object Visit(ArgumentsAstNode node)
         {
@@ -36,7 +38,6 @@ namespace SALShell.CodeGen
         {
             string expressionType = "";
             string type;
-            int index;
 
             expressionType += Visit(node.Expr);
 
@@ -45,8 +46,7 @@ namespace SALShell.CodeGen
                 IdTypes.TryGetValue(node.Symbol, out type);
                 if(type == "null")
                 {
-                    index = NumberDeclarations.FindIndex(x => x.Symbol == node.Symbol);
-                    NumberDeclarations[index].InoType = expressionType;   
+                    IdTypes[node.Symbol] = expressionType;
                 }
             } else
                 IdTypes.Add(node.Symbol, expressionType);
@@ -64,9 +64,7 @@ namespace SALShell.CodeGen
             if (node.Symbol.Type == SALTypeEnum.number)
             {
                 IdTypes.Add(node.Symbol, "null");
-                NumberDeclarations.Add(node);
             }
-                
             
             return null;
         }
@@ -93,14 +91,32 @@ namespace SALShell.CodeGen
 
         public override object Visit(FunctionDeclarationAstNode node)
         {
+            Visit(node.Parameters);
             Visit(node.Body);
+            node.InoType = CurrentReturnType;
+            CurrentReturnType = "";
+
             return null;
         }
 
+        //Due to the CFG some not so nice (almost spaghetti-like) code has been created
+        //(Namely that formal parameters are ID AST nodes and not Declaration Ast Nodes)
         public override object Visit(IdAstNode node)
         {
-            IdTypes.TryGetValue(node.Symbol, out string val);
-            return val;
+            if (IsParam)
+            {
+                if(node.Symbol.Type == SALTypeEnum.number) //IF IT IS A SAL-NUMBER ADD IT TO THE EVALUATION QUEUE ELSE IGNORE IT
+                {
+                    FormalParameters.Add(node);
+                    IdTypes.Add(node.Symbol, "null");
+                }
+                return null;
+            }
+            else
+            {
+                IdTypes.TryGetValue(node.Symbol, out string val);   //If it is not a parameter-declaration try to find the ino type of the id.
+                return val;
+            }
         }
 
         public override object Visit(IfStructureAstNode node)
@@ -147,6 +163,12 @@ namespace SALShell.CodeGen
 
         public override object Visit(ParameterListAstNode node)
         {
+            IsParam = true;
+            foreach (ASTNode param in node.Children)
+            {
+                Visit(param);
+            }
+            IsParam = false;
             return null;
         }
 
@@ -183,6 +205,7 @@ namespace SALShell.CodeGen
 
         public override object Visit(ReturnAstNode node)
         {
+            CurrentReturnType += Visit(node.ReturnExpression);
             return null;
         }
 
@@ -240,7 +263,13 @@ namespace SALShell.CodeGen
                 case DeclareAstNode decl:
                     if (decl.Symbol.Type == SALTypeEnum.number)
                     {
-                        decl.InoType = NumberDeclarations.Single(x => x == decl).InoType;
+                        decl.InoType = IdTypes[decl.Symbol];
+                    }
+                    break;
+                case IdAstNode paramnode:
+                    if (paramnode.Symbol.Type == SALTypeEnum.number && FormalParameters.Any(x => x == paramnode))
+                    {
+                        paramnode.InoType = IdTypes[paramnode.Symbol];
                     }
                     break;
                 default:
