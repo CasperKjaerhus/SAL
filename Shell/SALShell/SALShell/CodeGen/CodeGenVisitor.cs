@@ -15,6 +15,7 @@ namespace SALShell.CodeGen
         public bool IsGlobal { get; set; } = false;
         public bool IsLoop { get; set; } = false;
         private int IndentationDepth = 0;
+        private List<Symbol> DeclOrInit = new List<Symbol>();
 
         public override string Visit(ArgumentsAstNode node)
         {
@@ -47,7 +48,7 @@ namespace SALShell.CodeGen
             string expression = Visit(node.Expr);
             string id = Visit(node.Id);
 
-            if(node.InoType != null)
+            if(node.InoType != null && !(DeclOrInit.Any(x => x == node.Symbol)))
             {
                 id = node.InoType + " " + id;
             }
@@ -74,6 +75,7 @@ namespace SALShell.CodeGen
 
             if(node.Symbol.Type == SALTypeEnum.number)
             {
+                DeclOrInit.Add(node.Symbol);
                 return node.InoType + " " + Visit(node.Id) + ";";
             }
             else

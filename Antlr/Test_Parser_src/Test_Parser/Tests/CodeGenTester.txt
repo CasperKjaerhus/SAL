@@ -13,11 +13,13 @@ function bob(number num) returns number begin
 
 	num = num + 1;
 	number aaa;
+	number b;
 	string bbb;
 	number a = 2+2;
 	a++;
 	--a;
-	aaa = a;
+	aaa = a++;
+	b = aaa + 1.5;
 	number potato = aaa + num;
 
 	return num;

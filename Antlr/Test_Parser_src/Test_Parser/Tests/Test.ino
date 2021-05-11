@@ -13,13 +13,17 @@ void main(){
 bob(num){
     int num = num + 1;
     int aaa;
+    float b;
     string bbb;
     int a = 2 + 2;
     a++;
     --a;
-    int aaa = a;
+    aaa = a++;
+    b = aaa + 1.5;
     int potato = aaa + num;
     return num;
+
+
 
 
 

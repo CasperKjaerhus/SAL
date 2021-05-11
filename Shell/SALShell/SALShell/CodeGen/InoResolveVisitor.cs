@@ -168,12 +168,12 @@ namespace SALShell.CodeGen
 
         public override object Visit(PostfixExprAstNode node)
         {
-            return null;
+            return "int";
         }
 
         public override object Visit(PrefixExprAstNode node)
         {
-            return null;
+            return "int";
         }
 
         public override object Visit(RelationalExprAstNode node)
