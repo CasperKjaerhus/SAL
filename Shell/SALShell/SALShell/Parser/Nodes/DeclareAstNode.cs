@@ -9,7 +9,7 @@ namespace SALShell.Parser
     public class DeclareAstNode : ASTNode
     {
         public ASTNode Id { get; }
-        public Symbol Sym { get; set; }
+        public Symbol Symbol { get; set; }
         public string InoType { get; set; }
         public DeclareAstNode(ASTNode id, IToken token) : base(token)
         {

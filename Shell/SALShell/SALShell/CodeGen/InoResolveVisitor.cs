@@ -2,13 +2,15 @@
 using SALShell.SymbolTable;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SALShell.CodeGen
 {
     class InoResolveVisitor : ASTVisitor<object>
     {
-        Dictionary<Symbol, string> IdValues = new Dictionary<Symbol, string>();
+        Dictionary<Symbol, string> IdTypes = new Dictionary<Symbol, string>();
+        List<DeclareAstNode> NumberDeclarations = new List<DeclareAstNode>();
 
         public override object Visit(ArgumentsAstNode node)
         {
@@ -32,12 +34,24 @@ namespace SALShell.CodeGen
 
         private string EvaluateInoAssignment(AssignAstNode node)
         {
-            string value = "";
+            string expressionType = "";
+            string type;
+            int index;
 
-            value += Visit(node.Expr);
-            IdValues.Add(node.Symbol, value);
+            expressionType += Visit(node.Expr);
 
-            return value;
+            if (IdTypes.ContainsKey(node.Symbol))
+            {
+                IdTypes.TryGetValue(node.Symbol, out type);
+                if(type == "null")
+                {
+                    index = NumberDeclarations.FindIndex(x => x.Symbol == node.Symbol);
+                    NumberDeclarations[index].InoType = expressionType;   
+                }
+            } else
+                IdTypes.Add(node.Symbol, expressionType);
+
+            return expressionType;
         }
 
         public override object Visit(CondAstNode node)
@@ -47,9 +61,13 @@ namespace SALShell.CodeGen
 
         public override object Visit(DeclareAstNode node)
         {
-            if (node.Sym.Type == SALTypeEnum.number)
-                IdValues.Add(node.Sym, "null");
-
+            if (node.Symbol.Type == SALTypeEnum.number)
+            {
+                IdTypes.Add(node.Symbol, "null");
+                NumberDeclarations.Add(node);
+            }
+                
+            
             return null;
         }
 
@@ -81,7 +99,7 @@ namespace SALShell.CodeGen
 
         public override object Visit(IdAstNode node)
         {
-            IdValues.TryGetValue(node.Symbol, out string val);
+            IdTypes.TryGetValue(node.Symbol, out string val);
             return val;
         }
 
@@ -213,6 +231,29 @@ namespace SALShell.CodeGen
         public override object Visit(WhileAstNode node)
         {
             return null;
+        }
+
+        public void ResolveNumberDeclarations(ASTNode node)
+        {
+            switch (node)
+            {
+                case DeclareAstNode decl:
+                    if (decl.Symbol.Type == SALTypeEnum.number)
+                    {
+                        decl.InoType = NumberDeclarations.Single(x => x == decl).InoType;
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            if(node != null && node.Children != null)
+            {
+                foreach (ASTNode child in node.Children)
+                {
+                    ResolveNumberDeclarations(child);
+                }
+            }
         }
     }
 }

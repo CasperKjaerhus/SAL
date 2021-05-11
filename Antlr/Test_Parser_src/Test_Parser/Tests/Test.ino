@@ -1,34 +1,60 @@
-#include testLib
 void main(){
-    for (i = num; i <= 10; i = i + 1){
-        num = num + i;
+    int aaa = 1;
+    float caa = 1.5;
+    string bbb;
+    hat(bbb);
+    bob(aaa);
+
+
+
+
+
 }
-    for(numb : numArray){
+bob(num){
+    int num = num + 1;
+    int aaa;
+    string bbb;
+    int a = 2 + 2;
+    a++;
+    --a;
+    int aaa = a;
+    int potato = aaa + num;
+    return num;
+
+
+
+
+
+
+
+
+
+}
+string hat(string john, bobjones){
+    string words = "obama";
+    if(2 > 3;){
+        john = "help";
+    } else if(true){
+        bob(3);
+    } else{
+        words = "jodel";
+        words = "another one";
+
+
     }
-    while(num > 10;){
-        for (i = num; i <= 100; i = i + 1){
-        testNumber = i;
-        funcTest();
-
-}
-}
+    return john;
 
 
 
 }
-string funcTest(char c, num1, string str){
-    int newNum = num1 + num;
-    char newC = c;
-    if(newC == 'c'){
-        string newStr = str;
-    }
-
+void ForLoopTester(iterator){
+    int one = 1;
+    for (iterator = 0; iterator <= 100; iterator = iterator + 1){
+        one++;
+}
 
 
 }
-int num = 2;
- numArray[5] = { 1, 2, 3, 4, 5 };
-
 
 
 
@@ -36,23 +62,12 @@ void setup() {
 }
 
 void loop() {
-    for (i = num; i <= 10; i = i + 1){
-        num = num + i;
-}
-    for(numb : numArray){
-    }
-    while(num > 10;){
-        for (i = num; i <= 100; i = i + 1){
-        testNumber = i;
-        funcTest();
+    int aaa = 1;
+    float caa = 1.5;
+    string bbb;
+    hat(bbb);
+    bob(aaa);
 
-}
-}
-
-
-
-int num = 2;
- numArray[5] = { 1, 2, 3, 4, 5 };
 
 
 

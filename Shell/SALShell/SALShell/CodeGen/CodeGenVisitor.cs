@@ -67,12 +67,19 @@ namespace SALShell.CodeGen
 
         public override string Visit(DeclareAstNode node)
         {
-            if(node.Sym.Name == "Global" && IsLoop)
+            if(node.Symbol.Name == "Global" && IsLoop)
             {
                 return "";
             }
 
-            return Visit(node.Id) + ";";
+            if(node.Symbol.Type == SALTypeEnum.number)
+            {
+                return node.InoType + " " + Visit(node.Id) + ";";
+            }
+            else
+            {
+                return Visit(node.Id) + ";";
+            }
         }
 
         public override string Visit(ExprListAstNode node)

@@ -1,4 +1,5 @@
 ﻿using Antlr4.Runtime;
+using SALShell.SymbolTable;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,6 +10,7 @@ namespace SALShell.Parser
     {
         public ASTNode Id { get; }
         public ASTNode IndexExpression { get; }
+        public Symbol Symbol { get; set; }
         public ArrayAccessAstNode(ASTNode id, ASTNode indexExpr, IToken token) : base(token)
         {
             Id = id;

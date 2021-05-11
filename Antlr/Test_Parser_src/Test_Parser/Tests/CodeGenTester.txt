@@ -1,7 +1,7 @@
 function main() returns void begin
 
 	number aaa = 1;
-	number aaa = 1.5;
+	number caa = 1.5;
 	string bbb;
 	
 	hat(bbb);
@@ -17,7 +17,8 @@ function bob(number num) returns number begin
 	number a = 2+2;
 	a++;
 	--a;
-	aaa = a++;
+	aaa = a;
+	number potato = aaa + num;
 
 	return num;
 end
