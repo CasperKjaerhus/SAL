@@ -11,6 +11,7 @@ namespace SALShell.SymbolTable
         private List<Error> Errors { get; }
         private Scope CurrentScope { get; set; }
         private Queue<(ASTNode, Scope)> scopeQueue = new Queue<(ASTNode, Scope)>();
+        private Dictionary<string, FunctionSymbol> FunctionSymbols = new Dictionary<string, FunctionSymbol>();
 
         public SymbolTableVisitor(Scope globalScope, List<Error> errors)
         {
@@ -37,7 +38,6 @@ namespace SALShell.SymbolTable
                     CurrentScope = CurrentScope.Parent;
                 }
             }
-            
 
             return default;
         }
@@ -96,6 +96,7 @@ namespace SALShell.SymbolTable
             }
 
             FunctionSymbol functionSymbol = new FunctionSymbol(IdSymbol.Scope, IdSymbol.Name, IdSymbol.Type, parameters);
+            FunctionSymbols.Add(functionSymbol.Name, functionSymbol);
             node.Symbol = functionSymbol;
 
             scopeQueue.Enqueue((node.Body, CurrentScope)); // Queue to scopeQueue so it gets scopechecked after all FunctionDecls
@@ -112,6 +113,7 @@ namespace SALShell.SymbolTable
             Symbol idSymbol = Visit(node.Id);
             if (idSymbol != null && !CurrentScope.IsSymbolWithinScope(idSymbol))
             {
+                node.Symbol = idSymbol;
                 CurrentScope.Symbols.Add(idSymbol);
             }
             return idSymbol;
@@ -203,9 +205,28 @@ namespace SALShell.SymbolTable
                 }
                 return default;
             }
+        }
+        public override Symbol Visit(ArrayAccessAstNode node)
+        {
+            Symbol idSymbol = Visit(node.Id);
+            
+            if (idSymbol != null)
+            {
+                node.Symbol = idSymbol;
+            }
 
+            Visit(node.IndexExpression);
+
+            return base.Visit(node);
         }
 
+        public override Symbol Visit(FunctioncallAstNode node)
+        {
+            Symbol s = Visit(node.FunctionId);
+            if (s != null)
+                node.Symbol = FunctionSymbols[s.Name];
 
+            return base.Visit(node);
+        }
     }
 }
