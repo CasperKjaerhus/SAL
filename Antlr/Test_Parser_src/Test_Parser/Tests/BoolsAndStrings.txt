@@ -1,9 +1,6 @@
 ﻿function main(number strLength) returns void begin
+
     string stringVar = "This is a string";
-    number john = 1;
-    number ronaldo = 1.5;
-  
-    number jones = john + ronaldo;
   
     Serial.Print(getFirstChar(stringVar)); 
     // Prints "T" to the console using the arduino-specific functionality Serial.Print()
@@ -26,4 +23,5 @@ end
 
 function getStringLength(string stringInp) returns number begin
 // Execute imaginary code that gets the string length..
+	return 1;
 end

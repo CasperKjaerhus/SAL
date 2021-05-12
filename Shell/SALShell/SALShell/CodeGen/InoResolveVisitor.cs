@@ -10,7 +10,7 @@ namespace SALShell.CodeGen
     class InoResolveVisitor : ASTVisitor<object>
     {
         private Dictionary<Symbol, string> IdTypes = new Dictionary<Symbol, string>();
-        private List<IdAstNode> FormalParameters = new List<IdAstNode>();
+        private Dictionary<Symbol, string> FunctionTypes = new Dictionary<Symbol, string>();
         private string CurrentReturnType;
         private bool IsParam = false;
 
@@ -91,9 +91,16 @@ namespace SALShell.CodeGen
 
         public override object Visit(FunctionDeclarationAstNode node)
         {
-            Visit(node.Parameters);
-            Visit(node.Body);
+            if (node.Body != null)
+            {
+                Visit(node.Parameters);
+                Visit(node.Body);
+            }
+            else
+                return null;
+
             node.InoType = CurrentReturnType;
+            FunctionTypes.Add(node.Symbol, CurrentReturnType);
             CurrentReturnType = "";
 
             return null;
@@ -105,10 +112,9 @@ namespace SALShell.CodeGen
         {
             if (IsParam)
             {
-                if(node.Symbol.Type == SALTypeEnum.number) //IF IT IS A SAL-NUMBER ADD IT TO THE EVALUATION QUEUE ELSE IGNORE IT
+                if(node.Symbol.Type == SALTypeEnum.number) //IF IT IS A SAL-NUMBER ADD IT TO THE EVALUATION QUEUE BY SETTING ISPARAM TO TRUE ELSE IGNORE IT
                 {
                     node.IsParam = IsParam;
-                    FormalParameters.Add(node);
                     IdTypes.Add(node.Symbol, "null");
                 }
                 return null;
@@ -257,7 +263,7 @@ namespace SALShell.CodeGen
             return null;
         }
 
-        public void ResolveNumberDeclarations(ASTNode node)
+        public void ResolveNumberTypes(ASTNode node)
         {
             switch (node)
             {
@@ -268,9 +274,15 @@ namespace SALShell.CodeGen
                     }
                     break;
                 case IdAstNode paramnode:
-                    if (paramnode.Symbol.Type == SALTypeEnum.number && FormalParameters.Any(x => x == paramnode))
+                    if (paramnode.IsParam && paramnode.Symbol.Type == SALTypeEnum.number)
                     {
                         paramnode.InoType = IdTypes[paramnode.Symbol];
+                    }
+                    break;
+                case AssignAstNode asmntNode:
+                    if(asmntNode.Expr is FunctioncallAstNode)
+                    {
+                        asmntNode.InoType = GrabFunctionType((FunctioncallAstNode)asmntNode.Expr);
                     }
                     break;
                 default:
@@ -281,9 +293,14 @@ namespace SALShell.CodeGen
             {
                 foreach (ASTNode child in node.Children)
                 {
-                    ResolveNumberDeclarations(child);
+                    ResolveNumberTypes(child);
                 }
             }
+        }
+
+        private string GrabFunctionType(FunctioncallAstNode astnode)
+        {
+            return FunctionTypes[astnode.Symbol];
         }
     }
 }
