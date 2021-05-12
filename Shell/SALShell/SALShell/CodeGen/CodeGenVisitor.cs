@@ -24,12 +24,20 @@ namespace SALShell.CodeGen
             if (node.Children.Count == 1)
             {
                 arguments += Visit(node.Children[0]);
+                if (arguments.Last() == ';')
+                {
+                    arguments = arguments.Remove(arguments.Length - 1);
+                }
             }
             else if(node.Children.Count > 1)
             {
                 foreach (ASTNode child in node.Children)
                 {
                     arguments += Visit(child) + ", ";
+                    if (arguments.Last() == ';')
+                    {
+                        arguments = arguments.Remove(arguments.Length - 1);
+                    }
                 }
             } else
                 return arguments;
@@ -269,7 +277,7 @@ namespace SALShell.CodeGen
 
         public override string Visit(PostfixExprAstNode node)
         {
-            return $"{Visit(node.Children[0])}{node.Token.Text};";
+            return $"{Visit(node.Children[0])}{node.Token.Text}";
         }
 
         public override string Visit(PrefixExprAstNode node)
@@ -279,7 +287,7 @@ namespace SALShell.CodeGen
 
         public override string Visit(RelationalExprAstNode node)
         {
-            return $"{Visit(node.Left)} {node.Token.Text} {Visit(node.Right)};";
+            return $"{Visit(node.Left)} {node.Token.Text} {Visit(node.Right)}";
         }
 
         public override string Visit(ReturnAstNode node)

@@ -2,7 +2,7 @@
     char firstChar;
     bool isEmpty = true;
     int strLength = getStringLength(stringInp);
-    if(strLength > 0;){
+    if(strLength > 0){
         isEmpty = false;
     }
     if(isEmpty){
@@ -27,7 +27,7 @@ void setup() {
 
 void loop() {
     string stringVar = "This is a string";
-    Serial.Print(getFirstChar(stringVar););
+    Serial.Print(getFirstChar(stringVar));
 
 
 }
