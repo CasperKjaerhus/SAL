@@ -14,7 +14,7 @@ function getFirstChar(string stringInp) returns char begin
     
     if(strLength > 0) then begin isEmpty = false; end
     
-    if(isEmpty) then begin
+    if(!isEmpty) then begin
         firstChar = stringInp[0];
     end
 

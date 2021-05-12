@@ -9,7 +9,7 @@ namespace SALShell.CodeGen
 {
     class InoResolveVisitor : ASTVisitor<object>
     {
-        private Dictionary<Symbol, string> IdTypes = new Dictionary<Symbol, string>();
+        private Dictionary<Symbol, string> VariableTypes = new Dictionary<Symbol, string>();
         private Dictionary<Symbol, string> FunctionTypes = new Dictionary<Symbol, string>();
         private string CurrentReturnType;
         private bool IsParam = false;
@@ -41,15 +41,15 @@ namespace SALShell.CodeGen
 
             expressionType += Visit(node.Expr);
 
-            if (IdTypes.ContainsKey(node.Symbol))
+            if (VariableTypes.ContainsKey(node.Symbol))
             {
-                IdTypes.TryGetValue(node.Symbol, out type);
+                VariableTypes.TryGetValue(node.Symbol, out type);
                 if(type == "null")
                 {
-                    IdTypes[node.Symbol] = expressionType;
+                    VariableTypes[node.Symbol] = expressionType;
                 }
             } else
-                IdTypes.Add(node.Symbol, expressionType);
+                VariableTypes.Add(node.Symbol, expressionType);
 
             return expressionType;
         }
@@ -63,7 +63,7 @@ namespace SALShell.CodeGen
         {
             if (node.Symbol.Type == SALTypeEnum.number)
             {
-                IdTypes.Add(node.Symbol, "null");
+                VariableTypes.Add(node.Symbol, "null");
             }
             
             return null;
@@ -71,7 +71,18 @@ namespace SALShell.CodeGen
 
         public override object Visit(ExprListAstNode node)
         {
-            return null;
+            string type = "";
+            foreach (ASTNode child in node.Children)
+            {
+                type += Visit(child);
+                if(type == "float")
+                {
+                    return type;
+                }
+                type = "";
+            }
+
+            return "int";
         }
 
         public override object Visit(ForAstNode node)
@@ -115,13 +126,13 @@ namespace SALShell.CodeGen
                 if(node.Symbol.Type == SALTypeEnum.number) //IF IT IS A SAL-NUMBER ADD IT TO THE EVALUATION QUEUE BY SETTING ISPARAM TO TRUE ELSE IGNORE IT
                 {
                     node.IsParam = IsParam;
-                    IdTypes.Add(node.Symbol, "null");
+                    VariableTypes.Add(node.Symbol, "null");
                 }
                 return null;
             }
             else
             {
-                IdTypes.TryGetValue(node.Symbol, out string val);   //If it is not a parameter-declaration try to find the ino type of the id.
+                VariableTypes.TryGetValue(node.Symbol, out string val);   //If it is not a parameter-declaration try to find the ino type of the id.
                 return val;
             }
         }
@@ -270,19 +281,19 @@ namespace SALShell.CodeGen
                 case DeclareAstNode decl:
                     if (decl.Symbol.Type == SALTypeEnum.number)
                     {
-                        decl.InoType = IdTypes[decl.Symbol];
+                        decl.InoType = VariableTypes[decl.Symbol];
                     }
                     break;
                 case IdAstNode paramnode:
                     if (paramnode.IsParam && paramnode.Symbol.Type == SALTypeEnum.number)
                     {
-                        paramnode.InoType = IdTypes[paramnode.Symbol];
+                        paramnode.InoType = VariableTypes[paramnode.Symbol];
                     }
                     break;
                 case AssignAstNode asmntNode:
-                    if(asmntNode.Expr is FunctioncallAstNode)
+                    if(asmntNode.Expr is FunctioncallAstNode funcnode)
                     {
-                        asmntNode.InoType = GrabFunctionType((FunctioncallAstNode)asmntNode.Expr);
+                        asmntNode.InoType = FunctionTypes[funcnode.Symbol];
                     }
                     break;
                 default:
@@ -298,9 +309,5 @@ namespace SALShell.CodeGen
             }
         }
 
-        private string GrabFunctionType(FunctioncallAstNode astnode)
-        {
-            return FunctionTypes[astnode.Symbol];
-        }
     }
 }

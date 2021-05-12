@@ -1,33 +1,38 @@
- char getFirstChar(string stringInp){
-    char firstChar;
-    bool isEmpty = true;
-    int strLength = getStringLength(stringInp);
-    if(strLength > 0){
-        isEmpty = false;
+ void setup(){
+    for (thisPin = 0; thisPin <= pinCount; thisPin = thisPin + 1){
+        pinMode(ledPins[thisPin], OUTPUT, );
     }
-    if(isEmpty){
-        firstChar = stringInp[0];
-    }
-    return firstChar;
-
-
-
-
-
 
 }
-int getStringLength(string stringInp){
-    return 1;
+int timer = 100;
+int ledPins[] = { 2, 7, 4, 6, 5, 3 };
+int pinCount = 6;
 
-}
 
 
-void setup() {
-}
 
 void loop() {
-    string stringVar = "This is a string";
-    Serial.Print(getFirstChar(stringVar));
+    for (thisPin = 0; thisPin <= pinCount; thisPin = thisPin + 1){
+        digitalWrite(ledPins[thisPin], HIGH, );
+        delay(timer);
+        digitalWrite(ledPins[thisPin], LOW, );
+
+
+    }
+    for (thisPin = pinCount + 1; thisPin <= 0; thisPin = thisPin + 1){
+        digitalWrite(ledPins[thisPin], HIGH, );
+        delay(timer);
+        digitalWrite(ledPins[thisPin], LOW, );
+
+
+    }
+
+
+int timer = 100;
+int ledPins[] = { 2, 7, 4, 6, 5, 3 };
+int pinCount = 6;
+
+
 
 
 }

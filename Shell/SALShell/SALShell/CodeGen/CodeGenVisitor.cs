@@ -113,12 +113,12 @@ namespace SALShell.CodeGen
         {
             string iterator = Visit(node.Iterator);
             string startVal = Visit(node.StartValue);
-            int endVal = int.Parse(Visit(node.EndValue));
-            int step = 1;
+            string endVal = Visit(node.EndValue);
+            string step = "1";
 
-            if (node.Step != null && int.TryParse(Visit(node.Step), out _)) 
-                step = int.Parse(Visit(node.Step));
-            
+            if (node.Step != null)
+                step = Visit(node.Step);
+
             string forCode = $"for ({iterator} = {startVal}; {iterator} <= {endVal}; {iterator} = {iterator} + {step})";
             IndentationDepth++;
             forCode += $"{{\n{Visit(node.Body)}{Spaces}}}";
@@ -177,6 +177,9 @@ namespace SALShell.CodeGen
         public override string Visit(IdAstNode node)
         {
             string IdCode = "";
+
+            if (node.Negation)
+                IdCode += "!";
 
             if (node.Type != SALTypeEnum.undefined && node.Type != SALTypeEnum.number)
                 IdCode += node.Type + " ";
@@ -287,7 +290,10 @@ namespace SALShell.CodeGen
 
         public override string Visit(RelationalExprAstNode node)
         {
-            return $"{Visit(node.Left)} {node.Token.Text} {Visit(node.Right)}";
+            if(node.Negation)
+                return $"!({Visit(node.Left)} {node.Token.Text} {Visit(node.Right)})";
+            else
+                return $"{Visit(node.Left)} {node.Token.Text} {Visit(node.Right)}";
         }
 
         public override string Visit(ReturnAstNode node)

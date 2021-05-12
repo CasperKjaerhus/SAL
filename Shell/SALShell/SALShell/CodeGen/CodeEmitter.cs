@@ -20,8 +20,8 @@ namespace SALShell.Core.CodeGeneration
             using (StreamWriter StreamW = File.CreateText(fileCreationPath))
             {
                 WriteToGlobal(StreamW, root);
-                StreamW.WriteLine("void setup() {");
-                StreamW.WriteLine("}\n");
+                //StreamW.WriteLine("void setup() {");
+                //StreamW.WriteLine("}\n");
 
                 StreamW.WriteLine("void loop() {");
                 WriteToLoop(StreamW, root);
