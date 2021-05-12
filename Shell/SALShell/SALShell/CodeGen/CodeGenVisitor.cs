@@ -52,6 +52,11 @@ namespace SALShell.CodeGen
 
         public override string Visit(AssignAstNode node)
         {
+            if (node.Symbol.Scope.Depth == 0 && IsLoop)
+            {
+                return "";
+            }
+
             string AssignmentCode = "";
             string expression = Visit(node.Expr);
             string id = Visit(node.Id);
@@ -76,7 +81,7 @@ namespace SALShell.CodeGen
 
         public override string Visit(DeclareAstNode node)
         {
-            if(node.Symbol.Name == "Global" && IsLoop)
+            if(node.Symbol.Scope.Depth == 0 && IsLoop)
             {
                 return "";
             }
