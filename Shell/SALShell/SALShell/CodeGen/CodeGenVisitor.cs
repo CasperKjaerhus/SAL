@@ -33,10 +33,14 @@ namespace SALShell.CodeGen
             {
                 foreach (ASTNode child in node.Children)
                 {
-                    arguments += Visit(child) + ", ";
+                    arguments += Visit(child);
                     if (arguments.Last() == ';')
                     {
                         arguments = arguments.Remove(arguments.Length - 1);
+                    }
+                    if (child != node.Children[node.Children.Count - 1])
+                    {
+                        arguments += ", ";
                     }
                 }
             } else
