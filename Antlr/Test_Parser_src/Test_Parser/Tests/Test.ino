@@ -1,7 +1,7 @@
  char getFirstChar(string stringInp){
     char firstChar;
     bool isEmpty = true;
-    WRONG strLength = getStringLength(stringInp);
+    int strLength = getStringLength(stringInp);
     if(strLength > 0;){
         isEmpty = false;
     }
