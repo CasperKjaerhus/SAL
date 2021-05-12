@@ -99,6 +99,7 @@ namespace SALShell.SymbolTable
 
             FunctionSymbol functionSymbol = new FunctionSymbol(IdSymbol.Scope, IdSymbol.Name, IdSymbol.Type, parameters);
             FunctionSymbols.Add(functionSymbol.Name, functionSymbol);
+            CurrentScope.ReturnType = IdSymbol.Type;
             node.Symbol = functionSymbol;
 
             scopeQueue.Enqueue((node.Body, CurrentScope)); // Queue to scopeQueue so it gets scopechecked after all FunctionDecls
@@ -108,6 +109,12 @@ namespace SALShell.SymbolTable
             CurrentScope.Symbols.Add(functionSymbol);
 
             return functionSymbol;
+        }
+
+        public override Symbol Visit(ReturnAstNode node)
+        {
+            node.ReturnType = CurrentScope.ReturnType;
+            return base.Visit(node);
         }
 
         public override Symbol Visit(DeclareAstNode node)

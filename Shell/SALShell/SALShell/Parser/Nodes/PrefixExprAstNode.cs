@@ -7,8 +7,10 @@ namespace SALShell.Parser
 {
     public class PrefixExprAstNode : ExprAstNode
     {
+        public ASTNode Id { get; set; }
         public PrefixExprAstNode(ASTNode idnode, IToken @operator) : base(@operator)
         {
+            Id = idnode;
             Children.Add(idnode);
         }
     }

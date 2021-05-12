@@ -51,7 +51,7 @@ namespace SALShell.TypeChecker
 
         public override SALTypeEnum Visit(EqualityAstNode node)
         {
-            return ExpressionCheck(new []{ SALTypeEnum.@bool, SALTypeEnum.@char, SALTypeEnum.number }, node.Left, node.Right);
+            return ExpressionCheck(new []{ SALTypeEnum.@bool, SALTypeEnum.@char, SALTypeEnum.number }, node.Left, node.Right) != SALTypeEnum.error ? SALTypeEnum.@bool : SALTypeEnum.error;
         }
 
         public override SALTypeEnum Visit(IfStructureAstNode node)
@@ -127,16 +127,55 @@ namespace SALShell.TypeChecker
         }
         public override SALTypeEnum Visit(LogicAndAstNode node)
         {
-            SALTypeEnum left = Visit(node.Left);
-            if (left == SALTypeEnum.error)
-                return SALTypeEnum.error;
-            SALTypeEnum right = Visit(node.Right);
-            if (right == SALTypeEnum.error)
-                return SALTypeEnum.error;
-
-            return base.Visit(node);
+            return ExpressionCheck(new[] { SALTypeEnum.@bool }, node.Left, node.Right) != SALTypeEnum.error ? SALTypeEnum.@bool : SALTypeEnum.error;
         }
 
+        public override SALTypeEnum Visit(LogicOrAstNode node)
+        {
+            return ExpressionCheck(new[] { SALTypeEnum.@bool }, node.Left, node.Right) != SALTypeEnum.error ? SALTypeEnum.@bool : SALTypeEnum.error;
+        }
+        public override SALTypeEnum Visit(PostfixExprAstNode node)
+        {
+            SALTypeEnum idType = Visit(node.Id);
+            if(idType != SALTypeEnum.number)
+            {
+                Errors.Add(new Error(ErrorEnum.TypeMismatch, node.Token.Line, node.Token.Text));
+                return SALTypeEnum.error;
+            }
+
+            return SALTypeEnum.number;
+        }
+        public override SALTypeEnum Visit(PrefixExprAstNode node)
+        {
+            SALTypeEnum idType = Visit(node.Id);
+            if (idType != SALTypeEnum.number)
+            {
+                Errors.Add(new Error(ErrorEnum.TypeMismatch, node.Token.Line, node.Token.Text));
+                return SALTypeEnum.error;
+            }
+
+            return SALTypeEnum.number;
+        }
+
+        public override SALTypeEnum Visit(ReturnAstNode node)
+        {
+            if(node.ReturnType != Visit(node.ReturnExpression))
+            {
+                Errors.Add(new Error(ErrorEnum.TypeMismatch, node.Token.Line, node.Token.Text));
+                return SALTypeEnum.error;
+            }
+            return node.ReturnType;
+        }
+
+        public override SALTypeEnum Visit(RelationalExprAstNode node)
+        {
+            return ExpressionCheck(new[] { SALTypeEnum.number }, node.Left, node.Right) != SALTypeEnum.error ? SALTypeEnum.@bool : SALTypeEnum.error;
+        }
+
+        public override SALTypeEnum Visit(MultAstNode node)
+        {
+            return ExpressionCheck(new[] { SALTypeEnum.number }, node.Left, node.Right);
+        }
         public override SALTypeEnum Visit(ForeachAstNode node)
         {
             return base.Visit(node);
@@ -164,7 +203,7 @@ namespace SALShell.TypeChecker
             SALTypeEnum rightType = Visit(right);
             if (rightType == SALTypeEnum.error)
                 return SALTypeEnum.error;
-            if (left != right)
+            if (leftType != rightType)
                 return SALTypeEnum.error;
             if (!compatibleTypes.ToList().Exists(s => s == leftType))
                 return SALTypeEnum.error;
