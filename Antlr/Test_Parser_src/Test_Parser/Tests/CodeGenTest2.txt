@@ -12,6 +12,23 @@ function main() returns void begin
 	end
 end
 
+function SwitchTest(char switchChar) returns string begin
+    string returnString;
+	switch (switchChar)
+        begin 
+            case 'x': 
+                returnString = "Char is x";
+                break;
+            case 'y': 
+                returnString = "Char is Y";
+                break;
+            default:
+				returnString = "Char is neither Y or X";
+                break;
+        end
+	return returnString;
+end
+
 function setup() returns void begin
 	for(thisPin: 0...pinCount) begin
 		pinMode(ledPins[thisPin], OUTPUT);
@@ -21,3 +38,4 @@ end
 number timer = 100;
 number ledPins[] = {2, 7, 4, 6, 5, 3}; // initialising number array
 number pinCount = 6;
+

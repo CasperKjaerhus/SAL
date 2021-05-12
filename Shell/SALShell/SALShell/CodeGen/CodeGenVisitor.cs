@@ -191,7 +191,10 @@ namespace SALShell.CodeGen
                 IdCode += "!";
 
             if (node.Type != SALTypeEnum.undefined && node.Type != SALTypeEnum.number)
+            {
                 IdCode += node.Type + " ";
+            }
+
             else if(node.Type == SALTypeEnum.number && node.InoType != null)
             {
                 if (node.IsParam)               //Makes sure that if the Id is used as an assignment it is not set as int or float once again;
@@ -330,7 +333,12 @@ namespace SALShell.CodeGen
 
         public override string Visit(SwitchBodyAstNode node)
         {
-            throw new NotImplementedException();
+            string SwitchBody = "";
+            foreach (ASTNode child in node.Children)
+            {
+                SwitchBody += Visit(child);
+            }
+            return SwitchBody;
         }
 
         public override string Visit(SwitchItemAstNode node)
@@ -340,7 +348,7 @@ namespace SALShell.CodeGen
 
         public override string Visit(SwitchStructureAstNode node)
         {
-            throw new NotImplementedException();
+            return $"switch({Visit(node.ConditionalValue)}){{\n{Visit(node.SwitchBody)}\n}}";
         }
 
         public override string Visit(TypeAstNode node)
@@ -359,4 +367,6 @@ namespace SALShell.CodeGen
         }
 
     }
+
+    //TODO: FIX WEIRD NEWLINES, DO SWITCHES, ARRAYS WITHOUT INITIALIZATION CODE
 }

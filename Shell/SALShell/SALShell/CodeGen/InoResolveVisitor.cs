@@ -7,24 +7,24 @@ using System.Text;
 
 namespace SALShell.CodeGen
 {
-    class InoResolveVisitor : ASTVisitor<object>
+    class InoResolveVisitor : ASTVisitor<string>
     {
         private Dictionary<Symbol, string> VariableTypes = new Dictionary<Symbol, string>();
         private Dictionary<Symbol, string> FunctionTypes = new Dictionary<Symbol, string>();
         private string CurrentReturnType;
         private bool IsParam = false;
 
-        public override object Visit(ArgumentsAstNode node)
+        public override string Visit(ArgumentsAstNode node)
         {
             return null;
         }
 
-        public override object Visit(ArrayAccessAstNode node)
+        public override string Visit(ArrayAccessAstNode node)
         {
             return null;
         }
 
-        public override object Visit(AssignAstNode node)
+        public override string Visit(AssignAstNode node)
         {
             if (node.Symbol.Type == SALTypeEnum.number)
             {
@@ -54,12 +54,12 @@ namespace SALShell.CodeGen
             return expressionType;
         }
 
-        public override object Visit(CondAstNode node)
+        public override string Visit(CondAstNode node)
         {
             return null;
         }
 
-        public override object Visit(DeclareAstNode node)
+        public override string Visit(DeclareAstNode node)
         {
             if (node.Symbol.Type == SALTypeEnum.number)
             {
@@ -69,7 +69,7 @@ namespace SALShell.CodeGen
             return null;
         }
 
-        public override object Visit(ExprListAstNode node)
+        public override string Visit(ExprListAstNode node)
         {
             string type = "";
             foreach (ASTNode child in node.Children)
@@ -85,22 +85,22 @@ namespace SALShell.CodeGen
             return "int";
         }
 
-        public override object Visit(ForAstNode node)
+        public override string Visit(ForAstNode node)
         {
             return null;
         }
 
-        public override object Visit(ForeachAstNode node)
+        public override string Visit(ForeachAstNode node)
         {
             return null;
         }
 
-        public override object Visit(FunctioncallAstNode node)
+        public override string Visit(FunctioncallAstNode node)
         {
             return null;
         }
 
-        public override object Visit(FunctionDeclarationAstNode node)
+        public override string Visit(FunctionDeclarationAstNode node)
         {
             if (node.Body != null)
             {
@@ -119,7 +119,7 @@ namespace SALShell.CodeGen
 
         //Due to the CFG some not so nice (almost spaghetti-like) code has been created
         //(Namely that formal parameters are ID AST nodes and not Declaration Ast Nodes)
-        public override object Visit(IdAstNode node)
+        public override string Visit(IdAstNode node)
         {
             if (IsParam)
             {
@@ -137,32 +137,32 @@ namespace SALShell.CodeGen
             }
         }
 
-        public override object Visit(IfStructureAstNode node)
+        public override string Visit(IfStructureAstNode node)
         {
             return null;
         }
 
-        public override object Visit(ImportStatementAstNode node)
+        public override string Visit(ImportStatementAstNode node)
         {
             return null;
         }
 
-        public override object Visit(LogicAndAstNode node)
+        public override string Visit(LogicAndAstNode node)
         {
             return null;
         }
 
-        public override object Visit(EqualityAstNode node)
+        public override string Visit(EqualityAstNode node)
         {
             return null;
         }
 
-        public override object Visit(LogicOrAstNode node)
+        public override string Visit(LogicOrAstNode node)
         {
             return null;
         }
 
-        public override object Visit(MultAstNode node)
+        public override string Visit(MultAstNode node)
         {
             string leftval = "";
             string rightval = "";
@@ -179,7 +179,7 @@ namespace SALShell.CodeGen
 
         }
 
-        public override object Visit(ParameterListAstNode node)
+        public override string Visit(ParameterListAstNode node)
         {
             IsParam = true;
             foreach (ASTNode param in node.Children)
@@ -190,7 +190,7 @@ namespace SALShell.CodeGen
             return null;
         }
 
-        public override object Visit(PlusAstNode node)
+        public override string Visit(PlusAstNode node)
         {
             string leftval = "";
             string rightval = "";
@@ -206,28 +206,28 @@ namespace SALShell.CodeGen
             return "int";
         }
 
-        public override object Visit(PostfixExprAstNode node)
+        public override string Visit(PostfixExprAstNode node)
         {
             return "int";
         }
 
-        public override object Visit(PrefixExprAstNode node)
+        public override string Visit(PrefixExprAstNode node)
         {
             return "int";
         }
 
-        public override object Visit(RelationalExprAstNode node)
+        public override string Visit(RelationalExprAstNode node)
         {
             return null;
         }
 
-        public override object Visit(ReturnAstNode node)
+        public override string Visit(ReturnAstNode node)
         {
             CurrentReturnType += Visit(node.ReturnExpression);
             return null;
         }
 
-        public override object Visit(StatementAstNode node)
+        public override string Visit(StatementAstNode node)
         {
             foreach (ASTNode child in node.Children)
             {
@@ -237,27 +237,27 @@ namespace SALShell.CodeGen
             return null;
         }
 
-        public override object Visit(SwitchBodyAstNode node)
+        public override string Visit(SwitchBodyAstNode node)
         {
             return null;
         }
 
-        public override object Visit(SwitchItemAstNode node)
+        public override string Visit(SwitchItemAstNode node)
         {
             return null;
         }
 
-        public override object Visit(SwitchStructureAstNode node)
+        public override string Visit(SwitchStructureAstNode node)
         {
             return null;
         }
 
-        public override object Visit(TypeAstNode node)
+        public override string Visit(TypeAstNode node)
         {
             return null;
         }
 
-        public override object Visit(ValueAstNode node)
+        public override string Visit(ValueAstNode node)
         {
             if (node.Token.Text.Contains("."))
             {
@@ -269,7 +269,7 @@ namespace SALShell.CodeGen
             }
         }
 
-        public override object Visit(WhileAstNode node)
+        public override string Visit(WhileAstNode node)
         {
             return null;
         }
