@@ -11,7 +11,7 @@ void main(){
 
 }
 bob(int num){
-    int num = num + 1;
+    num = num + 1;
     int aaa;
     float b;
     string bbb;
@@ -34,8 +34,9 @@ bob(int num){
 
 
 }
-string hat(string john, null bobjones){
+string hat(string john, int bobjones){
     string words = "obama";
+    bobjones = 10;
     if(2 > 3;){
         john = "help";
     } else if(true){
@@ -50,12 +51,15 @@ string hat(string john, null bobjones){
 
 
 
+
 }
-void ForLoopTester(null iterator){
+void ForLoopTester(int iterator){
     int one = 1;
-    for (iterator = 0; iterator <= 100; iterator = iterator + 1){
+    iterator = 2;
+    for (i = iterator; i <= 100; i = i + 1){
         one++;
 }
+
 
 
 }

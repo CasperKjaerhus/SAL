@@ -12,6 +12,7 @@ namespace SALShell.Parser
         public IToken ArraySize { get; }
         public string InoType { get; set; }
         public Symbol Symbol { get; set; }
+        public bool IsParam { get; set; } = false;
 
         public IdAstNode(IToken idName, SALTypeEnum type) : base(idName)
         {

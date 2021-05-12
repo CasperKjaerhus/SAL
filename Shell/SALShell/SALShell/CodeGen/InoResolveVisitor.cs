@@ -107,6 +107,7 @@ namespace SALShell.CodeGen
             {
                 if(node.Symbol.Type == SALTypeEnum.number) //IF IT IS A SAL-NUMBER ADD IT TO THE EVALUATION QUEUE ELSE IGNORE IT
                 {
+                    node.IsParam = IsParam;
                     FormalParameters.Add(node);
                     IdTypes.Add(node.Symbol, "null");
                 }

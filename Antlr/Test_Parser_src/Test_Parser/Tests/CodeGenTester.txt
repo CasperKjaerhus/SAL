@@ -28,6 +28,7 @@ end
 function hat(string john, number bobjones) returns string begin
 	
 	string words = "obama";
+	bobjones = 10;
 
 	if(2>3) then begin
 		john = "help";
@@ -45,8 +46,9 @@ end
 
 function ForLoopTester(number iterator) returns void begin
 	number one = 1;
+	iterator = 2;	
 
-	for(iterator:0...100)
+	for(i:iterator...100)
 	begin
 		one++;
 	end

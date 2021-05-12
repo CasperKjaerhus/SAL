@@ -169,6 +169,10 @@ namespace SALShell.CodeGen
                 IdCode += node.Type + " ";
             else if(node.Type == SALTypeEnum.number && node.InoType != null)
             {
+                if (node.IsParam)
+                {
+                    DeclOrInit.Add(node.Symbol);
+                }
                 IdCode += node.InoType + " ";
             }
 

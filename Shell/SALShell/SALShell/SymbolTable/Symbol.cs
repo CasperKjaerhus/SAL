@@ -37,7 +37,7 @@ namespace SALShell.SymbolTable
         }
         public override int GetHashCode()
         {
-            return HashCode.Combine(Depth, Name, Type, Scope);
+            return HashCode.Combine(Name, Scope);
         }
     }
 }
