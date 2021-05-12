@@ -113,7 +113,7 @@ namespace SALShell.CodeGen
             
             string forCode = $"for ({iterator} = {startVal}; {iterator} <= {endVal}; {iterator} = {iterator} + {step})";
             IndentationDepth++;
-            forCode += $"{{\n{Visit(node.Body)}}}";
+            forCode += $"{{\n{Visit(node.Body)}{Spaces}}}";
             IndentationDepth--;
 
             return forCode;
@@ -137,6 +137,12 @@ namespace SALShell.CodeGen
             string id = Visit(node.Id);
             string body = "";
 
+            if(node.InoType != null)
+            {
+                id = node.InoType + " " + id;
+            }
+
+
             if (IsLoop && node.Symbol.Name == "main")
             {
                 IndentationDepth++;
@@ -146,10 +152,9 @@ namespace SALShell.CodeGen
                 return body;
             }
 
-            if (IsGlobal && node.Symbol.Scope.ScopeName != "main")
+            if (IsGlobal && node.Symbol.Name != "main")
             {
                 string parameters = $"({Visit(node.Parameters)})";
-
                 IndentationDepth++;
                 if(node.Body != null)
                     body = Visit(node.Body);
@@ -169,9 +174,9 @@ namespace SALShell.CodeGen
                 IdCode += node.Type + " ";
             else if(node.Type == SALTypeEnum.number && node.InoType != null)
             {
-                if (node.IsParam)
+                if (node.IsParam)               //Makes sure that if the Id is used as an assignment it is not set as int or float once again;
                 {
-                    DeclOrInit.Add(node.Symbol);
+                    DeclOrInit.Add(node.Symbol); 
                 }
                 IdCode += node.InoType + " ";
             }

@@ -51,6 +51,7 @@ function ForLoopTester(number iterator) returns void begin
 	for(i:iterator...100)
 	begin
 		one++;
+		iterator = iterator + 3;
 	end
 end
 
