@@ -21,7 +21,7 @@ namespace SALShell
             //ShellController sheeController = new ShellController(ui, core);
             //sheeController.Ui.Start();
 
-            string text = System.IO.File.ReadAllText(@"D:\P4\SAL\Antlr\Test_Parser_src\Test_Parser\Tests\CodeGenTest2.txt");
+            string text = System.IO.File.ReadAllText(@"D:\P4\SAL\Antlr\Test_Parser_src\Test_Parser\Tests\CppCompileTest.txt");
            
             p4Lexer lexer = new p4Lexer(new AntlrInputStream(text));
             CommonTokenStream stream = new CommonTokenStream(lexer);

@@ -12,8 +12,10 @@ function main() returns void begin
 	end
 end
 
-function SwitchTest(char switchChar) returns string begin
+function SwitchTest(char switchChar, number arrayIndex) returns string begin
     string returnString;
+
+	number arrayTest[];
 
 	switch (switchChar)
         begin 

@@ -23,8 +23,9 @@ namespace SALShell.Core.CodeGeneration
                 //StreamW.WriteLine("void setup() {");
                 //StreamW.WriteLine("}\n");
 
-                StreamW.WriteLine("void loop() {");
+                StreamW.WriteLine("int main()\n{");
                 WriteToLoop(StreamW, root);
+                StreamW.WriteLine("return 0;");
                 StreamW.WriteLine("}");
             }
 

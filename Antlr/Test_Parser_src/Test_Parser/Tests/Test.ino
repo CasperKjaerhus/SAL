@@ -1,49 +1,39 @@
- string SwitchTest(char switchChar){
-    string returnString;
-    switch(switchChar){
-    case 'x':
-        returnString = "Char is x";
-    break;
-    case 'y':
-        returnString = "Char is Y";
-    break;
-    default:
-    break;
+ string funcTest(char c, string str, null num){
+    null newNum = num;
+    int newNum = newNum + 1;
+    char newC = c;
+    if(newC == 'c'){
+        string newStr = str;
     }
-    return returnString;
+
 
 
 
 }
- void setup(){
-    for (thisPin = 0; thisPin <= pinCount; thisPin = thisPin + 1){
-        pinMode(ledPins[thisPin], OUTPUT);
+int numArray[] = { 1, 2, 3, 4, 5 };
+
+
+int main()
+{
+    int num = 2;
+    for (int i = num; i <= 10; i = i + 1){
+        num = num + i;
+}
+    for(numb : numArray){
+        if(numb == 5){
+        string str = "This is a string";
     }
+}
+    while(num > 10){
+        for (int i = num; i <= 100; i = i + numArray[2]){
+        testNumber = i;
+        funcTest('o', "pee");
 
 }
-int timer = 100;
-int ledPins[6] = { 2, 7, 4, 6, 5, 3 };
-int pinCount = 6;
+}
 
 
 
 
-
-void loop() {
-    for (thisPin = 0; thisPin <= pinCount; thisPin = thisPin + 1){
-        digitalWrite(ledPins[thisPin], HIGH);
-        delay(timer);
-        digitalWrite(ledPins[thisPin], LOW);
-
-
-    }
-    for (thisPin = pinCount + 1; thisPin <= 0; thisPin = thisPin + 1){
-        digitalWrite(ledPins[thisPin], HIGH);
-        delay(timer);
-        digitalWrite(ledPins[thisPin], LOW);
-
-
-    }
-
-
+return 0;
 }

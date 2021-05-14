@@ -56,9 +56,10 @@ namespace SALShell.CodeGen
 
         public override string Visit(AssignAstNode node)
         {
-            if (node.Symbol.Scope.Depth == 0 && IsLoop)
+            if (node.Symbol.Scope.Depth == 0 && IsLoop && node.Id is IdAstNode idnode)
             {
-                return "";
+                if(idnode.Type != SALTypeEnum.undefined)
+                    return "";
             }
 
             string AssignmentCode = "";
@@ -124,21 +125,21 @@ namespace SALShell.CodeGen
             string startVal = Visit(node.StartValue);
             string endVal = Visit(node.EndValue);
             string step = "1";
+            IndentationDepth++;
+            string body = Visit(node.Body);
+            IndentationDepth--;
 
             if (node.Step != null)
                 step = Visit(node.Step);
 
-            string forCode = $"for ({iterator} = {startVal}; {iterator} <= {endVal}; {iterator} = {iterator} + {step})";
-            IndentationDepth++;
-            forCode += $"{{\n{Visit(node.Body)}{Spaces}}}";
-            IndentationDepth--;
+            string forCode = $"for (int {iterator} = {startVal}; {iterator} <= {endVal}; {iterator} = {iterator} + {step}){{\n{body}}}";
 
             return forCode;
         }
 
         public override string Visit(ForeachAstNode node)
         {
-            return $"for({Visit(node.ItemId)} : {Visit(node.CollectionId)}){{\n{Spaces}}}";
+            return $"for({Visit(node.ItemId)} : {Visit(node.CollectionId)}){{\n{Spaces}{Visit(node.Body)}}}";
         }
 
         public override string Visit(FunctioncallAstNode node)
@@ -206,10 +207,14 @@ namespace SALShell.CodeGen
 
             IdCode += node.Token.Text;
 
-            if (node.ArraySize != null && node.ArraySize.Text != "[]")
-                IdCode += $"{node.ArraySize.Text}";
-            else if (node.UndefinedArraySize != null)
-                IdCode += $"[{node.UndefinedArraySize}]";
+            if (node.ArraySize != null)
+            {
+                if(node.ArraySize == 0)
+                {
+                    IdCode += "[]";
+                }else
+                    IdCode += $"[{node.ArraySize}]";
+            }
 
             return IdCode;
         }
@@ -373,7 +378,6 @@ namespace SALShell.CodeGen
         {
             return $"while({Visit(node.Condition)}){{\n{Spaces}{Visit(node.Body)}}}";
         }
-
     }
 
     //TODO: FIX WEIRD NEWLINES, ARRAYS WITHOUT INITIALIZATION CODE
