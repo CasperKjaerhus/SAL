@@ -15,6 +15,8 @@ namespace SALShell.Parser
             Value = value;
             Block = block;
             IsBreaked = isBreaked;
+
+            Children.Add(block);
         }
         public override void PrintTrees(int depth)
         {
