@@ -130,11 +130,13 @@ namespace SALShell.CodeGen
                 }
                 return null;
             }
-            else
+            else if(node.Symbol != null && node.Symbol.Type == SALTypeEnum.number)
             {
                 VariableTypes.TryGetValue(node.Symbol, out string val);   //If it is not a parameter-declaration try to find the ino type of the id.
                 return val;
             }
+
+            return null;
         }
 
         public override string Visit(IfStructureAstNode node)

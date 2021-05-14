@@ -14,18 +14,21 @@ end
 
 function SwitchTest(char switchChar) returns string begin
     string returnString;
+
 	switch (switchChar)
         begin 
-            case 'x': 
+            case 'x':
+				begin
                 returnString = "Char is x";
+				end
                 break;
-            case 'y': 
+            case 'y':
+				begin
                 returnString = "Char is Y";
-                break;
-            default:
-				returnString = "Char is neither Y or X";
+				end
                 break;
         end
+
 	return returnString;
 end
 

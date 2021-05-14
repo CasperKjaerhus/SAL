@@ -343,12 +343,15 @@ namespace SALShell.CodeGen
 
         public override string Visit(SwitchItemAstNode node)
         {
-            throw new NotImplementedException();
+            if(node.IsBreaked)
+                return $"{Spaces}case {Visit(node.Value)}:\n{Visit(node.Block)}{Spaces}break;\n";
+            else
+                return $"{Spaces}case {Visit(node.Value)}:\n{Visit(node.Block)}";
         }
 
         public override string Visit(SwitchStructureAstNode node)
         {
-            return $"switch({Visit(node.ConditionalValue)}){{\n{Visit(node.SwitchBody)}\n}}";
+            return $"switch({Visit(node.ConditionalValue)}){{\n{Visit(node.SwitchBody)}{Spaces}default:\n{Spaces}break;\n{Spaces}}}";
         }
 
         public override string Visit(TypeAstNode node)
