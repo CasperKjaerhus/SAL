@@ -53,6 +53,8 @@ namespace SALShell.SymbolTable
             node.Scope = CurrentScope;
 
             Symbol iterator = Visit(node.Iterator);
+            if (CurrentScope.RetrieveSymbol(iterator.Name) != null)
+                Errors.Add(new Error(ErrorEnum.VariableRedeclaration, node.Token.Line, node.Token.Text));
             CurrentScope.Symbols.Add(iterator);
 
             if(node.Body != null) // TODO: Error/Warning on empty body
