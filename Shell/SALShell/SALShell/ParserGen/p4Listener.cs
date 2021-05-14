@@ -450,4 +450,14 @@ public interface Ip4Listener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitAssnOp([NotNull] p4Parser.AssnOpContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="p4Parser.modifier"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterModifier([NotNull] p4Parser.ModifierContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="p4Parser.modifier"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitModifier([NotNull] p4Parser.ModifierContext context);
 }

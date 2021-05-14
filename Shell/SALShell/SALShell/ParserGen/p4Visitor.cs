@@ -283,4 +283,10 @@ public interface Ip4Visitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitAssnOp([NotNull] p4Parser.AssnOpContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="p4Parser.modifier"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitModifier([NotNull] p4Parser.ModifierContext context);
 }

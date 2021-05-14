@@ -21,7 +21,7 @@ returnsStmt				: 		Returns returntype;
 
 assignment				:		Id assnOp expr;
 
-declaration				:		valuetype Id Modifier? (Assign expr)?;
+declaration				:		valuetype Id modifier? (Assign expr)?;
 
 functioncall			:		Id Lparen arguments? Rparen;
 arguments				:		expr (Comma expr)*;
@@ -63,8 +63,8 @@ returntype				: 		VOID | valuetype;
 value					: 		Number | bool | Char | String;
 bool					: 		True | False;
 assnOp					:		Assign | CompoundOp;
+modifier				: 		Lbracket (Nonzero)? Rbracket;
 
-Modifier				: 		Lbracket (Nonzero)? Rbracket;
 Number					: 		Integer | Decimal;
 
 Function				:	 	'function';
@@ -123,7 +123,7 @@ Id						:		Idregex (Dot Idregex)*;
 
 fragment Idregex		: 		[a-zA-Z][a-zA-Z0-9_]*;
 fragment Digit			: 		'0'..'9';
-fragment Nonzero		: 		'1'..'9'Digit*;
+Nonzero					: 		'1'..'9'Digit*;
 Decimal					: 		Digit+[.]Digit+;
 Integer					: 		'0' | Nonzero;
 String					: 		'"'~["]*'"';

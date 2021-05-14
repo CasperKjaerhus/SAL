@@ -539,6 +539,18 @@ public partial class p4BaseListener : Ip4Listener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitAssnOp([NotNull] p4Parser.AssnOpContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="p4Parser.modifier"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterModifier([NotNull] p4Parser.ModifierContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="p4Parser.modifier"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitModifier([NotNull] p4Parser.ModifierContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>
