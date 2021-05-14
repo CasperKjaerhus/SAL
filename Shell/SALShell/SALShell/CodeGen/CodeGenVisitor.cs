@@ -206,8 +206,10 @@ namespace SALShell.CodeGen
 
             IdCode += node.Token.Text;
 
-            if (node.ArraySize != null)
+            if (node.ArraySize != null && node.ArraySize.Text != "[]")
                 IdCode += $"{node.ArraySize.Text}";
+            else if (node.UndefinedArraySize != null)
+                IdCode += $"[{node.UndefinedArraySize}]";
 
             return IdCode;
         }
@@ -343,10 +345,13 @@ namespace SALShell.CodeGen
 
         public override string Visit(SwitchItemAstNode node)
         {
-            if(node.IsBreaked)
-                return $"{Spaces}case {Visit(node.Value)}:\n{Visit(node.Block)}{Spaces}break;\n";
+            IndentationDepth++;
+            string block = Visit(node.Block);
+            IndentationDepth--;
+            if (node.IsBreaked)
+                return $"{Spaces}case {Visit(node.Value)}:\n{block}{Spaces}break;\n";
             else
-                return $"{Spaces}case {Visit(node.Value)}:\n{Visit(node.Block)}";
+                return $"{Spaces}case {Visit(node.Value)}:\n{block}";
         }
 
         public override string Visit(SwitchStructureAstNode node)
@@ -371,5 +376,5 @@ namespace SALShell.CodeGen
 
     }
 
-    //TODO: FIX WEIRD NEWLINES, DO SWITCHES, ARRAYS WITHOUT INITIALIZATION CODE
+    //TODO: FIX WEIRD NEWLINES, ARRAYS WITHOUT INITIALIZATION CODE
 }

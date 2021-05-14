@@ -2,10 +2,10 @@
     string returnString;
     switch(switchChar){
     case 'x':
-    returnString = "Char is x";
+        returnString = "Char is x";
     break;
     case 'y':
-    returnString = "Char is Y";
+        returnString = "Char is Y";
     break;
     default:
     break;
@@ -22,7 +22,7 @@
 
 }
 int timer = 100;
-int ledPins[] = { 2, 7, 4, 6, 5, 3 };
+int ledPins[6] = { 2, 7, 4, 6, 5, 3 };
 int pinCount = 6;
 
 

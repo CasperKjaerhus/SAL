@@ -44,14 +44,34 @@ namespace SALShell.CodeGen
             if (VariableTypes.ContainsKey(node.Symbol))
             {
                 VariableTypes.TryGetValue(node.Symbol, out type);
-                if(type == "null")
+                if (type == "null")
                 {
                     VariableTypes[node.Symbol] = expressionType;
                 }
-            } else
+            }
+            else
                 VariableTypes.Add(node.Symbol, expressionType);
 
+            if(node.Expr is ExprListAstNode)                    //If the programmer has not defined arraysize upon initialazation, this function will define it.
+                UndefinedArraySizeChecker(node);
+
             return expressionType;
+        }
+
+        private static void UndefinedArraySizeChecker(AssignAstNode node)
+        {
+            int arraysize = 0;
+            if (node.Expr is ExprListAstNode exprNode && node.Id is IdAstNode idNode)
+            {
+                if (idNode.ArraySize.Text == "[]")
+                {
+                    foreach (ASTNode child in exprNode.Children)
+                    {
+                        arraysize++;
+                    }
+                    idNode.UndefinedArraySize = arraysize;
+                }
+            }
         }
 
         public override string Visit(CondAstNode node)
