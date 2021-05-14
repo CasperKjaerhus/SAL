@@ -9,11 +9,8 @@ namespace SALShell.Parser
     public class IdAstNode : ExprAstNode
     {
         public SALTypeEnum Type { get; set; }
-        public IToken ArraySize { get; }
-        public int? UndefinedArraySize { get; set; }
-        public string InoType { get; set; }
+        public int ArraySize { get; }
         public Symbol Symbol { get; set; }
-        public bool IsParam { get; set; } = false;
 
         public IdAstNode(IToken idName, SALTypeEnum type) : base(idName)
         {
@@ -22,7 +19,7 @@ namespace SALShell.Parser
         public IdAstNode(IToken idName, SALTypeEnum type, IToken modifier) : base(idName)
         {
             Type = type;
-            ArraySize = modifier;
+            ArraySize = Convert.ToInt32(modifier.Text);
         }
 
         public override void PrintTrees(int depth)
@@ -34,7 +31,7 @@ namespace SALShell.Parser
                 Console.Write("\t");
             }
 
-            Console.WriteLine($"{Type} {Token.Text}{ArraySize?.Text}: {this.GetType()}");
+            Console.WriteLine($"{Type} {Token.Text}{ArraySize}: {this.GetType()}");
 
             foreach (ASTNode child in Children)
             {

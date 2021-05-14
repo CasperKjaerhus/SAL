@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using SALShell.Parser;
 using Antlr4.Runtime.Tree;
+using Antlr4.Runtime;
 
 namespace SALShell.Parser
 {
@@ -338,9 +339,9 @@ namespace SALShell.Parser
             {
                 Antlr4.Runtime.IToken symbol = context.Assign().Symbol;
                 ASTNode expr = Visit(context.expr());
-                if(context.Modifier() != null)
+                if(context.modifier() != null)
                 {
-                    id = new IdAstNode(context.Id().Symbol, SALType.Types[Visit(context.valuetype()).Token.Text], context.Modifier().Symbol);
+                    id = new IdAstNode(context.Id().Symbol, SALType.Types[Visit(context.valuetype()).Token.Text], Visit(context.modifier()).Token);
                     return new AssignAstNode(id, symbol, expr);
                 }
                 else
@@ -352,9 +353,9 @@ namespace SALShell.Parser
             }
             else
             {
-                if (context.Modifier() != null)
+                if (context.modifier() != null)
                 {
-                    id = new IdAstNode(context.Id().Symbol, SALType.Types[Visit(context.valuetype()).Token.Text], context.Modifier().Symbol);
+                    id = new IdAstNode(context.Id().Symbol, SALType.Types[Visit(context.valuetype()).Token.Text], Visit(context.modifier()).Token);
                     return new DeclareAstNode(id, null);
                 }
                 else
@@ -364,6 +365,18 @@ namespace SALShell.Parser
                 }
             }
             
+        }
+
+        public override ASTNode VisitModifier([NotNull] p4Parser.ModifierContext context)
+        {
+            if (context.Nonzero() != null)
+                return new ValueAstNode(context.Nonzero().Symbol);
+            else
+            {
+                IToken token = new CommonToken(p4Lexer.Number, "0");
+                return new ValueAstNode(token);
+            }
+                
         }
 
         public override ASTNode VisitValuetype([NotNull] p4Parser.ValuetypeContext context)
