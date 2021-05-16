@@ -46,8 +46,7 @@ namespace SALShell.Core.CodeGeneration
 
         public void SynthesizeCode(string path, string name, ASTNode ASTroot)
         {
-            Resolver.Visit(ASTroot);
-            Resolver.ResolveNumberTypes(ASTroot);
+            Resolver.PopulateAST(ASTroot);
             CreateFile(path, name, ASTroot);
         }
     }

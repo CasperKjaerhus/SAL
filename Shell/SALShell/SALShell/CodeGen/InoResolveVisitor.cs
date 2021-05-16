@@ -13,6 +13,7 @@ namespace SALShell.CodeGen
         private Dictionary<Symbol, string> FunctionTypes = new Dictionary<Symbol, string>();
         private string CurrentReturnType;
         private bool IsParam = false;
+        private bool IsFirstWalk = true;
 
         public override string Visit(ArgumentsAstNode node)
         {
@@ -37,13 +38,12 @@ namespace SALShell.CodeGen
         private string EvaluateInoAssignment(AssignAstNode node)
         {
             string expressionType = "";
-            string type;
 
             expressionType += Visit(node.Expr);
 
             if (VariableTypes.ContainsKey(node.Symbol))
             {
-                VariableTypes.TryGetValue(node.Symbol, out type);
+                VariableTypes.TryGetValue(node.Symbol, out string type);
                 if (type == "null")
                 {
                     VariableTypes[node.Symbol] = expressionType;
@@ -96,9 +96,15 @@ namespace SALShell.CodeGen
             return null;
         }
 
-        public override string Visit(FunctioncallAstNode node)
+        public override string Visit(FunctioncallAstNode node)      //Node does not have any symbol rn :/ (Should ideally share symbol with it's declaration)
         {
-            return null;
+            if (IsFirstWalk)
+                return null;
+
+            string InoType = FunctionTypes[node.Symbol];
+            Visit(node.Arguments);
+
+            return InoType;
         }
 
         public override string Visit(FunctionDeclarationAstNode node)
@@ -111,8 +117,12 @@ namespace SALShell.CodeGen
             else
                 return null;
 
-            node.InoType = CurrentReturnType;
-            FunctionTypes.Add(node.Symbol, CurrentReturnType);
+            if (IsFirstWalk)
+            {
+                node.InoType = CurrentReturnType;
+                FunctionTypes.Add(node.Symbol, CurrentReturnType);
+            }
+
             CurrentReturnType = "";
 
             return null;
@@ -124,7 +134,7 @@ namespace SALShell.CodeGen
         {
             if (IsParam)
             {
-                if(node.Symbol.Type == SALTypeEnum.number) //IF IT IS A SAL-NUMBER ADD IT TO THE EVALUATION QUEUE BY SETTING ISPARAM TO TRUE ELSE IGNORE IT
+                if(node.Symbol.Type == SALTypeEnum.number && IsFirstWalk) //IF IT IS A SAL-NUMBER ADD IT TO THE EVALUATION QUEUE BY SETTING ISPARAM TO TRUE ELSE IGNORE IT
                 {
                     node.IsParam = IsParam;
                     VariableTypes.Add(node.Symbol, "null");
@@ -277,8 +287,9 @@ namespace SALShell.CodeGen
             return null;
         }
 
-        public void ResolveNumberTypes(ASTNode node)
+        private void ResolveNumberTypes(ASTNode node)
         {
+
             switch (node)
             {
                 case DeclareAstNode decl:
@@ -311,6 +322,13 @@ namespace SALShell.CodeGen
                 }
             }
         }
+        public void PopulateAST(ASTNode root)
+        {
+            Visit(root);
+            IsFirstWalk = false;
+            Visit(root);
 
+            ResolveNumberTypes(root);
+        }
     }
 }

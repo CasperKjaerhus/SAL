@@ -27,7 +27,7 @@ int main()
     while(num > 10){
         for (int i = num; i <= 100; i = i + numArray[2]){
         testNumber = i;
-        funcTest('o', "pee");
+        funcTest('o', "pee", num);
 
 }
 }
