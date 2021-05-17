@@ -21,7 +21,7 @@ function main() returns void begin
 end
 
 function funcTest(char c, string str, number num) returns string begin
-	number newNum = num;
+	number newNum = num + 2;
 	
 	newNum = newNum	+ 1;
 	

@@ -20,21 +20,21 @@ namespace SALShell.CodeGen
 
         public override string Visit(ArgumentsAstNode node) //Need The Symbol For Argument ;_; - ToDo: Fix so that formal parameters that cannot be decided upon their calculations are decided by their first call
         {
-            List<IdAstNode> FormalParams = ParamList[CurrentFunctionCall];
-            int i = 0;
-            string type = "notSet";
-            foreach (ASTNode child in node.Children)
-            {
-                if(child is IdAstNode idNode)
-                {
-                    type = VariableTypes[idNode.Symbol];
-                    if (FormalParams[i].InoType == "null")
-                        FormalParams[i].InoType = type;
-                }
-                i++;
-            }
+            //List<IdAstNode> FormalParams = ParamList[CurrentFunctionCall];
+            //int i = 0;
+            //string type = "notSet";
+            //foreach (ASTNode child in node.Children)
+            //{
+            //    if(child is IdAstNode idNode)
+            //    {
+            //        type = VariableTypes[idNode.Symbol];
+            //        if (FormalParams[i].InoType == "null")
+            //            FormalParams[i].InoType = type;
+            //    }
+            //    i++;
+            //}
 
-            return type;
+            return null;
         }
 
         public override string Visit(ArrayAccessAstNode node)
@@ -79,7 +79,7 @@ namespace SALShell.CodeGen
 
         public override string Visit(DeclareAstNode node)
         {
-            if (node.Symbol.Type == SALTypeEnum.number)
+            if (node.Symbol.Type == SALTypeEnum.number && IsFirstWalk)
             {
                 VariableTypes.Add(node.Symbol, "null");
             }

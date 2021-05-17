@@ -16,6 +16,8 @@ namespace SALShell.CodeGen
         public bool IsLoop { get; set; } = false;
         private int IndentationDepth = 0;
         private List<Symbol> DeclOrInit = new List<Symbol>();
+        private string GlobalVariables = "";
+        private List<ASTNode> AlreadyVisited = new List<ASTNode>();
 
         public override string Visit(ArgumentsAstNode node)
         {
@@ -56,6 +58,16 @@ namespace SALShell.CodeGen
 
         public override string Visit(AssignAstNode node)
         {
+            if(!(AlreadyVisited.Any(x => x == node)))
+            {
+                AlreadyVisited.Add(node);
+            }
+            else
+            {
+                return "";
+            }
+
+
             if (node.Symbol.Scope.Depth == 0 && IsLoop && node.Id is IdAstNode idnode)
             {
                 if(idnode.Type != SALTypeEnum.undefined)
@@ -75,6 +87,12 @@ namespace SALShell.CodeGen
                 AssignmentCode = id + " = " + expression;
             else
                 AssignmentCode = id + " = " + expression + ";";
+
+            if(node.Symbol.Depth == 0 && IsGlobal)
+            {
+                GlobalVariables += AssignmentCode + "\n";
+                return "";
+            }
 
             return AssignmentCode;
         }
@@ -96,10 +114,13 @@ namespace SALShell.CodeGen
                 DeclOrInit.Add(node.Symbol);
                 return node.InoType + " " + Visit(node.Id) + ";";
             }
-            else
+            else if(node.Symbol.Depth == 0 && IsGlobal)
             {
-                return Visit(node.Id) + ";";
+                GlobalVariables += Visit(node.Id) + ";" + "\n";
+                return "";
             }
+
+            return Visit(node.Id) + ";";
         }
 
         public override string Visit(ExprListAstNode node)
@@ -323,6 +344,7 @@ namespace SALShell.CodeGen
         public override string Visit(StatementAstNode node)
         {
             string Code = "";
+            string CurrentCode = "";
 
             for (int i = 0; i < IndentationDepth; i++)
             {
@@ -331,8 +353,12 @@ namespace SALShell.CodeGen
 
             foreach (ASTNode child in node.Children)
             {
-                if (Visit(child) != "")
-                    Code += Visit(child) + "\n";
+                CurrentCode = Visit(child);
+
+                if (CurrentCode != "")
+                {
+                    Code += CurrentCode + "\n";
+                }
             }
 
             return Code;
@@ -378,6 +404,12 @@ namespace SALShell.CodeGen
         {
             return $"while({Visit(node.Condition)}){{\n{Spaces}{Visit(node.Body)}}}";
         }
+
+        public string GlobalVariableCode()
+        {
+            return GlobalVariables;
+        }
+
     }
 
     //TODO: FIX WEIRD NEWLINES, ARRAYS WITHOUT INITIALIZATION CODE

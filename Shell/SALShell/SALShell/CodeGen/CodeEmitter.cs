@@ -23,9 +23,8 @@ namespace SALShell.Core.CodeGeneration
                 //StreamW.WriteLine("void setup() {");
                 //StreamW.WriteLine("}\n");
 
-                StreamW.WriteLine("int main()\n{");
+                StreamW.WriteLine("void loop()\n{");
                 WriteToLoop(StreamW, root);
-                StreamW.WriteLine("return 0;");
                 StreamW.WriteLine("}");
             }
 
@@ -33,8 +32,10 @@ namespace SALShell.Core.CodeGeneration
         private void WriteToGlobal(StreamWriter streamW, ASTNode node)
         {
             CodeGenerationVisitor.IsGlobal = true;
-            streamW.Write(CodeGenerationVisitor.Visit(node));
+            string Code = CodeGenerationVisitor.Visit(node);
             CodeGenerationVisitor.IsGlobal = false;
+            streamW.Write(CodeGenerationVisitor.GlobalVariableCode());
+            streamW.Write(Code);
         }
 
         private void WriteToLoop(StreamWriter streamW, ASTNode node)
