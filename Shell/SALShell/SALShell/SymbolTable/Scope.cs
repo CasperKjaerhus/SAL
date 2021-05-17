@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SALShell.Parser;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,21 @@ namespace SALShell.SymbolTable
         public Scope Parent { get; set; }
         public string ScopeName { get; }
         public List<Symbol> Symbols { get; set; }
+        public SALTypeEnum ReturnType { 
+            get 
+            {
+                if(_returnType == SALTypeEnum.undefined)
+                {
+                    return Parent.ReturnType;
+                }
+                return _returnType;
+            }
+            set
+            {
+                _returnType = value;
+            }
+        }
+        private SALTypeEnum _returnType { get; set; } = SALTypeEnum.undefined;
 
         public Scope(Scope parent, int depth)
         {
