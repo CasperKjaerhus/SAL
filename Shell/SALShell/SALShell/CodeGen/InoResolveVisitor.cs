@@ -10,14 +10,31 @@ namespace SALShell.CodeGen
     class InoResolveVisitor : ASTVisitor<string>
     {
         private Dictionary<Symbol, string> VariableTypes = new Dictionary<Symbol, string>();
-        private Dictionary<Symbol, string> FunctionTypes = new Dictionary<Symbol, string>();
+        private Dictionary<string, string> FunctionTypes = new Dictionary<string, string>();
+        private Dictionary<string, List<IdAstNode>> ParamList = new Dictionary<string, List<IdAstNode>>();
+        private List<IdAstNode> ParamNodes = new List<IdAstNode>();
+        private string CurrentFunctionCall;
         private string CurrentReturnType;
         private bool IsParam = false;
         private bool IsFirstWalk = true;
 
-        public override string Visit(ArgumentsAstNode node)
+        public override string Visit(ArgumentsAstNode node) //Need The Symbol For Argument ;_; - ToDo: Fix so that formal parameters that cannot be decided upon their calculations are decided by their first call
         {
-            return null;
+            List<IdAstNode> FormalParams = ParamList[CurrentFunctionCall];
+            int i = 0;
+            string type = "notSet";
+            foreach (ASTNode child in node.Children)
+            {
+                if(child is IdAstNode idNode)
+                {
+                    type = VariableTypes[idNode.Symbol];
+                    if (FormalParams[i].InoType == "null")
+                        FormalParams[i].InoType = type;
+                }
+                i++;
+            }
+
+            return type;
         }
 
         public override string Visit(ArrayAccessAstNode node)
@@ -101,17 +118,29 @@ namespace SALShell.CodeGen
             if (IsFirstWalk)
                 return null;
 
-            string InoType = FunctionTypes[node.Symbol];
-            Visit(node.Arguments);
+            string InoType = "";
+
+            if (node.FunctionId is IdAstNode idNode)
+            {
+                CurrentFunctionCall = idNode.Token.Text;
+                node.InoType = FunctionTypes[idNode.Token.Text];
+                Visit(node.Arguments);
+            }
+
 
             return InoType;
         }
 
         public override string Visit(FunctionDeclarationAstNode node)
-        {
+        { 
             if (node.Body != null)
             {
                 Visit(node.Parameters);
+                if (IsFirstWalk)
+                {
+                    ParamList.Add(node.Symbol.Name, ParamNodes);        //Add the functions current parameters for later checking, then clear it for next time 
+                    ParamNodes.Clear();
+                }
                 Visit(node.Body);
             }
             else
@@ -119,8 +148,11 @@ namespace SALShell.CodeGen
 
             if (IsFirstWalk)
             {
-                node.InoType = CurrentReturnType;
-                FunctionTypes.Add(node.Symbol, CurrentReturnType);
+                if(node.Id is IdAstNode idNode)
+                {
+                    node.InoType = CurrentReturnType;
+                    FunctionTypes.Add(idNode.Token.Text, CurrentReturnType);
+                }
             }
 
             CurrentReturnType = "";
@@ -132,11 +164,12 @@ namespace SALShell.CodeGen
         //(Namely that formal parameters are ID AST nodes and not Declaration Ast Nodes)
         public override string Visit(IdAstNode node)
         {
-            if (IsParam)
+            if (IsParam && IsFirstWalk)
             {
-                if(node.Symbol.Type == SALTypeEnum.number && IsFirstWalk) //IF IT IS A SAL-NUMBER ADD IT TO THE EVALUATION QUEUE BY SETTING ISPARAM TO TRUE ELSE IGNORE IT
+                if(node.Symbol.Type == SALTypeEnum.number) //IF IT IS A SAL-NUMBER ADD IT TO THE EVALUATION QUEUE BY SETTING ISPARAM TO TRUE ELSE IGNORE IT
                 {
                     node.IsParam = IsParam;
+                    ParamNodes.Add(node);
                     VariableTypes.Add(node.Symbol, "null");
                 }
                 return null;
@@ -307,7 +340,7 @@ namespace SALShell.CodeGen
                 case AssignAstNode asmntNode:
                     if(asmntNode.Expr is FunctioncallAstNode funcnode)
                     {
-                        asmntNode.InoType = FunctionTypes[funcnode.Symbol];
+                        asmntNode.InoType = funcnode.InoType;
                     }
                     break;
                 default:

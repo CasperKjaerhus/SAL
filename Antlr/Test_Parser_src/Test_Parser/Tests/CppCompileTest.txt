@@ -25,7 +25,7 @@ function funcTest(char c, string str, number num) returns string begin
 	
 	newNum = newNum	+ 1;
 	
-	number newNumTwo = numberFunc(numberOne);
+	number newNumTwo = NumberFunc(numberOne);
 	
 	char newC = c;
 	if(newC == 'c') then begin

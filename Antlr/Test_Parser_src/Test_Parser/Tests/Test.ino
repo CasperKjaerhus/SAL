@@ -1,6 +1,7 @@
  string funcTest(char c, string str, null num){
     null newNum = num;
     int newNum = newNum + 1;
+    int newNumTwo = NumberFunc(numberOne);
     char newC = c;
     if(newC == 'c'){
         string newStr = str;
@@ -9,8 +10,16 @@
 
 
 
+
+}
+int NumberFunc(int numberOne){
+    numberOne = numberOne + 1;
+    return numberOne;
+
+
 }
 int numArray[] = { 1, 2, 3, 4, 5 };
+
 
 
 int main()

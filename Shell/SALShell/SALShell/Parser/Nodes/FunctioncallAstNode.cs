@@ -11,6 +11,7 @@ namespace SALShell.Parser
         public ASTNode FunctionId { get; }
         public ASTNode Arguments { get; }
         public FunctionSymbol Symbol { get; set; }
+        public string InoType { get; set; }
         public FunctioncallAstNode(ASTNode functionId, ASTNode arguments, IToken token) : base(token)
         {
             FunctionId = functionId;
