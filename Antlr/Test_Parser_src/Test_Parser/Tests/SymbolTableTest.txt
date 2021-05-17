@@ -13,7 +13,7 @@ function main(number n) returns void begin
 	end
 	
 	while(num > 10) begin
-		for(i: num...100, step numArray) begin
+		for(i: num...100, step numArray[1]) begin
 			number testNumber = i;
 			funcTest('c', 4, "string");
 		end
