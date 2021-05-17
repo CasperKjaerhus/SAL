@@ -8,7 +8,11 @@ namespace SALShell.Parser
     {
         public virtual T Visit(ASTNode node)
         {
-            return Visit((dynamic) node); // Using c#'s double dispatch feature
+            if(node != null)
+            {
+                return Visit((dynamic) node); // Using c#'s double dispatch feature
+            }
+            return default;
         }
 
         public virtual T Visit(ArgumentsAstNode node)

@@ -1,0 +1,34 @@
+include testLib;
+
+function main(number strLength) returns void begin
+
+	for(i: num..."seven") begin
+		num = num + i;
+	end
+	
+	foreach(numb in numArray) begin
+		if(numb == 'c') then begin
+			string str = true;
+		end
+	end
+	
+	while(num != false) begin
+		for(i: strLength...100, step numArray) begin
+			number testNumber = i;
+			funcTest();
+		end
+	end
+end
+
+function funcTest(char c, number num1, string str) returns string begin
+	number newNum = num1 + num;
+	char newC = c;
+	if(newC == 'c') then begin
+		string newStr = str;
+	end
+
+	newC = 'f';
+end
+
+number num = 2;
+number numArray[5] = {1,2,3,4,5};
