@@ -10,29 +10,34 @@ namespace SALShell.CodeGen
     class InoResolveVisitor : ASTVisitor<string>
     {
         private Dictionary<Symbol, string> VariableTypes = new Dictionary<Symbol, string>();
-        private Dictionary<string, string> FunctionTypes = new Dictionary<string, string>();
-        private Dictionary<string, List<IdAstNode>> ParamList = new Dictionary<string, List<IdAstNode>>();
+        private Dictionary<Symbol, string> FunctionTypes = new Dictionary<Symbol, string>();
+        private Dictionary<Symbol, List<IdAstNode>> ParamDict = new Dictionary<Symbol, List<IdAstNode>>();
         private List<IdAstNode> ParamNodes = new List<IdAstNode>();
-        private string CurrentFunctionCall;
+        private Symbol CurrentFunction;
         private string CurrentReturnType;
         private bool IsParam = false;
         private bool IsFirstWalk = true;
 
-        public override string Visit(ArgumentsAstNode node) //Need The Symbol For Argument ;_; - ToDo: Fix so that formal parameters that cannot be decided upon their calculations are decided by their first call
+        public override string Visit(ArgumentsAstNode node)
         {
-            //List<IdAstNode> FormalParams = ParamList[CurrentFunctionCall];
-            //int i = 0;
-            //string type = "notSet";
-            //foreach (ASTNode child in node.Children)
-            //{
-            //    if(child is IdAstNode idNode)
-            //    {
-            //        type = VariableTypes[idNode.Symbol];
-            //        if (FormalParams[i].InoType == "null")
-            //            FormalParams[i].InoType = type;
-            //    }
-            //    i++;
-            //}
+            List<IdAstNode> formalParams = ParamDict[CurrentFunction];
+            if (!(formalParams.Any(x => x.InoType == null)))          //If all formal parameters have been resolved RETURN
+                return null;
+
+            int i = 0;
+            string currentType;
+
+            foreach (ASTNode child in node.Children)
+            {
+                currentType = Visit(child);
+                if(formalParams[i].InoType == null && formalParams[i].Type == SALTypeEnum.number)
+                {
+                    formalParams[i].InoType = currentType;
+                }
+                i++;
+            }
+
+            ParamDict[CurrentFunction] = formalParams;
 
             return null;
         }
@@ -79,7 +84,7 @@ namespace SALShell.CodeGen
 
         public override string Visit(DeclareAstNode node)
         {
-            if (node.Symbol.Type == SALTypeEnum.number && is)
+            if (node.Symbol.Type == SALTypeEnum.number)
             {
                 VariableTypes.Add(node.Symbol, "null");
             }
@@ -105,11 +110,13 @@ namespace SALShell.CodeGen
 
         public override string Visit(ForAstNode node)
         {
+            Visit(node.Body);
             return null;
         }
 
         public override string Visit(ForeachAstNode node)
         {
+            Visit(node.Body);
             return null;
         }
 
@@ -118,27 +125,23 @@ namespace SALShell.CodeGen
             if (IsFirstWalk)
                 return null;
 
-            string InoType = "";
+            string InoType = FunctionTypes[node.Symbol];
 
-            if (node.FunctionId is IdAstNode idNode)
-            {
-                CurrentFunctionCall = idNode.Token.Text;
-                node.InoType = FunctionTypes[idNode.Token.Text];
-                Visit(node.Arguments);
-            }
-
+            CurrentFunction = node.Symbol;
+            node.InoType = InoType;
+            Visit(node.Arguments);
 
             return InoType;
         }
 
         public override string Visit(FunctionDeclarationAstNode node)
-        { 
+        {
             if (node.Body != null)
             {
                 Visit(node.Parameters);
                 if (IsFirstWalk)
                 {
-                    ParamList.Add(node.Symbol.Name, ParamNodes);        //Add the functions current parameters for later checking, then clear it for next time 
+                    ParamDict.Add(node.Symbol, CopyNodeList(ParamNodes));        //Add the functions current parameters for later checking, then clear it for next time 
                     ParamNodes.Clear();
                 }
                 Visit(node.Body);
@@ -151,13 +154,24 @@ namespace SALShell.CodeGen
                 if(node.Id is IdAstNode idNode)
                 {
                     node.InoType = CurrentReturnType;
-                    FunctionTypes.Add(idNode.Token.Text, CurrentReturnType);
+                    FunctionTypes.Add(node.Symbol, CurrentReturnType);
                 }
             }
 
             CurrentReturnType = "";
 
             return null;
+        }
+
+        private List<IdAstNode> CopyNodeList(List<IdAstNode> paramNodes)
+        {
+            List<IdAstNode> nodeList = new List<IdAstNode>();
+            foreach (IdAstNode node in paramNodes)
+            {
+                nodeList.Add(node);
+            }
+
+            return nodeList;
         }
 
         //Due to the CFG some not so nice (almost spaghetti-like) code has been created
@@ -169,7 +183,6 @@ namespace SALShell.CodeGen
                 if(node.Symbol.Type == SALTypeEnum.number) //IF IT IS A SAL-NUMBER ADD IT TO THE EVALUATION QUEUE BY SETTING ISPARAM TO TRUE ELSE IGNORE IT
                 {
                     node.IsParam = IsParam;
-                    ParamNodes.Add(node);
                     VariableTypes.Add(node.Symbol, "null");
                 }
                 return null;
@@ -230,6 +243,8 @@ namespace SALShell.CodeGen
             IsParam = true;
             foreach (ASTNode param in node.Children)
             {
+                if(param is IdAstNode id)
+                    ParamNodes.Add(id);
                 Visit(param);
             }
             IsParam = false;
@@ -285,16 +300,22 @@ namespace SALShell.CodeGen
 
         public override string Visit(SwitchBodyAstNode node)
         {
+            foreach(ASTNode child in node.Children)
+            {
+                Visit(child);
+            }
             return null;
         }
 
         public override string Visit(SwitchItemAstNode node)
         {
+            Visit(node.Block);
             return null;
         }
 
         public override string Visit(SwitchStructureAstNode node)
         {
+            Visit(node.SwitchBody);
             return null;
         }
 
@@ -317,11 +338,15 @@ namespace SALShell.CodeGen
 
         public override string Visit(WhileAstNode node)
         {
+            Visit(node.Body);
             return null;
         }
 
         private void ResolveNumberTypes(ASTNode node)
         {
+            if (node is FunctionDeclarationAstNode funcnode)
+                ParamNodes = ParamDict[funcnode.Symbol];
+            string inotype;
 
             switch (node)
             {
@@ -331,16 +356,24 @@ namespace SALShell.CodeGen
                         decl.InoType = VariableTypes[decl.Symbol];
                     }
                     break;
+                case FunctionDeclarationAstNode funcDcl:
+                    CurrentFunction = funcDcl.Symbol;
+                    break;
                 case IdAstNode paramnode:
                     if (paramnode.IsParam && paramnode.Symbol.Type == SALTypeEnum.number)
                     {
-                        paramnode.InoType = VariableTypes[paramnode.Symbol];
+
+                        if(VariableTypes[paramnode.Symbol] == "null" || paramnode.InoType == null)
+                        {
+                            inotype = ParamNodes.First(x => x.Symbol == paramnode.Symbol).InoType;
+                            paramnode.InoType = inotype;
+                        }
                     }
                     break;
                 case AssignAstNode asmntNode:
-                    if(asmntNode.Expr is FunctioncallAstNode funcnode)
+                    if(asmntNode.Expr is FunctioncallAstNode funcCallnode)
                     {
-                        asmntNode.InoType = funcnode.InoType;
+                        asmntNode.InoType = funcCallnode.InoType;
                     }
                     break;
                 default:

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SALShell": {
+      "commandName": "Project",
+      "nativeDebugging": false
+    }
+  }
+}

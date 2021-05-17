@@ -1,30 +1,37 @@
-int timer = 100;
-int ledPins[] = { 2, 7, 4, 6, 5, 3 };
-int pinCount = 6;
+int num = 2;
+int numArray[] = { 1, 2, 3, 4, 5 };
 
- void setup(){
-    for (int thisPin = 0; thisPin <= pinCount; thisPin = thisPin + 1){
-        pinMode(ledPins[thisPin], OUTPUT);
-}
+ string funcTest(char c, int num1, string str){
+    int newNum = num1 + num;
+    char newC = c;
+    if(newC == 'c'){
+        string newStr = str;
+    }
+
+
 
 }
 
 void loop()
 {
-    for (int thisPin = 0; thisPin <= pinCount; thisPin = thisPin + 1){
-        digitalWrite(ledPins[thisPin], HIGH);
-        delay(timer);
-        digitalWrite(ledPins[thisPin], LOW);
-
+    string str = "This is not a string :P";
+    for (int i = num; i <= 10; i = i + 1){
+        int num = num + i;
+}
+    for(numb : numArray){
+        if(numb == 5){
+        str = "This is a string";
+    }
+}
+    while(num > 10){
+        for (int i = num; i <= 100; i = i + numArray[2]){
+         testNumber = i;
+        funcTest('k', num, "yoghurt");
 
 }
-    for (int thisPin = pinCount + 1; thisPin <= 0; thisPin = thisPin + 1){
-        digitalWrite(ledPins[thisPin], HIGH);
-        delay(timer);
-        digitalWrite(ledPins[thisPin], LOW);
-
-
 }
+
+
 
 
 }
