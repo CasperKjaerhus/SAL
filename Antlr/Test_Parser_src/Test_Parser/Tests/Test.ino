@@ -1,6 +1,7 @@
 int timer = 100;
 int ledPins[] = { 2, 7, 4, 6, 5, 3 };
 int pinCount = 6;
+
  void setup(){
     for (int thisPin = 0; thisPin <= pinCount; thisPin = thisPin + 1){
         pinMode(ledPins[thisPin], OUTPUT);

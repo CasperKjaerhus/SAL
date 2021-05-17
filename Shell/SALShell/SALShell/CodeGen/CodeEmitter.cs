@@ -34,7 +34,7 @@ namespace SALShell.Core.CodeGeneration
             CodeGenerationVisitor.IsGlobal = true;
             string Code = CodeGenerationVisitor.Visit(node);
             CodeGenerationVisitor.IsGlobal = false;
-            streamW.Write(CodeGenerationVisitor.GlobalVariableCode());
+            streamW.Write(CodeGenerationVisitor.GlobalVariableCode() + "\n");
             streamW.Write(Code);
         }
 

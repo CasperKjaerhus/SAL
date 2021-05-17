@@ -21,3 +21,5 @@ end
 number timer = 100;
 number ledPins[] = {2, 7, 4, 6, 5, 3}; // initialising number array
 number pinCount = 6;
+
+

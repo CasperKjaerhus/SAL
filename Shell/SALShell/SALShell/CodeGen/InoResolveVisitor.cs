@@ -79,7 +79,7 @@ namespace SALShell.CodeGen
 
         public override string Visit(DeclareAstNode node)
         {
-            if (node.Symbol.Type == SALTypeEnum.number && IsFirstWalk)
+            if (node.Symbol.Type == SALTypeEnum.number && is)
             {
                 VariableTypes.Add(node.Symbol, "null");
             }
