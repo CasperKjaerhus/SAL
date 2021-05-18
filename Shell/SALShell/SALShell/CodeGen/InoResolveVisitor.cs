@@ -13,6 +13,7 @@ namespace SALShell.CodeGen
         private Dictionary<Symbol, string> FunctionTypes = new Dictionary<Symbol, string>();
         private Dictionary<Symbol, List<IdAstNode>> ParamDict = new Dictionary<Symbol, List<IdAstNode>>();
         private List<IdAstNode> ParamNodes = new List<IdAstNode>();
+        private List<FunctioncallAstNode> CalledFunctions = new List<FunctioncallAstNode>();
         private Symbol CurrentFunction;
         private string CurrentReturnType;
         private bool IsParam = false;
@@ -125,11 +126,17 @@ namespace SALShell.CodeGen
             if (IsFirstWalk)
                 return null;
 
+
             string InoType = FunctionTypes[node.Symbol];
 
             CurrentFunction = node.Symbol;
             node.InoType = InoType;
-            Visit(node.Arguments);
+
+            if(!(CalledFunctions.Any(x => x == node)))          // If-Statement Makes sure we're not going to evaluate the parameters more than once (first call decides type)
+            {
+                Visit(node.Arguments);
+                CalledFunctions.Add(node);
+            }
 
             return InoType;
         }
