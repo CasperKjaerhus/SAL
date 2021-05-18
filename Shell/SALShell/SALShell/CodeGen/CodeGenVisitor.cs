@@ -16,7 +16,7 @@ namespace SALShell.CodeGen
         public bool IsLoop { get; set; } = false;
         private int IndentationDepth = 0;
         private List<Symbol> DeclOrInit = new List<Symbol>();
-        private string GlobalVariables = "";
+        public string GlobalVariables { get; private set; } = "";
         private List<ASTNode> AlreadyVisited = new List<ASTNode>();
 
         public override string Visit(ArgumentsAstNode node)
@@ -88,18 +88,13 @@ namespace SALShell.CodeGen
             else
                 AssignmentCode = id + " = " + expression + ";";
 
-            if(node.Symbol.Depth == 0 && IsGlobal)
+            if(node.Symbol.Scope.Depth == 0 && IsGlobal)
             {
                 GlobalVariables += AssignmentCode + "\n";
                 return "";
             }
 
             return AssignmentCode;
-        }
-
-        public override string Visit(CondAstNode node)
-        {
-            throw new NotImplementedException();
         }
 
         public override string Visit(DeclareAstNode node)
@@ -114,7 +109,7 @@ namespace SALShell.CodeGen
                 DeclOrInit.Add(node.Symbol);
                 return node.InoType + " " + Visit(node.Id) + ";";
             }
-            else if(node.Symbol.Depth == 0 && IsGlobal)
+            else if(node.Symbol.Scope.Depth == 0 && IsGlobal)
             {
                 GlobalVariables += Visit(node.Id) + ";" + "\n";
                 return "";
@@ -390,11 +385,6 @@ namespace SALShell.CodeGen
             return $"switch({Visit(node.ConditionalValue)}){{\n{Visit(node.SwitchBody)}{Spaces}default:\n{Spaces}break;\n{Spaces}}}";
         }
 
-        public override string Visit(TypeAstNode node)
-        {
-            throw new NotImplementedException();
-        }
-
         public override string Visit(ValueAstNode node)
         {
             return node.Token.Text;
@@ -405,12 +395,5 @@ namespace SALShell.CodeGen
             return $"while({Visit(node.Condition)}){{\n{Spaces}{Visit(node.Body)}}}";
         }
 
-        public string GlobalVariableCode()
-        {
-            return GlobalVariables;
-        }
-
     }
-
-    //TODO: FIX WEIRD NEWLINES, ARRAYS WITHOUT INITIALIZATION CODE
 }

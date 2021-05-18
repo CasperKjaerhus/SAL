@@ -45,7 +45,7 @@ namespace SALShell.CodeGen
 
         public override string Visit(ArrayAccessAstNode node)
         {
-            return null;
+            return VariableTypes[node.Symbol];
         }
 
         public override string Visit(AssignAstNode node)
@@ -76,11 +76,6 @@ namespace SALShell.CodeGen
                 VariableTypes.Add(node.Symbol, expressionType);
 
             return expressionType;
-        }
-
-        public override string Visit(CondAstNode node)
-        {
-            return null;
         }
 
         public override string Visit(DeclareAstNode node)
@@ -126,7 +121,6 @@ namespace SALShell.CodeGen
             if (IsFirstWalk)
                 return null;
 
-
             string InoType = FunctionTypes[node.Symbol];
 
             CurrentFunction = node.Symbol;
@@ -158,11 +152,8 @@ namespace SALShell.CodeGen
 
             if (IsFirstWalk)
             {
-                if(node.Id is IdAstNode idNode)
-                {
-                    node.InoType = CurrentReturnType;
-                    FunctionTypes.Add(node.Symbol, CurrentReturnType);
-                }
+                node.InoType = CurrentReturnType;
+                FunctionTypes.Add(node.Symbol, CurrentReturnType);
             }
 
             CurrentReturnType = "";
@@ -205,26 +196,7 @@ namespace SALShell.CodeGen
 
         public override string Visit(IfStructureAstNode node)
         {
-            return null;
-        }
-
-        public override string Visit(ImportStatementAstNode node)
-        {
-            return null;
-        }
-
-        public override string Visit(LogicAndAstNode node)
-        {
-            return null;
-        }
-
-        public override string Visit(EqualityAstNode node)
-        {
-            return null;
-        }
-
-        public override string Visit(LogicOrAstNode node)
-        {
+            Visit(node.Body);
             return null;
         }
 
@@ -284,11 +256,6 @@ namespace SALShell.CodeGen
             return "int";
         }
 
-        public override string Visit(RelationalExprAstNode node)
-        {
-            return null;
-        }
-
         public override string Visit(ReturnAstNode node)
         {
             CurrentReturnType += Visit(node.ReturnExpression);
@@ -323,11 +290,6 @@ namespace SALShell.CodeGen
         public override string Visit(SwitchStructureAstNode node)
         {
             Visit(node.SwitchBody);
-            return null;
-        }
-
-        public override string Visit(TypeAstNode node)
-        {
             return null;
         }
 
