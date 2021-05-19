@@ -18,8 +18,6 @@ namespace SALShell.SymbolTable
             _visitor.Visit(root);
         }
 
-        
-
         public void PrintErrors()
         {
             foreach (Error error in Errors)

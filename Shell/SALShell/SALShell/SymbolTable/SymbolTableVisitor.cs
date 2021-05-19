@@ -235,6 +235,15 @@ namespace SALShell.SymbolTable
             if (s != null)
                 node.Symbol = FunctionSymbols[s.Name];
 
+            if(node.Arguments.Children.Count > 0)
+            {
+                foreach(ASTNode child in node.Arguments.Children)
+                {
+                    Visit(child);
+                }
+            }
+
+
             return base.Visit(node);
         }
     }

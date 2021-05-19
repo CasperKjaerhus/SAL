@@ -8,14 +8,13 @@ namespace SALShell.SymbolTable
 
     public class Symbol
     {
-        public int Depth { get; }
+
         public string Name { get; }
         public SALTypeEnum Type { get; }
         public Scope Scope { get; }
 
         public Symbol(Scope scope, string name, SALTypeEnum type)
         {
-            Depth = scope.Depth;
             Name = name;
             Type = type;
             Scope = scope;
@@ -23,14 +22,14 @@ namespace SALShell.SymbolTable
 
         public override string ToString()
         {
-            return $"Symbol {Name}: Depth {Depth} Type {Type}";
+            return $"Symbol {Name}: Depth {Scope.Depth} Type {Type}";
         }
 
         public override bool Equals(object obj)
         {
             if (obj is Symbol item)
             {
-                return item.Depth == this.Depth && item.Name == this.Name && item.Type == this.Type;
+                return item.Scope.Depth == this.Scope.Depth && item.Name == this.Name && item.Type == this.Type;
             }
 
             return false;

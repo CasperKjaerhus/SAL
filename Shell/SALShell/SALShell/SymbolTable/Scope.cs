@@ -10,7 +10,6 @@ namespace SALShell.SymbolTable
     {
         public int Depth { get; }
         public Scope Parent { get; set; }
-        public string ScopeName { get; }
         public List<Symbol> Symbols { get; set; }
         public SALTypeEnum ReturnType { 
             get 
