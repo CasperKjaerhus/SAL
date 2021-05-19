@@ -35,13 +35,13 @@ namespace SALShell
             SymTable s = new SymTable(AST);
 
             s.PrintErrors();
-            //TypeCheckVisitor t = new TypeCheckVisitor(AST);
+            TypeCheckVisitor t = new TypeCheckVisitor(AST);
 
-            //t.Errors.ForEach(s => Console.WriteLine(s.Message));
+            t.Errors.ForEach(s => Console.WriteLine(s.Message));
 
             CodeEmitter CodeGenerator = new CodeEmitter();
 
-            CodeGenerator.GenerateMode(@"D:\P4\SAL\Antlr\Test_Parser_src\Test_Parser\Tests", "test", AST);
+            CodeGenerator.GenerateCode(@"D:\P4\SAL\Antlr\Test_Parser_src\Test_Parser\Tests", "test", AST);
         }
     }
 }

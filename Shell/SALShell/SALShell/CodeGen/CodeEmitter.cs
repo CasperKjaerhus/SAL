@@ -45,7 +45,7 @@ namespace SALShell.Core.CodeGeneration
             CodeGenerationVisitor.IsLoop = false;
         }
 
-        public void GenerateMode(string path, string name, ASTNode ASTroot)
+        public void GenerateCode(string path, string name, ASTNode ASTroot)
         {
             Resolver.PopulateAST(ASTroot);
             CreateFile(path, name, ASTroot);
