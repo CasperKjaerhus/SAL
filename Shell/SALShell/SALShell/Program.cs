@@ -41,7 +41,7 @@ namespace SALShell
 
             CodeEmitter CodeGenerator = new CodeEmitter();
 
-            CodeGenerator.SynthesizeCode(@"D:\P4\SAL\Antlr\Test_Parser_src\Test_Parser\Tests", "test", AST);
+            CodeGenerator.GenerateMode(@"D:\P4\SAL\Antlr\Test_Parser_src\Test_Parser\Tests", "test", AST);
         }
     }
 }

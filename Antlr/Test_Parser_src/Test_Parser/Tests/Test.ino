@@ -21,7 +21,7 @@ int NumberFunc(int numberOne){
 void loop()
 {
     int num = 2;
-    undefined testnumber;
+    int testnumber;
     for (int i = num; i <= 10; i = i + 1){
         num = num + i;
 }
@@ -32,7 +32,7 @@ void loop()
 }
     while(num > 10){
         for (int i = num; i <= 100; i = i + numArray[2]){
-        testnumber = i;
+        testnumber = num;
         funcTest('o', "pee", num);
 
 }
