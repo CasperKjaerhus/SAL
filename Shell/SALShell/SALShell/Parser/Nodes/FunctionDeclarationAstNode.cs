@@ -12,7 +12,7 @@ namespace SALShell.Parser
         public ASTNode Parameters { get; }
         public ASTNode Body { get; }
         public FunctionSymbol Symbol { get; set; }
-        public string InoType { get; set; }
+        public InoTypeEnum InoType { get; set; }
 
         public FunctionDeclarationAstNode(ASTNode id, ASTNode parameters, ASTNode body, IToken token) : base(token)
         {

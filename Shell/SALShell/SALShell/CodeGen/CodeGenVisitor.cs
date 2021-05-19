@@ -78,9 +78,10 @@ namespace SALShell.CodeGen
             string expression = Visit(node.Expr);
             string id = Visit(node.Id);
 
-            if(node.InoType != null && !(DeclOrInit.Any(x => x == node.Symbol)))
+            if(node.InoType != InoTypeEnum.undefined && !(DeclOrInit.Any(x => x == node.Symbol)))
             {
                 id = node.InoType + " " + id;
+                DeclOrInit.Add(node.Symbol);
             }
 
             if (expression.Last() == ';')
@@ -171,7 +172,7 @@ namespace SALShell.CodeGen
             string id = Visit(node.Id);
             string body = "";
 
-            if(node.InoType != null)
+            if(node.InoType != InoTypeEnum.undefined)
             {
                 id = node.InoType + " " + id;
             }
@@ -212,12 +213,9 @@ namespace SALShell.CodeGen
                 IdCode += node.Type + " ";
             }
 
-            else if(node.Type == SALTypeEnum.number && node.InoType != null)
+            else if(node.Type == SALTypeEnum.number && node.InoType != InoTypeEnum.undefined)
             {
-                if (node.IsParam)               //Makes sure that if the Id is used as an assignment it is not set as int or float once again;
-                {
-                    DeclOrInit.Add(node.Symbol); 
-                }
+                DeclOrInit.Add(node.Symbol); 
                 IdCode += node.InoType + " ";
             }
 

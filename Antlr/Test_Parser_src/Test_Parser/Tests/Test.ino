@@ -1,8 +1,7 @@
-int num = 2;
 int numArray[] = { 1, 2, 3, 4, 5 };
 
- string funcTest(char c, int num1, string str){
-    int newNum = num1 + num;
+string funcTest(char c, string str){
+    int newNumTwo = NumberFunc(numberOne);
     char newC = c;
     if(newC == 'c'){
         string newStr = str;
@@ -11,25 +10,34 @@ int numArray[] = { 1, 2, 3, 4, 5 };
 
 
 }
+int NumberFunc(int numberOne){
+    numberOne = numberOne + 1;
+    return numberOne;
+
+
+}
+
 
 void loop()
 {
-    string str = "This is not a string :P";
+    int num = 2;
+    undefined testnumber;
     for (int i = num; i <= 10; i = i + 1){
-        int num = num + i;
+        num = num + i;
 }
     for(numb : numArray){
         if(numb == 5){
-        str = "This is a string";
+        string str = "This is a string";
     }
 }
     while(num > 10){
         for (int i = num; i <= 100; i = i + numArray[2]){
-         testNumber = i;
-        funcTest('k', num, "yoghurt");
+        testnumber = i;
+        funcTest('o', "pee", num);
 
 }
 }
+
 
 
 

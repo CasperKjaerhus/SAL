@@ -1,6 +1,7 @@
 function main() returns void begin
 
 	number num = 2;
+	number testnumber;
 	
 	for(i: num...10) begin
 		num = num + i;
@@ -14,16 +15,13 @@ function main() returns void begin
 	
 	while(num > 10) begin
 		for(i: num...100, step numArray[2]) begin
-			number testNumber = i;
+			testnumber = i;
 			funcTest('o', "pee", num);
 		end
 	end
 end
 
-function funcTest(char c, string str, number num) returns string begin
-	number newNum = num + 2;
-	
-	newNum = newNum	+ 1;
+function funcTest(char c, string str) returns string begin
 	
 	number newNumTwo = NumberFunc(numberOne);
 	

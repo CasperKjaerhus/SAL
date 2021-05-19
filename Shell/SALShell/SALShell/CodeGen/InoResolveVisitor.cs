@@ -7,31 +7,31 @@ using System.Text;
 
 namespace SALShell.CodeGen
 {
-    class InoResolveVisitor : ASTVisitor<string>
+    class InoResolveVisitor : ASTVisitor<InoTypeEnum>
     {
-        private Dictionary<Symbol, string> VariableTypes = new Dictionary<Symbol, string>();
-        private Dictionary<Symbol, string> FunctionTypes = new Dictionary<Symbol, string>();
+        private Dictionary<Symbol, InoTypeEnum> VariableTypes = new Dictionary<Symbol, InoTypeEnum>();
+        private Dictionary<Symbol, InoTypeEnum> FunctionTypes = new Dictionary<Symbol, InoTypeEnum>();
         private Dictionary<Symbol, List<IdAstNode>> ParamDict = new Dictionary<Symbol, List<IdAstNode>>();
         private List<IdAstNode> ParamNodes = new List<IdAstNode>();
         private List<FunctioncallAstNode> CalledFunctions = new List<FunctioncallAstNode>();
         private Symbol CurrentFunction;
-        private string CurrentReturnType;
+        private InoTypeEnum CurrentReturnType;
         private bool IsParam = false;
         private bool IsFirstWalk = true;
 
-        public override string Visit(ArgumentsAstNode node)
+        public override InoTypeEnum Visit(ArgumentsAstNode node)
         {
             List<IdAstNode> formalParams = ParamDict[CurrentFunction];
-            if (!(formalParams.Any(x => x.InoType == null)))          //If all formal parameters have been resolved RETURN
-                return null;
+            if (!(formalParams.Any(x => x.InoType == InoTypeEnum.undefined && x.Type == SALTypeEnum.number)))          //If all formal parameters have been resolved RETURN
+                return InoTypeEnum.undefined;
 
             int i = 0;
-            string currentType;
+            InoTypeEnum currentType;
 
             foreach (ASTNode child in node.Children)
             {
                 currentType = Visit(child);
-                if(formalParams[i].InoType == null && formalParams[i].Type == SALTypeEnum.number)
+                if(formalParams[i].InoType == InoTypeEnum.undefined && formalParams[i].Type == SALTypeEnum.number)
                 {
                     formalParams[i].InoType = currentType;
                 }
@@ -40,34 +40,34 @@ namespace SALShell.CodeGen
 
             ParamDict[CurrentFunction] = formalParams;
 
-            return null;
+            return InoTypeEnum.undefined;
         }
 
-        public override string Visit(ArrayAccessAstNode node)
+        public override InoTypeEnum Visit(ArrayAccessAstNode node)
         {
+            if (IsFirstWalk)
+                return InoTypeEnum.undefined;
             return VariableTypes[node.Symbol];
         }
 
-        public override string Visit(AssignAstNode node)
+        public override InoTypeEnum Visit(AssignAstNode node)
         {
             if (node.Symbol.Type == SALTypeEnum.number)
             {
                 node.InoType = EvaluateInoAssignment(node);
             }
 
-            return null;
+            return InoTypeEnum.undefined;
         }
 
-        private string EvaluateInoAssignment(AssignAstNode node)
+        private InoTypeEnum EvaluateInoAssignment(AssignAstNode node)
         {
-            string expressionType = "";
-
-            expressionType += Visit(node.Expr);
+            InoTypeEnum expressionType = Visit(node.Expr);
 
             if (VariableTypes.ContainsKey(node.Symbol))
             {
-                VariableTypes.TryGetValue(node.Symbol, out string type);
-                if (type == "null")
+                VariableTypes.TryGetValue(node.Symbol, out InoTypeEnum type);
+                if (type == InoTypeEnum.undefined)
                 {
                     VariableTypes[node.Symbol] = expressionType;
                 }
@@ -78,50 +78,38 @@ namespace SALShell.CodeGen
             return expressionType;
         }
 
-        public override string Visit(DeclareAstNode node)
+        public override InoTypeEnum Visit(DeclareAstNode node)
         {
-            if (node.Symbol.Type == SALTypeEnum.number)
+            if (node.Symbol.Type == SALTypeEnum.number && IsFirstWalk)
             {
-                VariableTypes.Add(node.Symbol, "null");
+                VariableTypes.Add(node.Symbol, InoTypeEnum.undefined);
             }
             
-            return null;
+            return InoTypeEnum.undefined;
         }
 
-        public override string Visit(ExprListAstNode node)
+        public override InoTypeEnum Visit(ExprListAstNode node)
         {
-            string type = "";
+            InoTypeEnum type;
             foreach (ASTNode child in node.Children)
             {
-                type += Visit(child);
-                if(type == "float")
+                type = Visit(child);
+                if(type == InoTypeEnum.@float)
                 {
                     return type;
                 }
-                type = "";
+                type = InoTypeEnum.undefined;
             }
 
-            return "int";
+            return InoTypeEnum.@int;
         }
 
-        public override string Visit(ForAstNode node)
-        {
-            Visit(node.Body);
-            return null;
-        }
-
-        public override string Visit(ForeachAstNode node)
-        {
-            Visit(node.Body);
-            return null;
-        }
-
-        public override string Visit(FunctioncallAstNode node)      //Node does not have any symbol rn :/ (Should ideally share symbol with it's declaration)
+        public override InoTypeEnum Visit(FunctioncallAstNode node)      //Node does not have any symbol rn :/ (Should ideally share symbol with it's declaration)
         {
             if (IsFirstWalk)
-                return null;
+                return InoTypeEnum.undefined;
 
-            string InoType = FunctionTypes[node.Symbol];
+            InoTypeEnum InoType = FunctionTypes[node.Symbol];
 
             CurrentFunction = node.Symbol;
             node.InoType = InoType;
@@ -135,7 +123,7 @@ namespace SALShell.CodeGen
             return InoType;
         }
 
-        public override string Visit(FunctionDeclarationAstNode node)
+        public override InoTypeEnum Visit(FunctionDeclarationAstNode node)
         {
             if (node.Body != null)
             {
@@ -148,7 +136,7 @@ namespace SALShell.CodeGen
                 Visit(node.Body);
             }
             else
-                return null;
+                return InoTypeEnum.undefined;
 
             if (IsFirstWalk)
             {
@@ -156,9 +144,9 @@ namespace SALShell.CodeGen
                 FunctionTypes.Add(node.Symbol, CurrentReturnType);
             }
 
-            CurrentReturnType = "";
+            CurrentReturnType = InoTypeEnum.undefined;
 
-            return null;
+            return InoTypeEnum.undefined;
         }
 
         private List<IdAstNode> CopyNodeList(List<IdAstNode> paramNodes)
@@ -174,50 +162,47 @@ namespace SALShell.CodeGen
 
         //Due to the CFG some not so nice (almost spaghetti-like) code has been created
         //(Namely that formal parameters are ID AST nodes and not Declaration Ast Nodes)
-        public override string Visit(IdAstNode node)
+        public override InoTypeEnum Visit(IdAstNode node)
         {
             if (IsParam && IsFirstWalk)
             {
                 if(node.Symbol.Type == SALTypeEnum.number) //IF IT IS A SAL-NUMBER ADD IT TO THE EVALUATION QUEUE BY SETTING ISPARAM TO TRUE ELSE IGNORE IT
                 {
                     node.IsParam = IsParam;
-                    VariableTypes.Add(node.Symbol, "null");
+                    VariableTypes.Add(node.Symbol, InoTypeEnum.undefined);
                 }
-                return null;
+                return InoTypeEnum.undefined;
             }
             else if(node.Symbol != null && node.Symbol.Type == SALTypeEnum.number)
             {
-                VariableTypes.TryGetValue(node.Symbol, out string val);   //If it is not a parameter-declaration try to find the ino type of the id.
+                VariableTypes.TryGetValue(node.Symbol, out InoTypeEnum val);   //If it is not a parameter-declaration try to find the ino type of the id.
+                node.InoType = val;
                 return val;
             }
 
-            return null;
+            return InoTypeEnum.undefined;
         }
-
-        public override string Visit(IfStructureAstNode node)
+        public override InoTypeEnum Visit(ForAstNode node)
         {
             Visit(node.Body);
-            return null;
+            return InoTypeEnum.undefined;
         }
 
-        public override string Visit(MultAstNode node)
+        public override InoTypeEnum Visit(MultAstNode node)
         {
-            string leftval = "";
-            string rightval = "";
-            
-            leftval += Visit(node.Left);
-            rightval += Visit(node.Right);
+            InoTypeEnum leftval = Visit(node.Left);
+            InoTypeEnum rightval = Visit(node.Right);
 
-            if(rightval == "float" || leftval == "float")
+            if(rightval == InoTypeEnum.@float || leftval == InoTypeEnum.@float)
             {
-                return "float";
+                return InoTypeEnum.@float;
             }
 
-            return "int";
+            return InoTypeEnum.@int;
 
         }
 
-        public override string Visit(ParameterListAstNode node)
+        public override InoTypeEnum Visit(ParameterListAstNode node)
         {
             IsParam = true;
             foreach (ASTNode param in node.Children)
@@ -227,95 +212,74 @@ namespace SALShell.CodeGen
                 Visit(param);
             }
             IsParam = false;
-            return null;
+            return InoTypeEnum.undefined;
         }
 
-        public override string Visit(PlusAstNode node)
+        public override InoTypeEnum Visit(PlusAstNode node)
         {
-            string leftval = "";
-            string rightval = "";
+            InoTypeEnum leftval = Visit(node.Left);
+            InoTypeEnum rightval = Visit(node.Right);
 
-            leftval += Visit(node.Left);
-            rightval += Visit(node.Right);
-
-            if (rightval == "float" || leftval == "float")
+            if (rightval == InoTypeEnum.@float || leftval == InoTypeEnum.@float)
             {
-                return "float";
+                return InoTypeEnum.@float;
             }
 
-            return "int";
+            return InoTypeEnum.@int;
         }
 
-        public override string Visit(PostfixExprAstNode node)
+        public override InoTypeEnum Visit(PostfixExprAstNode node)
         {
-            return "int";
+            return InoTypeEnum.@int;
         }
 
-        public override string Visit(PrefixExprAstNode node)
+        public override InoTypeEnum Visit(PrefixExprAstNode node)
         {
-            return "int";
+            return InoTypeEnum.@int;
         }
 
-        public override string Visit(ReturnAstNode node)
+        public override InoTypeEnum Visit(ReturnAstNode node)
         {
-            CurrentReturnType += Visit(node.ReturnExpression);
-            return null;
+            CurrentReturnType = Visit(node.ReturnExpression);
+            return InoTypeEnum.undefined;
         }
 
-        public override string Visit(StatementAstNode node)
+        public override InoTypeEnum Visit(StatementAstNode node)
         {
             foreach (ASTNode child in node.Children)
             {
-                Visit(child);
+                _ = Visit(child);
             }
 
-            return null;
+            return InoTypeEnum.undefined;
         }
 
-        public override string Visit(SwitchBodyAstNode node)
+        public override InoTypeEnum Visit(SwitchBodyAstNode node)
         {
             foreach(ASTNode child in node.Children)
             {
-                Visit(child);
+                _ = Visit(child);
             }
-            return null;
+            return InoTypeEnum.undefined;
         }
 
-        public override string Visit(SwitchItemAstNode node)
-        {
-            Visit(node.Block);
-            return null;
-        }
-
-        public override string Visit(SwitchStructureAstNode node)
-        {
-            Visit(node.SwitchBody);
-            return null;
-        }
-
-        public override string Visit(ValueAstNode node)
+        public override InoTypeEnum Visit(ValueAstNode node)
         {
             if (node.Token.Text.Contains("."))
             {
-                return "float";
+                return InoTypeEnum.@float;
             }
             else
             {
-                return "int";
+                return InoTypeEnum.@int;
             }
-        }
-
-        public override string Visit(WhileAstNode node)
-        {
-            Visit(node.Body);
-            return null;
         }
 
         private void ResolveNumberTypes(ASTNode node)
         {
             if (node is FunctionDeclarationAstNode funcnode)
                 ParamNodes = ParamDict[funcnode.Symbol];
-            string inotype;
+            InoTypeEnum inotype;
 
             switch (node)
             {
@@ -331,8 +295,7 @@ namespace SALShell.CodeGen
                 case IdAstNode paramnode:
                     if (paramnode.IsParam && paramnode.Symbol.Type == SALTypeEnum.number)
                     {
-
-                        if(VariableTypes[paramnode.Symbol] == "null" || paramnode.InoType == null)
+                        if(VariableTypes[paramnode.Symbol] == InoTypeEnum.undefined)
                         {
                             inotype = ParamNodes.First(x => x.Symbol == paramnode.Symbol).InoType;
                             paramnode.InoType = inotype;
@@ -359,9 +322,9 @@ namespace SALShell.CodeGen
         }
         public void PopulateAST(ASTNode root)
         {
-            Visit(root);
+            _ = Visit(root);
             IsFirstWalk = false;
-            Visit(root);
+            _ = Visit(root);
 
             ResolveNumberTypes(root);
         }
