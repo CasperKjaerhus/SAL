@@ -61,11 +61,11 @@ namespace SALShell.Core.CodeGeneration
             string ExePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
             string DirectoryPath = System.IO.Path.GetDirectoryName(ExePath);
             string BoardName = "arduino:avr:uno";
-            string fileCreationPath = $"{path}\\{name}.ino";
+            string fileCreationPath = $"{path}";
 
             Console.WriteLine(fileCreationPath);
 
-            Process.Start($"{DirectoryPath}\\arduino-cli", $"compile --fqbn {BoardName} {fileCreationPath}");
+            Process.Start($"{DirectoryPath}\\arduino-cli", $"compile --fqbn {BoardName} {fileCreationPath} --build-path {fileCreationPath}");
         }
     }
 }

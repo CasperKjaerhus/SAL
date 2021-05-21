@@ -172,6 +172,7 @@ namespace SALShell.CodeGen
 
         public override string Visit(FunctionDeclarationAstNode node)
         {
+
             string id = Visit(node.Id);
             string body = "";
 
@@ -218,7 +219,10 @@ namespace SALShell.CodeGen
 
             if (node.Type != SALTypeEnum.undefined && node.Type != SALTypeEnum.number)
             {
-                IdCode += node.Type + " ";
+                if (node.Type == SALTypeEnum.@string)
+                    IdCode += "String ";
+                else
+                    IdCode += node.Type + " ";
             }
 
             else if(node.Type == SALTypeEnum.number && node.InoType != InoTypeEnum.undefined)
