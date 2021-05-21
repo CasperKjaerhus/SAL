@@ -1,0 +1,38 @@
+[
+  {
+    "Name": "digitalRead",
+    "InoType": "int",
+    "SALType": "number",
+    "ParameterTypes": [
+      "number"
+    ]
+  },
+  {
+    "Name": "digitalWrite",
+    "InoType": "Void",
+    "SALType": "Void",
+    "ParameterTypes": [
+      "number",
+      "number"
+    ]
+  },
+  {
+    "Name": "pinMode",
+    "InoType": "Void",
+    "SALType": "Void",
+    "ParameterTypes": [
+      "number",
+      "number"
+    ]
+  },
+  {
+    "Name": "HIGH",
+    "InoType": "int",
+    "SALType": "number"
+  },
+  {
+    "Name": "LOW",
+    "InoType": "int",
+    "SALType": "number"
+  }
+ ]

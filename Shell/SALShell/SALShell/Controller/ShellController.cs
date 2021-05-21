@@ -10,6 +10,8 @@ namespace SALShell.Controller
 {
     class ShellController
     {
+        public ICore Core { get; set; }
+        public IShellUI Ui { get; set; }
         public ShellController(IShellUI ui, ICore core)
         {
             Ui = ui;
@@ -58,9 +60,5 @@ namespace SALShell.Controller
                 throw new NotImplementedException();
             }
         }
-
-        public ICore Core { get; set; }
-
-        public IShellUI Ui { get; set; }
     }
 }
