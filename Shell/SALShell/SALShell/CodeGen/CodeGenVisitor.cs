@@ -105,7 +105,9 @@ namespace SALShell.CodeGen
                 return "";
             }
 
-            if(node.Symbol.Type == SALTypeEnum.number)
+            if (node.InoType == InoTypeEnum.undefined)
+                return "";
+            else if(node.Symbol.Type == SALTypeEnum.number)
             {
                 DeclOrInit.Add(node.Symbol);
                 return node.InoType + " " + Visit(node.Id) + ";";
