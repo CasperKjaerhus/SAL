@@ -11,11 +11,9 @@ namespace SALShell.Command
     {
         public void Execute(string[] argStrings, IShellUI ui, ICore core)
         {
-            string Path = argStrings[1];
-
             try
             {
-                core.OpenFile(Path);
+                Compilation compilation = new Compilation(argStrings[1]);
             }
             catch (Exception)
             {
