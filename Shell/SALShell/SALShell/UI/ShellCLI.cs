@@ -76,7 +76,7 @@ namespace SALShell.UI
 
         public void DisplayCommandNotFoundMessage(string commandStr)
         {
-            Console.WriteLine($"Sorry, I do not recognize the '{commandStr}' command. Try again.");
+            Console.WriteLine($"Sorry, I do not recognize the '{commandStr}' command. Try '-h' for help.");
         }
     }
 }
