@@ -1,6 +1,4 @@
 ﻿function main() returns void begin
-    number timer = 50+50;
-    number ledPins[] = {2, 7, 4, 6, 5, 3}; // initialising number array
 
 
     for (thisPin: 0...ledPins.length, step 1) begin        
@@ -21,3 +19,6 @@
         
     end
 end
+
+number timer = 50+50;
+number ledPins[] = {2, 7, 4, 6, 5, 3}; // initialising number array

@@ -1,0 +1,45 @@
+function main() returns void begin
+
+	number num = 2;
+	
+	for(i: num...10) begin
+		num = num + i;
+	end
+	
+	foreach(numb in numArray) begin
+		if(numb == 5) then begin
+			string str = "This is a string";
+		end
+	end
+	
+	while(num > 10) begin
+		for(i: num...100, step numArray[2]) begin
+			number testNumber = i;
+			funcTest('o', "pee", num);
+		end
+	end
+end
+
+function funcTest(char c, string str, number num) returns string begin
+	number newNum = num + 2;
+	
+	newNum = newNum	+ 1;
+	
+	number newNumTwo = NumberFunc(numberOne);
+	
+	char newC = c;
+	if(newC == 'c') then begin
+		string newStr = str;
+	end
+end
+
+function NumberFunc(number numberOne) returns number 
+begin 
+
+numberOne = numberOne + 1;
+return numberOne;
+
+end
+
+number numberOne = 1;
+number numArray[5] = {1,2,3,4,5};

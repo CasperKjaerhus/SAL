@@ -1,0 +1,59 @@
+function main() returns void begin
+
+	number aaa = 1;
+	number caa = 1.5;
+	string bbb;
+	
+	hat(bbb);
+	bob(aaa);
+
+end
+
+function bob(number num) returns number begin
+
+	num = num + 1;
+	number aaa;
+	number b;
+	string bbb;
+	number a = 2+2;
+	a++;
+	--a;
+	aaa = a++;
+	b = aaa + 1.5;
+	number potato = aaa + num;
+
+	return num;
+end
+
+function hat(string john, number bobjones) returns string begin
+	
+	string words = "obama";
+	bobjones = 10;
+
+	if(2>3) then begin
+		john = "help";
+	end
+	else if(true) then begin
+		bob(3);
+	end
+	else begin
+		words = "jodel";
+		words = "another one";
+	end
+
+	return john;
+end
+
+function ForLoopTester(number iterator) returns void begin
+	number one = 1;
+	iterator = 2;	
+
+	for(i:iterator...100)
+	begin
+		one++;
+		iterator = iterator + 3;
+	end
+end
+
+
+

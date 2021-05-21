@@ -8,9 +8,11 @@ namespace SALShell.Parser
     public class SwitchStructureAstNode : ASTNode
     {
         public ASTNode ConditionalValue { get; }
+        public ASTNode SwitchBody { get; }
         public SwitchStructureAstNode(ASTNode conditionalvalue, ASTNode switchBody, IToken token) : base(token)
         {
             ConditionalValue = conditionalvalue;
+            SwitchBody = switchBody;
             Children.Add(switchBody);
         }
         public override void PrintTrees(int depth)

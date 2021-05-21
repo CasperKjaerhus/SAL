@@ -1,0 +1,23 @@
+function main() returns void begin
+	for(thisPin: 0...pinCount) begin
+		digitalWrite(ledPins[thisPin], HIGH);
+		delay(timer);
+		digitalWrite(ledPins[thisPin], LOW);
+	end
+	
+	for(thisPin: pinCount-1...0) begin
+		digitalWrite(ledPins[thisPin], HIGH);
+		delay(timer);
+		digitalWrite(ledPins[thisPin], LOW);
+	end
+end
+
+function setup() returns void begin
+	for(thisPin: 0...pinCount) begin
+		pinMode(ledPins[thisPin], OUTPUT);
+	end
+end
+
+number timer = 100;
+number ledPins[] = {2, 7, 4, 6, 5, 3}; // initialising number array
+number pinCount = 6;
