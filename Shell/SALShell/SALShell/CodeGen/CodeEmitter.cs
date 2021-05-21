@@ -3,6 +3,7 @@ using SALShell.Parser;
 using SALShell.SymbolTable;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 
@@ -12,10 +13,11 @@ namespace SALShell.Core.CodeGeneration
     {
         private InoResolveVisitor Resolver = new InoResolveVisitor();
         private CodeGenVisitor CodeGenerationVisitor = new CodeGenVisitor();
+        private string fileCreationPath;
 
         private void CreateFile(string filePath, string fileName, ASTNode root)
         {
-            string fileCreationPath = $"{filePath}/{fileName}.ino";
+            fileCreationPath = $"{filePath}/{fileName}.ino";
 
             using (StreamWriter StreamW = File.CreateText(fileCreationPath))
             {
@@ -52,6 +54,18 @@ namespace SALShell.Core.CodeGeneration
         {
             Resolver.PopulateAST(ASTroot);
             CreateFile(path, name, ASTroot);
+            CompileToMachineCode();
+        }
+
+        private void CompileToMachineCode()
+        {
+            string ExePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            string DirectoryPath = System.IO.Path.GetDirectoryName(ExePath);
+            string BoardName = "arduino:avr:uno";
+
+            Console.WriteLine(DirectoryPath);
+
+            Process.Start($"{DirectoryPath}\\arduino-cli", $"compile --fqbn {BoardName} {fileCreationPath}");
         }
     }
 }

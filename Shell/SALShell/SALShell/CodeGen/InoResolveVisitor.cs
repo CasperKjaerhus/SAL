@@ -34,6 +34,7 @@ namespace SALShell.CodeGen
                 if(formalParams[i].InoType == InoTypeEnum.undefined && formalParams[i].Type == SALTypeEnum.number)
                 {
                     formalParams[i].InoType = currentType;
+                    VariableTypes[formalParams[i].Symbol] = currentType;
                 }
                 i++;
             }
