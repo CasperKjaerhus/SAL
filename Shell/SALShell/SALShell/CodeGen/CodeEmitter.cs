@@ -20,8 +20,6 @@ namespace SALShell.Core.CodeGeneration
             using (StreamWriter StreamW = File.CreateText(fileCreationPath))
             {
                 WriteToGlobal(StreamW, root);
-                //StreamW.WriteLine("void setup() {");
-                //StreamW.WriteLine("}\n");
 
                 StreamW.WriteLine("void loop()\n{");
                 WriteToLoop(StreamW, root);
@@ -36,6 +34,11 @@ namespace SALShell.Core.CodeGeneration
             CodeGenerationVisitor.IsGlobal = false;
             streamW.Write(CodeGenerationVisitor.GlobalVariables + "\n");
             streamW.Write(Code);
+            if (!(CodeGenerationVisitor.HasSetup))
+            {
+                streamW.WriteLine("void setup(){\n");
+                streamW.WriteLine("}\n");
+            }
         }
 
         private void WriteToLoop(StreamWriter streamW, ASTNode node)

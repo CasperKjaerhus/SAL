@@ -18,6 +18,7 @@ namespace SALShell.CodeGen
         private List<Symbol> DeclOrInit = new List<Symbol>();
         public string GlobalVariables { get; private set; } = "";
         private List<ASTNode> AlreadyVisited = new List<ASTNode>();
+        public bool HasSetup { get; private set; } = false;
 
         public override string Visit(ArgumentsAstNode node)
         {
@@ -187,6 +188,11 @@ namespace SALShell.CodeGen
                     body = Visit(node.Body);
                 IndentationDepth--;
                 return body;
+            }
+
+            if(node.Symbol.Name.ToLower() == "setup")
+            {
+                HasSetup = true;
             }
 
             if (IsGlobal && node.Symbol.Name != "main")
