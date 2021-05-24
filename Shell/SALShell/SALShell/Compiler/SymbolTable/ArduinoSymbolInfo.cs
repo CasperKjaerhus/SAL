@@ -2,11 +2,11 @@
 
 namespace SALShell.Compiler.SymbolTable
 {
-    internal class ArduinoSymbol
+    internal class ArduinoSymbolInfo
     {
         public string Name { get; set; }
         public SALTypeEnum SALType { get; set; }
         public InoTypeEnum InoType { get; set; }
-        public SALTypeEnum[] ParameterTypes { get; set; }
+        public ArduinoParameter[] ParameterTypes { get; set; }
     }
 }
