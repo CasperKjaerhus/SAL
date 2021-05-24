@@ -10,6 +10,8 @@ namespace SALShell.Controller
 {
     class ShellController
     {
+        public ICore Core { get; set; }
+        public IShellUI Ui { get; set; }
         public ShellController(IShellUI ui, ICore core)
         {
             Ui = ui;
@@ -43,24 +45,14 @@ namespace SALShell.Controller
         {
             string[] argStrings = input.Trim().Split(" ");
             string commandStr = argStrings[0];
-            try
+
+            if (commands.ContainsKey(commandStr))
             {
-                if (commands.ContainsKey(commandStr))
-                {
-                    ICommand command = commands[commandStr];
-                    command.Execute(argStrings, Ui, Core);
-                }
-                else
-                    Ui.DisplayCommandNotFoundMessage(commandStr);
+                ICommand command = commands[commandStr];
+                command.Execute(argStrings, Ui, Core);
             }
-            catch (Exception e) //TODO: Add exception handling
-            {
-                throw new NotImplementedException();
-            }
+            else
+                Ui.DisplayCommandNotFoundMessage(commandStr);
         }
-
-        public ICore Core { get; set; }
-
-        public IShellUI Ui { get; set; }
     }
 }

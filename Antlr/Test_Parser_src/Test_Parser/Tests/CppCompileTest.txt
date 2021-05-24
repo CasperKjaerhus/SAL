@@ -5,16 +5,10 @@ function main() returns void begin
 	for(i: num...10) begin
 		num = num + i;
 	end
-	
-	foreach(numb in numArray) begin
-		if(numb == 5) then begin
-			string str = "This is a string";
-		end
-	end
+
 	
 	while(num > 10) begin
 		for(i: num...100, step numArray[2]) begin
-			number testNumber = i;
 			funcTest('o', "pee", num);
 		end
 	end
