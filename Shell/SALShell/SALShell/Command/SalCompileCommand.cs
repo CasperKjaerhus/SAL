@@ -4,6 +4,7 @@ using System.Text;
 using SALShell.Core;
 using SALShell.UI;
 using System.IO;
+using SALShell.Compiler.Compilation;
 
 namespace SALShell.Command
 {
@@ -13,11 +14,16 @@ namespace SALShell.Command
         {
             try
             {
-                Compilation compilation = new Compilation(argStrings[1]);
+                string sourcePath = argStrings[1];
+                string outputPath = argStrings[2];
+                string fileName = argStrings[3];
+                Compilation compilation = new Compilation(sourcePath, outputPath, fileName);
             }
-            catch (Exception)
+            catch (Exception e) //TODO: Better exception handling
             {
-                throw;
+                Console.WriteLine("Compilation Error\n");
+                Console.WriteLine(e);
+                Console.WriteLine("Please try again! type -h for help.\n");
             }
         }
     }

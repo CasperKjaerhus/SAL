@@ -45,20 +45,14 @@ namespace SALShell.Controller
         {
             string[] argStrings = input.Trim().Split(" ");
             string commandStr = argStrings[0];
-            try
+
+            if (commands.ContainsKey(commandStr))
             {
-                if (commands.ContainsKey(commandStr))
-                {
-                    ICommand command = commands[commandStr];
-                    command.Execute(argStrings, Ui, Core);
-                }
-                else
-                    Ui.DisplayCommandNotFoundMessage(commandStr);
+                ICommand command = commands[commandStr];
+                command.Execute(argStrings, Ui, Core);
             }
-            catch (Exception e) //TODO: Add exception handling
-            {
-                throw new NotImplementedException();
-            }
+            else
+                Ui.DisplayCommandNotFoundMessage(commandStr);
         }
     }
 }
