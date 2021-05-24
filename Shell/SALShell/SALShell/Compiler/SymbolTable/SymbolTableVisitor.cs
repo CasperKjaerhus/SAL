@@ -16,6 +16,18 @@ namespace SALShell.Compiler.SymbolTable
         {
             this.Errors = errors;
             this.CurrentScope = globalScope;
+
+            ArduinoSymbolFetcher fetcher = new ArduinoSymbolFetcher();
+            List<FunctionSymbol> functionSymbols = fetcher.FetchFunctions(CurrentScope);
+
+            CurrentScope.Symbols.AddRange(fetcher.FetchConstants(CurrentScope));
+            CurrentScope.Symbols.AddRange(functionSymbols);
+
+            foreach(FunctionSymbol fs in functionSymbols)
+            {
+                FunctionSymbols.Add(fs.Name, fs);
+            }
+
         }
 
         override public Symbol Visit(StatementAstNode node)

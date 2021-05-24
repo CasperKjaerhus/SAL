@@ -4,6 +4,9 @@
     {
         undefined,
         @int,
-        @float
+        @float,
+        @string,
+        @char,
+        @void
     }
 }

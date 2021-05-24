@@ -4,7 +4,10 @@
     "InoType": "int",
     "SALType": "number",
     "ParameterTypes": [
-      "number"
+      {
+        "Name": "pin",
+        "Type": "number"
+      }
     ]
   },
   {
@@ -12,8 +15,14 @@
     "InoType": "Void",
     "SALType": "Void",
     "ParameterTypes": [
-      "number",
-      "number"
+      {
+        "Name": "pin",
+        "Type": "number"
+      },
+      {
+        "Name": "value",
+        "Type": "number"
+      }
     ]
   },
   {
@@ -21,8 +30,14 @@
     "InoType": "Void",
     "SALType": "Void",
     "ParameterTypes": [
-      "number",
-      "number"
+      {
+        "Name": "pin",
+        "Type": "number"
+      },
+      {
+        "Name": "mode",
+        "Type": "number"
+      }
     ]
   },
   {
