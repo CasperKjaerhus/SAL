@@ -15,7 +15,7 @@ namespace SALShell.Compiler.Compilation
     {
         public Compilation(string sourcePath, string outputPath, string fileName)
         {
-            string text = System.IO.File.ReadAllText(sourcePath); // test with: sourcePath = "...\SAL\Antlr\Test_Parser_src\Test_Parser\Tests"
+            string text = System.IO.File.ReadAllText(sourcePath); // test available in relative directory: sourcePath = "...\SAL\Antlr\Test_Parser_src\Test_Parser\Tests"
 
             p4Lexer lexer = new p4Lexer(new AntlrInputStream(text));
             CommonTokenStream stream = new CommonTokenStream(lexer);
@@ -36,7 +36,8 @@ namespace SALShell.Compiler.Compilation
             CodeEmitter CodeGenerator = new CodeEmitter();
 
             CodeGenerator.GenerateCode(outputPath, fileName, AST);
-            //test with: outputPath = "D:\P4\SAL\Antlr\Test_Parser_src\Test_Parser\Tests"
+            //test available in relative directory: 
+            //           outputPath = "...\SAL\Antlr\Test_Parser_src\Test_Parser\Tests"
             //           fileName = "Tests"
         }
     }

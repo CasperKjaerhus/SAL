@@ -19,7 +19,7 @@ namespace SALShell.Command
                 string fileName = argStrings[3];
                 Compilation compilation = new Compilation(sourcePath, outputPath, fileName);
             }
-            catch (Exception e)
+            catch (Exception e) //TODO: Better exception handling
             {
                 Console.WriteLine("Compilation Error\n");
                 Console.WriteLine(e);
