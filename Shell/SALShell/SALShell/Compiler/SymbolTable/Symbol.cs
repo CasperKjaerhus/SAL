@@ -11,11 +11,18 @@ namespace SALShell.Compiler.SymbolTable
         public SALTypeEnum Type { get; }
         public Scope Scope { get; }
 
+        public bool IsExtern { get; set; } = false;
+
         public Symbol(Scope scope, string name, SALTypeEnum type)
         {
             Name = name;
             Type = type;
             Scope = scope;
+        }
+
+        public Symbol(Scope scope, string name, SALTypeEnum type, bool isExtern) : this(scope, name, type)
+        {
+            IsExtern = isExtern;
         }
 
         public override string ToString()

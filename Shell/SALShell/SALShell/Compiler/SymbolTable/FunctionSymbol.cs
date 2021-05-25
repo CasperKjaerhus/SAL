@@ -10,5 +10,10 @@ namespace SALShell.Compiler.SymbolTable
         {
             ParameterSymbols = parameterSymbols;
         }
+
+        public FunctionSymbol(Scope scope, string name, SALTypeEnum type, List<Symbol> parameterSymbols, bool isExtern) : base(scope, name, type, isExtern)
+        {
+            ParameterSymbols = parameterSymbols;
+        }
     }
 }

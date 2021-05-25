@@ -53,9 +53,9 @@ namespace SALShell.Compiler.SymbolTable
                 List<Symbol> parameters = new List<Symbol>();
                 foreach(var parameter in arduinoSymbolInfo.ParameterTypes)
                 {
-                    parameters.Add(new Symbol(null, parameter.Name, parameter.Type)); // Can set scope to null since function scope is not part of file.
+                    parameters.Add(new Symbol(null, parameter.Name, parameter.Type, true)); // Can set scope to null since function scope is not part of file.
                 }
-                functionSymbols.Add(new FunctionSymbol(globalScope, arduinoSymbolInfo.Name, arduinoSymbolInfo.SALType, parameters));
+                functionSymbols.Add(new FunctionSymbol(globalScope, arduinoSymbolInfo.Name, arduinoSymbolInfo.SALType, parameters, true));
             }
             return functionSymbols;
         }
@@ -66,7 +66,7 @@ namespace SALShell.Compiler.SymbolTable
 
             foreach (ArduinoSymbolInfo symbol in arduinoSymbolInfo)
             {
-                symbols.Add(new Symbol(globalScope, symbol.Name, symbol.SALType));
+                symbols.Add(new Symbol(globalScope, symbol.Name, symbol.SALType, true));
             }
             return symbols;
         }
