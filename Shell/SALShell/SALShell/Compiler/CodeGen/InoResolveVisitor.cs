@@ -109,6 +109,17 @@ namespace SALShell.Compiler.CodeGen
             if (IsFirstWalk)
                 return InoTypeEnum.undefined;
 
+            if (node.Symbol.IsExtern && node.Symbol.Type == SALTypeEnum.number)         // SUPER ROUGH WORKAROUND - SHOULD BE MODIFIED IN THE FUTURE
+            {
+                node.InoType = InoTypeEnum.@int;
+                return InoTypeEnum.@int;
+            }
+            else if (node.Symbol.IsExtern)
+            {
+                node.InoType = InoTypeEnum.@void;
+                return InoTypeEnum.@void;
+            }
+
             InoTypeEnum InoType = FunctionTypes[node.Symbol];
 
             CurrentFunction = node.Symbol;

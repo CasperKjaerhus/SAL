@@ -26,6 +26,17 @@
     ]
   },
   {
+    "Name": "delay",
+    "InoType": "Void",
+    "SALType": "Void",
+    "ParameterTypes": [
+      {
+        "Name": "ms",
+        "Type": "number"
+      }
+    ]
+  },
+  {
     "Name": "pinMode",
     "InoType": "Void",
     "SALType": "Void",
@@ -49,5 +60,10 @@
     "Name": "LOW",
     "InoType": "int",
     "SALType": "number"
+  },
+  {
+    "Name": "OUTPUT",
+    "InoType": "int",
+    "SALType": "number"
   }
- ]
+]
