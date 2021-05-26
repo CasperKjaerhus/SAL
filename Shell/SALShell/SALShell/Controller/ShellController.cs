@@ -26,6 +26,7 @@ namespace SALShell.Controller
             { "-h", new HelpCommand()},
             { "h", new HelpCommand()},
             {"cd", new ChangeDirectoryCommand()},
+            {"exit", new ExitCommand()},
             {"salc", new SalCompileCommand()}
         };
 

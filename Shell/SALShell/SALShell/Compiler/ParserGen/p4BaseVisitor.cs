@@ -35,7 +35,8 @@ namespace SALShell.Compiler.ParserGen
     [System.CodeDom.Compiler.GeneratedCode("ANTLR", "4.9.2")]
     [System.Diagnostics.DebuggerNonUserCode]
     [System.CLSCompliant(false)]
-    public partial class p4BaseVisitor<Result> : AbstractParseTreeVisitor<Result>, Ip4Visitor<Result> {
+    public partial class p4BaseVisitor<Result> : AbstractParseTreeVisitor<Result>, Ip4Visitor<Result>
+    {
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.s"/>.
         /// <para>
@@ -45,7 +46,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitS([NotNull] p4Parser.SContext context) { return VisitChildren(context); }
+        public virtual Result VisitS([NotNull] p4Parser.SContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.importStmt"/>.
         /// <para>
@@ -55,7 +60,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitImportStmt([NotNull] p4Parser.ImportStmtContext context) { return VisitChildren(context); }
+        public virtual Result VisitImportStmt([NotNull] p4Parser.ImportStmtContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.stmt"/>.
         /// <para>
@@ -65,7 +74,39 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitStmt([NotNull] p4Parser.StmtContext context) { return VisitChildren(context); }
+        public virtual Result VisitStmt([NotNull] p4Parser.StmtContext context)
+        {
+            return VisitChildren(context);
+        }
+
+        /// <summary>
+        /// Visit a parse tree produced by <see cref="p4Parser.global"/>.
+        /// <para>
+        /// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+        /// on <paramref name="context"/>.
+        /// </para>
+        /// </summary>
+        /// <param name="context">The parse tree.</param>
+        /// <return>The visitor result.</return>
+        public virtual Result VisitGlobal([NotNull] p4Parser.GlobalContext context)
+        {
+            return VisitChildren(context);
+        }
+
+        /// <summary>
+        /// Visit a parse tree produced by <see cref="p4Parser.main"/>.
+        /// <para>
+        /// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+        /// on <paramref name="context"/>.
+        /// </para>
+        /// </summary>
+        /// <param name="context">The parse tree.</param>
+        /// <return>The visitor result.</return>
+        public virtual Result VisitMain([NotNull] p4Parser.MainContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.block"/>.
         /// <para>
@@ -75,7 +116,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitBlock([NotNull] p4Parser.BlockContext context) { return VisitChildren(context); }
+        public virtual Result VisitBlock([NotNull] p4Parser.BlockContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.returnExpr"/>.
         /// <para>
@@ -85,7 +130,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitReturnExpr([NotNull] p4Parser.ReturnExprContext context) { return VisitChildren(context); }
+        public virtual Result VisitReturnExpr([NotNull] p4Parser.ReturnExprContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.funcDcl"/>.
         /// <para>
@@ -95,7 +144,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitFuncDcl([NotNull] p4Parser.FuncDclContext context) { return VisitChildren(context); }
+        public virtual Result VisitFuncDcl([NotNull] p4Parser.FuncDclContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.params"/>.
         /// <para>
@@ -105,7 +158,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitParams([NotNull] p4Parser.ParamsContext context) { return VisitChildren(context); }
+        public virtual Result VisitParams([NotNull] p4Parser.ParamsContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.param"/>.
         /// <para>
@@ -115,7 +172,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitParam([NotNull] p4Parser.ParamContext context) { return VisitChildren(context); }
+        public virtual Result VisitParam([NotNull] p4Parser.ParamContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.returnsStmt"/>.
         /// <para>
@@ -125,7 +186,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitReturnsStmt([NotNull] p4Parser.ReturnsStmtContext context) { return VisitChildren(context); }
+        public virtual Result VisitReturnsStmt([NotNull] p4Parser.ReturnsStmtContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.assignment"/>.
         /// <para>
@@ -135,7 +200,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitAssignment([NotNull] p4Parser.AssignmentContext context) { return VisitChildren(context); }
+        public virtual Result VisitAssignment([NotNull] p4Parser.AssignmentContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.declaration"/>.
         /// <para>
@@ -145,7 +214,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitDeclaration([NotNull] p4Parser.DeclarationContext context) { return VisitChildren(context); }
+        public virtual Result VisitDeclaration([NotNull] p4Parser.DeclarationContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.functioncall"/>.
         /// <para>
@@ -155,7 +228,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitFunctioncall([NotNull] p4Parser.FunctioncallContext context) { return VisitChildren(context); }
+        public virtual Result VisitFunctioncall([NotNull] p4Parser.FunctioncallContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.arguments"/>.
         /// <para>
@@ -165,7 +242,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitArguments([NotNull] p4Parser.ArgumentsContext context) { return VisitChildren(context); }
+        public virtual Result VisitArguments([NotNull] p4Parser.ArgumentsContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.controlStructure"/>.
         /// <para>
@@ -175,7 +256,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitControlStructure([NotNull] p4Parser.ControlStructureContext context) { return VisitChildren(context); }
+        public virtual Result VisitControlStructure([NotNull] p4Parser.ControlStructureContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.ifStmt"/>.
         /// <para>
@@ -185,7 +270,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitIfStmt([NotNull] p4Parser.IfStmtContext context) { return VisitChildren(context); }
+        public virtual Result VisitIfStmt([NotNull] p4Parser.IfStmtContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.elseStmt"/>.
         /// <para>
@@ -195,7 +284,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitElseStmt([NotNull] p4Parser.ElseStmtContext context) { return VisitChildren(context); }
+        public virtual Result VisitElseStmt([NotNull] p4Parser.ElseStmtContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.loopStructure"/>.
         /// <para>
@@ -205,7 +298,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitLoopStructure([NotNull] p4Parser.LoopStructureContext context) { return VisitChildren(context); }
+        public virtual Result VisitLoopStructure([NotNull] p4Parser.LoopStructureContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.forexpr"/>.
         /// <para>
@@ -215,7 +312,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitForexpr([NotNull] p4Parser.ForexprContext context) { return VisitChildren(context); }
+        public virtual Result VisitForexpr([NotNull] p4Parser.ForexprContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.whileexpr"/>.
         /// <para>
@@ -225,7 +326,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitWhileexpr([NotNull] p4Parser.WhileexprContext context) { return VisitChildren(context); }
+        public virtual Result VisitWhileexpr([NotNull] p4Parser.WhileexprContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.foreachexpr"/>.
         /// <para>
@@ -235,7 +340,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitForeachexpr([NotNull] p4Parser.ForeachexprContext context) { return VisitChildren(context); }
+        public virtual Result VisitForeachexpr([NotNull] p4Parser.ForeachexprContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.switchStmt"/>.
         /// <para>
@@ -245,7 +354,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitSwitchStmt([NotNull] p4Parser.SwitchStmtContext context) { return VisitChildren(context); }
+        public virtual Result VisitSwitchStmt([NotNull] p4Parser.SwitchStmtContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.switchBody"/>.
         /// <para>
@@ -255,7 +368,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitSwitchBody([NotNull] p4Parser.SwitchBodyContext context) { return VisitChildren(context); }
+        public virtual Result VisitSwitchBody([NotNull] p4Parser.SwitchBodyContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.switchItem"/>.
         /// <para>
@@ -265,7 +382,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitSwitchItem([NotNull] p4Parser.SwitchItemContext context) { return VisitChildren(context); }
+        public virtual Result VisitSwitchItem([NotNull] p4Parser.SwitchItemContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.expr"/>.
         /// <para>
@@ -275,7 +396,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitExpr([NotNull] p4Parser.ExprContext context) { return VisitChildren(context); }
+        public virtual Result VisitExpr([NotNull] p4Parser.ExprContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.condExpr"/>.
         /// <para>
@@ -285,7 +410,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitCondExpr([NotNull] p4Parser.CondExprContext context) { return VisitChildren(context); }
+        public virtual Result VisitCondExpr([NotNull] p4Parser.CondExprContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.logORexpr"/>.
         /// <para>
@@ -295,7 +424,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitLogORexpr([NotNull] p4Parser.LogORexprContext context) { return VisitChildren(context); }
+        public virtual Result VisitLogORexpr([NotNull] p4Parser.LogORexprContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.logANDexpr"/>.
         /// <para>
@@ -305,7 +438,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitLogANDexpr([NotNull] p4Parser.LogANDexprContext context) { return VisitChildren(context); }
+        public virtual Result VisitLogANDexpr([NotNull] p4Parser.LogANDexprContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.andExpr"/>.
         /// <para>
@@ -315,7 +452,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitAndExpr([NotNull] p4Parser.AndExprContext context) { return VisitChildren(context); }
+        public virtual Result VisitAndExpr([NotNull] p4Parser.AndExprContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.relExpr"/>.
         /// <para>
@@ -325,7 +466,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitRelExpr([NotNull] p4Parser.RelExprContext context) { return VisitChildren(context); }
+        public virtual Result VisitRelExpr([NotNull] p4Parser.RelExprContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.addExpr"/>.
         /// <para>
@@ -335,7 +480,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitAddExpr([NotNull] p4Parser.AddExprContext context) { return VisitChildren(context); }
+        public virtual Result VisitAddExpr([NotNull] p4Parser.AddExprContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.multExpr"/>.
         /// <para>
@@ -345,7 +494,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitMultExpr([NotNull] p4Parser.MultExprContext context) { return VisitChildren(context); }
+        public virtual Result VisitMultExpr([NotNull] p4Parser.MultExprContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.exprList"/>.
         /// <para>
@@ -355,7 +508,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitExprList([NotNull] p4Parser.ExprListContext context) { return VisitChildren(context); }
+        public virtual Result VisitExprList([NotNull] p4Parser.ExprListContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.postExpr"/>.
         /// <para>
@@ -365,7 +522,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitPostExpr([NotNull] p4Parser.PostExprContext context) { return VisitChildren(context); }
+        public virtual Result VisitPostExpr([NotNull] p4Parser.PostExprContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.primExpr"/>.
         /// <para>
@@ -375,7 +536,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitPrimExpr([NotNull] p4Parser.PrimExprContext context) { return VisitChildren(context); }
+        public virtual Result VisitPrimExpr([NotNull] p4Parser.PrimExprContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.literal"/>.
         /// <para>
@@ -385,7 +550,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitLiteral([NotNull] p4Parser.LiteralContext context) { return VisitChildren(context); }
+        public virtual Result VisitLiteral([NotNull] p4Parser.LiteralContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.postfix"/>.
         /// <para>
@@ -395,7 +564,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitPostfix([NotNull] p4Parser.PostfixContext context) { return VisitChildren(context); }
+        public virtual Result VisitPostfix([NotNull] p4Parser.PostfixContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.prefix"/>.
         /// <para>
@@ -405,7 +578,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitPrefix([NotNull] p4Parser.PrefixContext context) { return VisitChildren(context); }
+        public virtual Result VisitPrefix([NotNull] p4Parser.PrefixContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.valuetype"/>.
         /// <para>
@@ -415,7 +592,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitValuetype([NotNull] p4Parser.ValuetypeContext context) { return VisitChildren(context); }
+        public virtual Result VisitValuetype([NotNull] p4Parser.ValuetypeContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.returntype"/>.
         /// <para>
@@ -425,7 +606,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitReturntype([NotNull] p4Parser.ReturntypeContext context) { return VisitChildren(context); }
+        public virtual Result VisitReturntype([NotNull] p4Parser.ReturntypeContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.value"/>.
         /// <para>
@@ -435,7 +620,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitValue([NotNull] p4Parser.ValueContext context) { return VisitChildren(context); }
+        public virtual Result VisitValue([NotNull] p4Parser.ValueContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.bool"/>.
         /// <para>
@@ -445,7 +634,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitBool([NotNull] p4Parser.BoolContext context) { return VisitChildren(context); }
+        public virtual Result VisitBool([NotNull] p4Parser.BoolContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.assnOp"/>.
         /// <para>
@@ -455,7 +648,11 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitAssnOp([NotNull] p4Parser.AssnOpContext context) { return VisitChildren(context); }
+        public virtual Result VisitAssnOp([NotNull] p4Parser.AssnOpContext context)
+        {
+            return VisitChildren(context);
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="p4Parser.modifier"/>.
         /// <para>
@@ -465,6 +662,9 @@ namespace SALShell.Compiler.ParserGen
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor result.</return>
-        public virtual Result VisitModifier([NotNull] p4Parser.ModifierContext context) { return VisitChildren(context); }
+        public virtual Result VisitModifier([NotNull] p4Parser.ModifierContext context)
+        {
+            return VisitChildren(context);
+        }
     }
 }
