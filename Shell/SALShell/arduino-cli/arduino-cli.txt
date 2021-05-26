@@ -1,0 +1,4 @@
+Source-code for the arduino-cli can be found at Arduino's official GitHub:
+https://github.com/arduino/arduino-cli/
+
+Which is released under the GNU General Public License.

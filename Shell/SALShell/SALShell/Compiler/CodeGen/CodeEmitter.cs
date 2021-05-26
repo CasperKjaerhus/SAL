@@ -54,8 +54,9 @@ namespace SALShell.Compiler.CodeGen
 
         private void CompileToMachineCode(string path, string name)
         {
-            string ExePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            string DirectoryPath = System.IO.Path.GetDirectoryName(ExePath);
+            string ExePath = Environment.CurrentDirectory;
+            string DirectoryPath = Directory.GetParent(ExePath).Parent.Parent.Parent.FullName;
+            DirectoryPath += "\\arduino-cli";
             string BoardName = "arduino:avr:uno";
             string fileCreationPath = $"{path}\\{name}.ino";
 
