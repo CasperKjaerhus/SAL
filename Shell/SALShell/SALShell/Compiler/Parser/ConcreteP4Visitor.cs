@@ -60,6 +60,21 @@ namespace SALShell.Compiler.Parser
             return new FunctionDeclarationAstNode(functionId, @params, Visit(context.block()), context.Function().Symbol);
         }
 
+        public override ASTNode VisitGlobal([NotNull] p4Parser.GlobalContext context)
+        {
+            if (context.funcDcl() != null)
+            {
+                return Visit(context.funcDcl());
+            } else if (context.declaration() != null)
+            {
+                return Visit(context.declaration());
+            }
+            else
+            {
+                throw new Exception("Should never happen");
+            }
+        }
+
         public override ASTNode VisitLoopStructure([NotNull] p4Parser.LoopStructureContext context)
         {
             if(context.forexpr() != null)
