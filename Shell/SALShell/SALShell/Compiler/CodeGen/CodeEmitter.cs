@@ -49,10 +49,10 @@ namespace SALShell.Compiler.CodeGen
         {
             Resolver.PopulateAST(ASTroot);
             CreateFile(path, name, ASTroot);
-            CompileToMachineCode(path, name);
+            CallArduinoCli(path, name);
         }
 
-        private void CompileToMachineCode(string path, string name)
+        private void CallArduinoCli(string path, string name)
         {
             string ExePath = Environment.CurrentDirectory;
             string DirectoryPath = Directory.GetParent(ExePath).Parent.Parent.Parent.FullName;
