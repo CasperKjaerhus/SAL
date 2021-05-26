@@ -488,3 +488,9 @@ Antlr/Test_Parser_src/Test_Parser/User_Tests/User_Tests.ino.elf
 Antlr/Test_Parser_src/Test_Parser/User_Tests/User_Tests.ino.hex
 Antlr/Test_Parser_src/Test_Parser/User_Tests/User_Tests.ino.with_bootloader.bin
 Antlr/Test_Parser_src/Test_Parser/User_Tests/User_Tests.ino.with_bootloader.hex
+Shell/SALShell/SALShell/Compiler/CodeGen/InoResolverDiagram.cd
+Shell/SALShell/SALShell/Compiler/CodeGen/CodeGenDiagram.cd
+Shell/SALShell/CodeGenDiagram.png
+Shell/SALShell/SALShell/Compiler/CodeGen/InoResolverDiagram.cd
+Shell/SALShell/SALShell/Compiler/CodeGen/CodeGenDiagram.cd
+Shell/SALShell/CodeGenDiagram.png
