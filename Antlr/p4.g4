@@ -1,5 +1,5 @@
 grammar p4;
-s 						: 		importStmt* funcDcl* stmt*;
+s 						: 		importStmt* global* main? global*;
 importStmt				:		Include Id Semicolon;
 stmt 					: 		assignment Semicolon
 						|		declaration Semicolon
@@ -9,6 +9,11 @@ stmt 					: 		assignment Semicolon
 						| 		controlStructure
 						|		loopStructure
 						|		returnExpr;
+						
+global					:		funcDcl
+						| 		declaration Semicolon;
+						
+main					:		Function Main Lparen Rparen Returns VOID block;
 
 block					:		Begin stmt* End;
 
@@ -28,7 +33,7 @@ arguments				:		expr (Comma expr)*;
 
 controlStructure		: 		ifStmt
 						| 		switchStmt;
-ifStmt 					: 		If Lparen expr Rparen Then block elseStmt?;
+ifStmt 					: 		If Lparen expr Rparen block elseStmt?;
 elseStmt 				: 		Else block
 						| 		Else ifStmt;
 						
@@ -119,6 +124,7 @@ VOID					: 		'void';
 True					:		'true';
 False					:		'false';
 
+Main					:		'main';
 Id						:		Idregex (Dot Idregex)*;
 
 fragment Idregex		: 		[a-zA-Z][a-zA-Z0-9_]*;

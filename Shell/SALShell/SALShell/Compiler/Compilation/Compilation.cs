@@ -24,18 +24,18 @@ namespace SALShell.Compiler.Compilation
             IParseTree tree = parser.s();
 
             ASTNode AST = new ConcreteP4Visitor().Visit(tree);
-            //AST?.PrintTrees(0);
+            AST?.PrintTrees(0);
 
-            SymTable s = new SymTable(AST);
+            //SymTable s = new SymTable(AST);
 
-            s.PrintErrors();
-            TypeCheckVisitor t = new TypeCheckVisitor(AST);
+            //s.PrintErrors();
+            //TypeCheckVisitor t = new TypeCheckVisitor(AST);
 
-            t.Errors.ForEach(s => Console.WriteLine(s.Message));
+            //t.Errors.ForEach(s => Console.WriteLine(s.Message));
 
-            CodeEmitter CodeGenerator = new CodeEmitter();
+            //CodeEmitter CodeGenerator = new CodeEmitter();
 
-            CodeGenerator.GenerateCode(outputPath, fileName, AST);
+            //CodeGenerator.GenerateCode(outputPath, fileName, AST);
             //test available in relative directory: 
             //           outputPath = "...\SAL\Antlr\Test_Parser_src\Test_Parser\Tests"
             //           fileName = "Tests"

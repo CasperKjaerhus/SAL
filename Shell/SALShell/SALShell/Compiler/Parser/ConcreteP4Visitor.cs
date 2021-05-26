@@ -25,26 +25,23 @@ namespace SALShell.Compiler.Parser
                 }
             }
 
-            if(context.funcDcl() != null)
+            if(context.global() != null)
             {
-                foreach (IParseTree funcdcl in context.funcDcl())
+                foreach (IParseTree globalDcl in context.global())
                 {
                     if (Root == null)
-                        Root = new StatementAstNode(Visit(funcdcl), null);
+                        Root = new StatementAstNode(Visit(globalDcl), null);
                     else
-                        Root.Push(new StatementAstNode(Visit(funcdcl), null));
+                        Root.Push(new StatementAstNode(Visit(globalDcl), null));
                 }
             }
 
-            if(context.stmt() != null)
+            if(context.main() != null)
             {
-                foreach(IParseTree stmt in context.stmt())
-                {
-                    if (Root == null)
-                        Root = new StatementAstNode(Visit(stmt), null);
-                    else
-                        Root.Push(new StatementAstNode(Visit(stmt), null));
-                }
+                if (Root == null)
+                    Root = new StatementAstNode(Visit(context.main()), null);
+                else
+                    Root.Push(new StatementAstNode(Visit(context.main()), null));
             }
 
             return Root;
@@ -53,6 +50,16 @@ namespace SALShell.Compiler.Parser
         {
             return new ImportStatementAstNode(context.Id().Symbol);
         }
+
+        public override ASTNode VisitMain([NotNull] p4Parser.MainContext context)
+        {
+            ASTNode returntype = new TypeAstNode(context.VOID().Symbol);
+            ASTNode functionId = new IdAstNode(context.Main().Symbol, SALType.Types[returntype.Token.Text]);
+            ASTNode @params = new ParameterListAstNode(new ASTNode[]{}, null);
+
+            return new FunctionDeclarationAstNode(functionId, @params, Visit(context.block()), context.Function().Symbol);
+        }
+
         public override ASTNode VisitLoopStructure([NotNull] p4Parser.LoopStructureContext context)
         {
             if(context.forexpr() != null)

@@ -1,8 +1,4 @@
-﻿include benis;
-
-function main() returns void begin
-    number timer = 50+50;
-    number ledPins[] = {2, 7, 4, 6, 5, 3}; // initialising number array
+﻿function main() returns void begin
 
 
     for (thisPin: 0...ledPins.length, step 1) begin        
@@ -23,3 +19,6 @@ function main() returns void begin
         
     end
 end
+
+number timer = 50+50;
+number ledPins[] = {2, 7, 4, 6, 5, 3}; // initialising number array

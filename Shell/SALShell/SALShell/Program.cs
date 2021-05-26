@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Antlr4.Runtime;
-using Antlr4.Runtime.Tree;
-using SALShell.Compiler.CodeGen;
-using SALShell.Compiler.Parser;
-using SALShell.Compiler.ParserGen;
-using SALShell.Compiler.SymbolTable;
-using SALShell.Compiler.TypeChecker;
-using SALShell.Controller;
+﻿using SALShell.Controller;
 using SALShell.Core;
 using SALShell.UI;
 
